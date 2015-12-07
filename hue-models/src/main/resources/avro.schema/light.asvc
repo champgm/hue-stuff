@@ -1,0 +1,18 @@
+@namespace("com.cgm.java.hue.models")
+
+protocol ReferenceRecordProtocol {
+    /**
+     * A model representing entities in a HBase table
+     */
+    record EntityAttributes {
+
+        string entityName;
+
+        long entityCount;
+
+        array<long>  entitySizes = [];
+
+        array<long> entityDepths = [];
+    }
+
+}
