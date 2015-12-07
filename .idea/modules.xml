@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/console.iml" filepath="$PROJECT_DIR$/console.iml" />
       <module fileurl="file://$PROJECT_DIR$/console-console/console-console.iml" filepath="$PROJECT_DIR$/console-console/console-console.iml" />
+      <module fileurl="file://$PROJECT_DIR$/utilities/utilities.iml" filepath="$PROJECT_DIR$/utilities/utilities.iml" />
     </modules>
   </component>
 </project>
