@@ -1,5 +1,6 @@
 package com.cgm.java.utilities.lambdas;
 
+import java.util.function.ToDoubleFunction;
 import java.util.function.ToLongFunction;
 
 /**
@@ -14,4 +15,5 @@ public class Conversion {
      * This is a "method reference" implementation of a Lambda
      */
     public static final ToLongFunction<String> STRING_TO_LONG = Long::parseLong;
+    public static final ToDoubleFunction<String> STRING_TO_DOUBLE = Double::parseDouble;
 }

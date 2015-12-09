@@ -1,9 +1,10 @@
 package com.cgm.java.console.commands.implementations;
 
 import java.util.Arrays;
-import java.util.stream.LongStream;
+import java.util.stream.DoubleStream;
 
 import org.apache.commons.cli.CommandLine;
+import org.apache.commons.cli.HelpFormatter;
 
 import com.cgm.java.console.commands.Command;
 import com.cgm.java.utilities.lambdas.Conversion;
@@ -13,21 +14,28 @@ import com.cgm.java.utilities.lambdas.Printers;
  * Sample command to add some numbers
  */
 public class AdditionCommand extends Command {
-
     @Override
     protected int run(final CommandLine line) throws Exception {
         final String[] args = line.getArgs();
 
         System.out.println("Here are the values you wish to sum: ");
-        final LongStream streamToPrint = Arrays.stream(args).mapToLong(Conversion.STRING_TO_LONG);
-        streamToPrint.forEach(Printers.PRINTING_CONSUMER);
+        final DoubleStream streamToPrint = Arrays.stream(args).mapToDouble(Conversion.STRING_TO_DOUBLE);
+        streamToPrint.forEach(Printers.DOUBLE_PRINTER);
 
         // Apparently a stream cannot be reused?
-        final LongStream streamToSum = Arrays.stream(args).mapToLong(Conversion.STRING_TO_LONG);
-        final long sum = streamToSum.sum();
+        final DoubleStream streamToSum = Arrays.stream(args).mapToDouble(Conversion.STRING_TO_DOUBLE);
+        final double sum = streamToSum.sum();
         System.out.println("The total of your inputs is: " + sum);
 
         return 0;
+    }
+
+    @Override
+    public void usage() {
+        final HelpFormatter formatter = new HelpFormatter();
+        formatter.printHelp(getName() + " <numbers...>",
+                "A command to sum numbers",
+                getOptions(), null);
     }
 
     @Override

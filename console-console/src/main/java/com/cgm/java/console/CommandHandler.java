@@ -59,7 +59,7 @@ public class CommandHandler {
     public String toString() {
         final StringBuilder resultBuilder = new StringBuilder();
         resultBuilder.append("These are the currently available commands: \n");
-        commandList.entrySet().stream().forEach(command -> resultBuilder.append(command).append("\n"));
+        commandList.entrySet().stream().forEach(command -> resultBuilder.append(command.getKey()).append("\n"));
         return resultBuilder.toString();
     }
 }

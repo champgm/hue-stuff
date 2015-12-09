@@ -1,6 +1,7 @@
 package com.cgm.java.utilities.lambdas;
 
 import java.util.function.Consumer;
+import java.util.function.DoubleConsumer;
 import java.util.function.LongConsumer;
 
 /**
@@ -8,5 +9,6 @@ import java.util.function.LongConsumer;
  */
 public class Printers {
     public static final Consumer<?> PRINTING_CONSUMER = (x) -> System.out.println(x);
-    public static final LongConsumer LONG = (x) -> System.out.println(x);
+    public static final LongConsumer LONG_PRINTER = (x) -> System.out.println(x);
+    public static final DoubleConsumer DOUBLE_PRINTER = (x) -> System.out.println(x);
 }
