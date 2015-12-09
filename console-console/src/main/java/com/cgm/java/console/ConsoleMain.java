@@ -22,7 +22,7 @@ public class ConsoleMain {
                 final Command command = classToInstantiate.newInstance();
                 commandHandler.addCommand(command);
             } catch (Exception e) {
-                throw new RuntimeException("Could not instantiate command class: " + classToInstantiate.getName());
+                throw new RuntimeException("Could not instantiate command class: " + classToInstantiate.getName(), e);
             }
         });
 

@@ -4,7 +4,6 @@ import java.util.Arrays;
 
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.DefaultParser;
-import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Options;
 
 /**
@@ -45,10 +44,7 @@ public abstract class Command {
     /**
      * Prints out usage information for the command.
      */
-    public void usage() {
-        final HelpFormatter formatter = new HelpFormatter();
-        formatter.printHelp(getName(), getOptions());
-    }
+    public abstract void usage();
 
     /**
      * Run the implementing command.
