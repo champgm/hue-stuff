@@ -22,7 +22,7 @@ public class RestCaller {
         CloseableHttpClient httpClient = null;
         InputStream contentStream = null;
         try {
-            final String uri = "http://" + bridgeIP + "/" + hueID + "/" + rest;
+            final String uri = "http://" + bridgeIP + "/api/" + hueID + "/" + rest;
             LOGGER.info("Will attempt to GET: " + uri);
 
             final HttpGet httpGet = new HttpGet(uri);
