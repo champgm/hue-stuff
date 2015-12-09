@@ -5,21 +5,37 @@ import java.util.HashMap;
 import com.cgm.java.console.commands.Command;
 
 /**
- * Holds available commands
+ * This is a holder and runner for available {@link com.cgm.java.console.commands.Command}s
  */
 public class CommandHandler {
     private final String banner;
     private final HashMap<String, Command> commandList;
 
+    /**
+     * Creates an instance
+     * 
+     * @param banner
+     *            the string that should be printed before processing begins
+     */
     public CommandHandler(final String banner) {
         this.banner = banner;
         this.commandList = new HashMap<>();
     }
 
+    /**
+     * Creates an instance with a blank banner
+     */
     public CommandHandler() {
         this("");
     }
 
+    /**
+     * Add a command to be handled by this class
+     * 
+     * @param newCommand
+     *            the new command to add
+     * @return this instance
+     */
     public CommandHandler addCommand(final Command newCommand) {
         final Command command = commandList.get(newCommand.getName());
         if (command != null) {
@@ -30,6 +46,16 @@ public class CommandHandler {
         return this;
     }
 
+    /**
+     * Run with a set of arguments. This handler will look for the input command and pass along its arguments and
+     * options.
+     * 
+     * @param inputArguments
+     *            ALL given arguments
+     * @return 0 if successful
+     * @throws Exception
+     *             if
+     */
     public int run(final String[] inputArguments) throws Exception {
         System.out.println(banner);
 

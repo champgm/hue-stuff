@@ -1,10 +1,10 @@
 @namespace("com.cgm.java.hue.models")
 
-protocol ReferenceRecordProtocol {
+protocol HueProtocol {
     /**
      * A model representing entities in a HBase table
      */
-    record EntityAttributes {
+    record Light {
 
         string entityName;
 

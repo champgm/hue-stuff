@@ -15,7 +15,7 @@ import com.cgm.java.utilities.lambdas.Printers;
  */
 public class AdditionCommand extends Command {
     @Override
-    protected int run(final CommandLine line) throws Exception {
+    protected int run(final CommandLine line) {
         final String[] args = line.getArgs();
 
         System.out.println("Here are the values you wish to sum: ");

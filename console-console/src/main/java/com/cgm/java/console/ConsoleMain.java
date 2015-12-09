@@ -7,7 +7,7 @@ import org.reflections.Reflections;
 import com.cgm.java.console.commands.Command;
 
 /**
- * Created by mc023219 on 12/7/15.
+ * Entry point for this console JAR
  */
 public class ConsoleMain {
     public static void main(final String[] args) throws Exception {

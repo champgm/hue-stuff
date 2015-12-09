@@ -1,5 +1,6 @@
 package com.cgm.java.console.commands;
 
+import java.net.UnknownHostException;
 import java.util.Arrays;
 
 import org.apache.commons.cli.CommandLine;
@@ -10,21 +11,37 @@ import org.apache.commons.cli.Options;
  * Base class for commands
  */
 public abstract class Command {
+
     /**
      * Constant for requesting help with a command.
      */
     public static final String HELP_OPTION = "help";
+
     /**
      * Constant for requesting verbose output from the command.
      */
     public static final String VERBOSE_OPTION = "verbose";
 
+    /**
+     * Gets all options
+     * 
+     * @return an {@link org.apache.commons.cli.Options} object containing the available options
+     */
     public Options getOptions() {
         return new Options()
                 .addOption("h", HELP_OPTION, false, "Print usage")
                 .addOption("v", VERBOSE_OPTION, false, "Verbose output");
     }
 
+    /**
+     * Runs the command
+     * 
+     * @param args
+     *            all arguments, including the name of the command
+     * @return 0 if successful
+     * @throws java.lang.Exception
+     *             if there are issues parsing the options or any unhandled issues while running the command.
+     */
     public final int run(final String[] args) throws Exception {
 
         final int argumentsToRemove = 1;
@@ -49,7 +66,7 @@ public abstract class Command {
     /**
      * Run the implementing command.
      */
-    protected abstract int run(final CommandLine line) throws Exception;
+    protected abstract int run(final CommandLine line) throws RuntimeException, UnknownHostException;
 
     /**
      * Returns the name of the command.
