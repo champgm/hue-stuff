@@ -11,6 +11,10 @@
 
     <artifactId>console-console</artifactId>
 
+    <properties>
+        <avro.destination>${project.build.directory}/generated-sources</avro.destination>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>com.cgm.java</groupId>
@@ -19,6 +23,10 @@
         <dependency>
             <groupId>com.cgm.java</groupId>
             <artifactId>hue-utilities</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.cgm.java</groupId>
+            <artifactId>hue-models</artifactId>
         </dependency>
         <dependency>
             <groupId>commons-cli</groupId>
@@ -32,10 +40,19 @@
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-simple</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.apache.avro</groupId>
+            <artifactId>avro</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+        </dependency>
     </dependencies>
 
     <build>
         <plugins>
+            <!-- Use the shade plugin to build the jar with minimum dependencies -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>

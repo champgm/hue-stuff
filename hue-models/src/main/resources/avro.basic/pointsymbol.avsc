@@ -1,0 +1,14 @@
+{"namespace": "com.cgm.java.hue.models",
+ "type": "record",
+ "name": "PointSymbol",
+ "fields": [
+        {"name": "one", "type": ["string", "null"]},
+        {"name": "two", "type": ["string", "null"]},
+        {"name": "three", "type": ["string", "null"]},
+        {"name": "four", "type": ["string", "null"]},
+        {"name": "five", "type": ["string", "null"]},
+        {"name": "six", "type": ["string", "null"]},
+        {"name": "seven", "type": ["string", "null"]},
+        {"name": "eight", "type": ["string", "null"]}
+ ]
+}

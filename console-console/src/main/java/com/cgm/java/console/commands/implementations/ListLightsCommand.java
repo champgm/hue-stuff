@@ -7,11 +7,11 @@ import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.HelpFormatter;
 
 import com.cgm.java.console.commands.Command;
-import com.cgm.java.hue.utilities.HueCommands;
 import com.cgm.java.hue.utilities.HueBridgeCaller;
+import com.cgm.java.hue.utilities.HueCommands;
 
 /**
- * Created by mc023219 on 12/9/15.
+ * Prints the raw JSON for all available lights
  */
 public class ListLightsCommand extends Command {
 

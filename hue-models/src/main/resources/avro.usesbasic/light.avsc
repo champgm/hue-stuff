@@ -1,0 +1,14 @@
+{"namespace": "com.cgm.java.hue.models",
+ "type": "record",
+ "name": "Light",
+ "fields": [
+     {"name": "state", "type": "State"},
+     {"name": "type", "type": "string"},
+     {"name": "name", "type": "string"},
+     {"name": "modelid", "type": "string"},
+     {"name": "manufacturername", "type": "string"},
+     {"name": "uniqueid", "type": "string"},
+     {"name": "swversion", "type": "string"},
+     {"name": "pointsymbol", "type": ["PointSymbol", "null"]}
+ ]
+}

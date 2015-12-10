@@ -1,0 +1,15 @@
+{"namespace": "com.cgm.java.hue.models",
+ "type": "record",
+ "name": "State",
+ "fields": [
+        {"name": "on", "type": "boolean"},
+        {"name": "bri", "type": "long"},
+        {"name": "alert", "type": "string"},
+        {"name": "reachable", "type": "boolean"},
+
+        {"name": "colormode", "type": ["string", "null"], "default": "null"},
+        {"name": "hue", "type": ["string", "null"], "default": "null"},
+        {"name": "sat", "type": ["string", "null"], "default": "null"},
+        {"name": "effect", "type": ["string", "null"], "default": "null"}
+ ]
+}
