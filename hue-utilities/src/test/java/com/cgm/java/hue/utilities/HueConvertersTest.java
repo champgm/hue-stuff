@@ -54,15 +54,10 @@ public class HueConvertersTest {
         final ImmutableSet<State> geLights = builder.build();
 
         final State state = Iterables.getOnlyElement(geLights);
-       Assert.assertEquals("false",state.getOn());
-       Assert.assertEquals("254",state.getBri());
-       Assert.assertEquals("none",state.getAlert());
-       Assert.assertEquals("true",state.getReachable());
-
-        //
-        //
-        //
-        //
+        Assert.assertEquals(Boolean.FALSE, state.getOn());
+        Assert.assertEquals(Long.valueOf(254), state.getBri());
+        Assert.assertEquals("none", state.getAlert());
+        Assert.assertEquals(Boolean.TRUE, state.getReachable());
     }
 
 }

@@ -8,7 +8,6 @@
      {"name": "modelid", "type": "string"},
      {"name": "manufacturername", "type": "string"},
      {"name": "uniqueid", "type": "string"},
-     {"name": "swversion", "type": "string"},
-     {"name": "pointsymbol", "type": ["PointSymbol", "null"]}
+     {"name": "swversion", "type": "string"}
  ]
 }
