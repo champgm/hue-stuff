@@ -11,4 +11,10 @@
 
     <artifactId>console-utilities</artifactId>
 
+    <dependencies>
+        <dependency>
+            <groupId>com.cgm.java</groupId>
+            <artifactId>hue-models</artifactId>
+        </dependency>
+    </dependencies>
 </project>

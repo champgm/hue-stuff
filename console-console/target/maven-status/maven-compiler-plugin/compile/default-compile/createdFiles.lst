@@ -1,0 +1,10 @@
+com/cgm/java/console/commands/BridgeCommand.class
+com/cgm/java/console/commands/implementations/DecodeLightsAsAvroCommand.class
+com/cgm/java/console/ConsoleMain.class
+com/cgm/java/console/commands/implementations/FadeOnOverTime.class
+com/cgm/java/console/CommandHandler.class
+com/cgm/java/console/commands/implementations/TurnOff.class
+com/cgm/java/console/commands/implementations/TurnOn.class
+com/cgm/java/console/commands/Command.class
+com/cgm/java/console/commands/implementations/ListLightsCommand.class
+com/cgm/java/console/commands/implementations/AdditionCommand.class

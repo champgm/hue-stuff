@@ -1,53 +1,26 @@
 package com.cgm.java.console.commands.implementations;
 
-import java.net.InetAddress;
 import java.net.UnknownHostException;
-import java.util.Arrays;
+import java.util.Collection;
 
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.HelpFormatter;
 
-import com.cgm.java.console.commands.Command;
+import com.cgm.java.console.commands.BridgeCommand;
 import com.cgm.java.hue.models.Light;
-import com.cgm.java.hue.utilities.HueBridgeCaller;
-import com.cgm.java.hue.utilities.HueCommands;
-import com.cgm.java.hue.utilities.HueConverters;
-import com.google.common.collect.ImmutableSet;
+import com.cgm.java.hue.utilities.HueBridgeGetter;
 
 /**
- * Attempts to put the JSOn
+ * A debugging command to retrieve the full set of {@link com.cgm.java.hue.models.Light}s and print them to console
  */
-public class DecodeLightsAsAvroCommand extends Command {
+public class DecodeLightsAsAvroCommand extends BridgeCommand {
 
     @Override
     protected int run(final CommandLine line) throws UnknownHostException {
+        setIpAndId(line);
 
-        final String[] args = line.getArgs();
-        if (args.length != 2) {
-            System.out.println("You must specify both a bridge IP and a hue ID.");
-        }
-
-        final InetAddress ipAddress = InetAddress.getByName(args[0]);
-
-        final String fullLightsList = HueBridgeCaller.rawGet(ipAddress.getHostAddress(), args[1], HueCommands.LIGHTS);
-        System.out.println("Here is the string representation of the list of lights:");
-        System.out.println(fullLightsList);
-        System.out.println();
-
-        // ,"2":
-        final String regex = ",\"\\d*\":";
-        System.out.println("==================================================");
-        System.out.println("Here is the light output split by, <" + regex + ">");
-        System.out.println("==================================================");
-        final String[] splitLights = fullLightsList.split(regex);
-        for (final String light : splitLights) {
-            System.out.println(light);
-            System.out.println();
-        }
-
-        final ImmutableSet.Builder<Light> builder = ImmutableSet.builder();
-        Arrays.stream(splitLights).map(HueConverters.JSON_TO_LIGHT).forEach(builder::add);
-        final ImmutableSet<Light> lightsSet = builder.build();
+        //This command got a lot smaller with some API...
+        final Collection<Light> lightsSet = HueBridgeGetter.getLights(bridgeIp, hueId);
 
         System.out.println("=============================================================");
         System.out.println("Here is the light output after being decoded into avro models");

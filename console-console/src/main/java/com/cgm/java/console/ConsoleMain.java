@@ -1,9 +1,10 @@
 package com.cgm.java.console;
 
-import java.util.Set;
+import java.util.HashSet;
 
 import org.reflections.Reflections;
 
+import com.cgm.java.console.commands.BridgeCommand;
 import com.cgm.java.console.commands.Command;
 
 /**
@@ -16,7 +17,11 @@ public class ConsoleMain {
         // I don't really want to have to maintain a list of commands here each time I add a new one
         // So let's try to do something interesting.
         final Reflections reflections = new Reflections("com.cgm.java.console.commands.implementations");
-        final Set<Class<? extends Command>> allCommands = reflections.getSubTypesOf(Command.class);
+        final HashSet<Class<? extends Command>> allCommands = new HashSet<>();
+        allCommands.addAll(reflections.getSubTypesOf(Command.class));
+        allCommands.addAll(reflections.getSubTypesOf(BridgeCommand.class));
+
+        // final Set<Class<? extends Command>> allCommands =
         allCommands.stream().forEach(classToInstantiate -> {
             try {
                 final Command command = classToInstantiate.newInstance();

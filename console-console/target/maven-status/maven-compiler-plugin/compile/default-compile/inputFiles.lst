@@ -1,0 +1,10 @@
+/Users/mac/mygithub/console/console-console/src/main/java/com/cgm/java/console/CommandHandler.java
+/Users/mac/mygithub/console/console-console/src/main/java/com/cgm/java/console/commands/implementations/TurnOff.java
+/Users/mac/mygithub/console/console-console/src/main/java/com/cgm/java/console/commands/BridgeCommand.java
+/Users/mac/mygithub/console/console-console/src/main/java/com/cgm/java/console/commands/implementations/ListLightsCommand.java
+/Users/mac/mygithub/console/console-console/src/main/java/com/cgm/java/console/commands/Command.java
+/Users/mac/mygithub/console/console-console/src/main/java/com/cgm/java/console/commands/implementations/AdditionCommand.java
+/Users/mac/mygithub/console/console-console/src/main/java/com/cgm/java/console/commands/implementations/DecodeLightsAsAvroCommand.java
+/Users/mac/mygithub/console/console-console/src/main/java/com/cgm/java/console/commands/implementations/TurnOn.java
+/Users/mac/mygithub/console/console-console/src/main/java/com/cgm/java/console/ConsoleMain.java
+/Users/mac/mygithub/console/console-console/src/main/java/com/cgm/java/console/commands/implementations/FadeOnOverTime.java
