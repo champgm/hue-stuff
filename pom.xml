@@ -5,15 +5,15 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.cgm.java</groupId>
-    <artifactId>console</artifactId>
+    <artifactId>hue-stuff</artifactId>
     <packaging>pom</packaging>
     <version>1.0-SNAPSHOT</version>
 
     <modules>
-        <module>console-console</module>
-        <module>console-utilities</module>
+        <module>hue-console</module>
         <module>hue-models</module>
         <module>hue-utilities</module>
+        <module>hue-web</module>
     </modules>
 
     <properties>
@@ -27,11 +27,6 @@
             <!-- Dependencies for this project -->
             <dependency>
                 <groupId>com.cgm.java</groupId>
-                <artifactId>console-utilities</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.cgm.java</groupId>
                 <artifactId>hue-utilities</artifactId>
                 <version>${project.version}</version>
             </dependency>
@@ -39,6 +34,12 @@
                 <groupId>com.cgm.java</groupId>
                 <artifactId>hue-models</artifactId>
                 <version>${project.version}</version>
+            </dependency>
+            <!-- Servlet Stuff -->
+            <dependency>
+                <groupId>javax.servlet</groupId>
+                <artifactId>javax.servlet-api</artifactId>
+                <version>3.1.0</version>
             </dependency>
             <!-- Apache Commons -->
             <dependency>
