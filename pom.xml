@@ -94,6 +94,13 @@
                 <version>18.0</version>
             </dependency>
 
+            <!-- lang for preconditions etc-->
+            <dependency>
+                <groupId>commons-lang</groupId>
+                <artifactId>commons-lang</artifactId>
+                <version>2.6</version>
+            </dependency>
+
             <!-- Testing -->
             <dependency>
                 <groupId>junit</groupId>
