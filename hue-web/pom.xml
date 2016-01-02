@@ -12,6 +12,14 @@
 
     <dependencies>
         <dependency>
+            <groupId>com.cgm.java</groupId>
+            <artifactId>hue-utilities</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.cgm.java</groupId>
+            <artifactId>hue-models</artifactId>
+        </dependency>
+        <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>javax.servlet-api</artifactId>
         </dependency>
