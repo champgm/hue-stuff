@@ -38,9 +38,9 @@ public class GetLights extends HttpServlet {
         // writer.append("\n")
         final HueConfiguration hueConfiguration = new HueConfiguration();
         final String bridgeIP = hueConfiguration.getIP();
-        writer.append("IP: ").append(bridgeIP).append("/n");
+        writer.append("IP: ").append(bridgeIP).append("\n");
         final String bridgeToken = hueConfiguration.getToken();
-        writer.append("API token: ").append(bridgeToken).append("/n");
+        writer.append("API token: ").append(bridgeToken).append("\n");
 
         final ArrayList<Light> list = HueBridgeGetter.getLights(bridgeIP, bridgeToken);
         for (final Light light : list) {
