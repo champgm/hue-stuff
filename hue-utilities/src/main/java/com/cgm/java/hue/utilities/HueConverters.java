@@ -13,6 +13,9 @@ import com.cgm.java.hue.models.State;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+/**
+ * Lambda converters for JSON -> Avro parsing
+ */
 public class HueConverters {
     private static final Logger LOGGER = LoggerFactory.getLogger(HueConverters.class);
 

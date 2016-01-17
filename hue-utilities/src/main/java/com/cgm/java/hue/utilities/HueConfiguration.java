@@ -12,7 +12,7 @@ import org.slf4j.LoggerFactory;
 import com.google.common.base.Preconditions;
 
 /**
- * Created by mac on 1/2/16.
+ * A class to aid with the retrieval and parsing of the bridge.properties file.
  */
 public class HueConfiguration {
     private static final Logger LOGGER = LoggerFactory.getLogger(HueConfiguration.class);

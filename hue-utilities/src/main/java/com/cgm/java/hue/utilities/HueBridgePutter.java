@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.io.StringWriter;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpPut;
 import org.apache.http.entity.ByteArrayEntity;
@@ -14,21 +15,52 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.cgm.java.hue.models.State;
+import com.google.common.base.Preconditions;
 
 /**
- * Created by mc023219 on 12/17/15.
+ * A utility class for writing data to the hue bridge
  */
 public class HueBridgePutter {
     private static final Logger LOGGER = LoggerFactory.getLogger(HueBridgePutter.class);
 
-    public static String setLightState(final String bridgeIp, final String hueId, final int lightIndex, final State state) {
-        final int baseOneIndex = lightIndex + 1;
+    /**
+     * Sets one light's state
+     * 
+     * @param bridgeIp
+     *            IP for the hue bridge
+     * @param hueId
+     *            API token for the bridge
+     * @param lightId
+     *            the ID of the light to modify
+     * @param state
+     *            the desired state for that light
+     * @return whatever the response from the bridge is
+     */
+    public String setLightState(final String bridgeIp, final String hueId, final String lightId, final State state) {
+        Preconditions.checkArgument(StringUtils.isNotBlank(bridgeIp), "bridgeIp may not be null or empty.");
+        Preconditions.checkArgument(StringUtils.isNotBlank(hueId), "hueId may not be null or empty.");
+        Preconditions.checkArgument(StringUtils.isNotBlank(lightId), "lightId may not be null or empty.");
+        Preconditions.checkNotNull(state, "state may not be null.");
+
         // State calls look like this:
         // http://<bridge ip address>/api/1028d66426293e821ecfd9ef1a0731df/lights/1/state
-        final String uri = "http://" + bridgeIp + "/api/" + hueId + "/lights/" + baseOneIndex + "/state";
-        LOGGER.debug("Attempting put to PUT: " + uri);
-        LOGGER.debug("Body: " + state);
+        final String uri = "http://" + bridgeIp + "/api/" + hueId + "/lights/" + lightId + "/state";
         return hitURI(uri, state.toString());
+    }
+
+    /**
+     * Use
+     * {@link com.cgm.java.hue.utilities.HueBridgePutter#setLightState(String, String, String, com.cgm.java.hue.models.State)}
+     * instead.
+     */
+    @Deprecated
+    public String setLightState(final String bridgeIp, final String hueId, final int lightIndex, final State state) {
+        Preconditions.checkArgument(StringUtils.isNotBlank(bridgeIp), "bridgeIp may not be null or empty.");
+        Preconditions.checkArgument(StringUtils.isNotBlank(hueId), "hueId may not be null or empty.");
+        Preconditions.checkNotNull(state, "state may not be null.");
+
+        final int baseOneIndex = lightIndex + 1;
+        return setLightState(bridgeIp, hueId, String.valueOf(baseOneIndex), state);
     }
 
     private static String hitURI(final String uri, final String body) {
@@ -46,9 +78,7 @@ public class HueBridgePutter {
             final StringWriter fullContentWriter = new StringWriter();
             IOUtils.copy(contentStream, fullContentWriter, "UTF8");
 
-            final String result = fullContentWriter.toString();
-            LOGGER.debug("Result of PUT: "+result);
-            return result;
+            return fullContentWriter.toString();
         } catch (IOException e) {
             throw new RuntimeException("Error while executing a raw HTTP get.", e);
         } finally {

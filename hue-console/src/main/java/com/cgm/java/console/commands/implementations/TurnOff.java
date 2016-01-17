@@ -45,6 +45,7 @@ public class TurnOff extends BridgeCommand {
         nameToLightMap.keySet().forEach(System.out::println);
         System.out.println();
 
+        final HueBridgePutter hueBridgePutter = new HueBridgePutter();
         final List<String> lightsToTurnOff = Arrays.stream(lightNames).filter(nameToLightMap::containsKey).collect(Collectors.toList());
         System.out.println("These lights matched your input: ");
         lightsToTurnOff.forEach((lightName) -> {
@@ -52,7 +53,7 @@ public class TurnOff extends BridgeCommand {
             final Light light = nameToLightMap.get(lightName);
 
             final State.Builder newStateBuilder = State.newBuilder(light.getState()).setOn(false);
-            HueBridgePutter.setLightState(bridgeIp, hueId, lights.indexOf(light), newStateBuilder.build());
+            hueBridgePutter.setLightState(bridgeIp, hueId, lights.indexOf(light), newStateBuilder.build());
         });
 
         return 0;

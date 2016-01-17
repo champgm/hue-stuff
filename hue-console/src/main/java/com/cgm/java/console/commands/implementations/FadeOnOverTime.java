@@ -59,6 +59,7 @@ public class FadeOnOverTime extends BridgeCommand {
         System.out.println("These lights matched your input: ");
         lightsToTurnOn.forEach(System.out::println);
 
+        final HueBridgePutter hueBridgePutter = new HueBridgePutter();
         // Turn the lights off and set their brightness to 0
         lightsToTurnOn.forEach((lightName) -> {
             try {
@@ -66,9 +67,9 @@ public class FadeOnOverTime extends BridgeCommand {
 
                 final State.Builder newStateBuilder = State.newBuilder(light.getState()).setOn(false).setBri(0L);
                 System.out.println("Turning '" + lightName + "' off.");
-                HueBridgePutter.setLightState(bridgeIp, hueId, lights.indexOf(light), newStateBuilder.build());
+                hueBridgePutter.setLightState(bridgeIp, hueId, lights.indexOf(light), newStateBuilder.build());
                 Thread.sleep(ONE_SECOND);
-                HueBridgePutter.setLightState(bridgeIp, hueId, lights.indexOf(light), newStateBuilder.build());
+                hueBridgePutter.setLightState(bridgeIp, hueId, lights.indexOf(light), newStateBuilder.build());
                 Thread.sleep(ONE_SECOND);
             } catch (InterruptedException e) {
                 e.printStackTrace();
@@ -92,7 +93,7 @@ public class FadeOnOverTime extends BridgeCommand {
                         final Light light = nameToLightMap.get(lightName);
                         System.out.println("Setting '" + lightName + "' to brightness: " + finalCurrentBrightness);
                         final State.Builder newStateBuilder = State.newBuilder(light.getState()).setOn(true).setBri(finalCurrentBrightness);
-                        HueBridgePutter.setLightState(bridgeIp, hueId, lights.indexOf(light), newStateBuilder.build());
+                        hueBridgePutter.setLightState(bridgeIp, hueId, lights.indexOf(light), newStateBuilder.build());
                     });
 
                     // Delay 10 seconds. If we do that 6 times it'll be about a minute. Close enough.
