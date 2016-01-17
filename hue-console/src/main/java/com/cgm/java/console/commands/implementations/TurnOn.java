@@ -1,7 +1,6 @@
 package com.cgm.java.console.commands.implementations;
 
 import java.net.UnknownHostException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -14,7 +13,6 @@ import org.apache.commons.cli.Options;
 import com.cgm.java.console.commands.BridgeCommand;
 import com.cgm.java.hue.models.Light;
 import com.cgm.java.hue.models.State;
-import com.cgm.java.hue.utilities.HueBridgeGetter;
 import com.cgm.java.hue.utilities.HueBridgePutter;
 import com.cgm.java.utilities.lambdas.Conversion;
 
@@ -49,7 +47,7 @@ public class TurnOn extends BridgeCommand {
         }
 
         // Collect all lights and keep them in a map
-        final ArrayList<Light> lights = HueBridgeGetter.getLights(bridgeIp, hueId);
+        final List<Light> lights = HUE_BRIDGE_GETTER.getLights(bridgeIp, hueId);
         final Map<String, Light> nameToLightMap = lights.stream().collect(Collectors.toMap(Conversion.LIGHT_TO_NAME, (light) -> light));
         System.out.println("These lights were found: ");
         nameToLightMap.keySet().forEach(System.out::println);
@@ -64,9 +62,9 @@ public class TurnOn extends BridgeCommand {
 
             final State.Builder newStateBuilder = State.newBuilder(light.getState()).setOn(true);
             if (brightnesses != null && brightnesses.length > 0) {
-                newStateBuilder.setBri(Integer.valueOf(brightnesses[0]));
+                newStateBuilder.setBri(Long.valueOf(brightnesses[0]));
             } else {
-                newStateBuilder.setBri(254);
+                newStateBuilder.setBri(254L);
             }
 
             HueBridgePutter.setLightState(bridgeIp, hueId, lights.indexOf(light), newStateBuilder.build());

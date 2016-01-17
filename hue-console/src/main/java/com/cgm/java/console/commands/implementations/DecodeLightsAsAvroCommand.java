@@ -8,19 +8,17 @@ import org.apache.commons.cli.HelpFormatter;
 
 import com.cgm.java.console.commands.BridgeCommand;
 import com.cgm.java.hue.models.Light;
-import com.cgm.java.hue.utilities.HueBridgeGetter;
 
 /**
  * A debugging command to retrieve the full set of {@link com.cgm.java.hue.models.Light}s and print them to console
  */
 public class DecodeLightsAsAvroCommand extends BridgeCommand {
-
     @Override
     protected int run(final CommandLine line) throws UnknownHostException {
         setIpAndId(line);
 
-        //This command got a lot smaller with some API...
-        final Collection<Light> lightsSet = HueBridgeGetter.getLights(bridgeIp, hueId);
+        // This command got a lot smaller with some API...
+        final Collection<Light> lightsSet = HUE_BRIDGE_GETTER.getLights(bridgeIp, hueId);
 
         System.out.println("=============================================================");
         System.out.println("Here is the light output after being decoded into avro models");

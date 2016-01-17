@@ -2,13 +2,13 @@
  "type": "record",
  "name": "PointSymbol",
  "fields": [
-        {"name": "one", "type": ["string", "null"]},
-        {"name": "two", "type": ["string", "null"]},
-        {"name": "three", "type": ["string", "null"]},
-        {"name": "four", "type": ["string", "null"]},
-        {"name": "five", "type": ["string", "null"]},
-        {"name": "six", "type": ["string", "null"]},
-        {"name": "seven", "type": ["string", "null"]},
-        {"name": "eight", "type": ["string", "null"]}
+        {"name": "one", "type": ["null", "string"]},
+        {"name": "two", "type": ["null", "string"]},
+        {"name": "three", "type": ["null", "string"]},
+        {"name": "four", "type": ["null", "string"]},
+        {"name": "five", "type": ["null", "string"]},
+        {"name": "six", "type": ["null", "string"]},
+        {"name": "seven", "type": ["null", "string"]},
+        {"name": "eight", "type": ["null", "string"]}
  ]
 }

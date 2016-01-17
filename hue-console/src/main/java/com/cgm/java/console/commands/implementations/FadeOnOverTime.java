@@ -1,7 +1,6 @@
 package com.cgm.java.console.commands.implementations;
 
 import java.net.UnknownHostException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -16,7 +15,6 @@ import org.slf4j.LoggerFactory;
 import com.cgm.java.console.commands.BridgeCommand;
 import com.cgm.java.hue.models.Light;
 import com.cgm.java.hue.models.State;
-import com.cgm.java.hue.utilities.HueBridgeGetter;
 import com.cgm.java.hue.utilities.HueBridgePutter;
 import com.cgm.java.utilities.lambdas.Conversion;
 
@@ -51,7 +49,7 @@ public class FadeOnOverTime extends BridgeCommand {
         }
         final Integer durationInMinutes = Integer.valueOf(durations[0]);
 
-        final ArrayList<Light> lights = HueBridgeGetter.getLights(bridgeIp, hueId);
+        final List<Light> lights = HUE_BRIDGE_GETTER.getLights(bridgeIp, hueId);
         final Map<String, Light> nameToLightMap = lights.stream().collect(Collectors.toMap(Conversion.LIGHT_TO_NAME, (light) -> light));
         System.out.println("These lights were found: ");
         nameToLightMap.keySet().forEach(System.out::println);
@@ -66,7 +64,7 @@ public class FadeOnOverTime extends BridgeCommand {
             try {
                 final Light light = nameToLightMap.get(lightName);
 
-                final State.Builder newStateBuilder = State.newBuilder(light.getState()).setOn(false).setBri(0);
+                final State.Builder newStateBuilder = State.newBuilder(light.getState()).setOn(false).setBri(0L);
                 System.out.println("Turning '" + lightName + "' off.");
                 HueBridgePutter.setLightState(bridgeIp, hueId, lights.indexOf(light), newStateBuilder.build());
                 Thread.sleep(ONE_SECOND);
@@ -79,7 +77,7 @@ public class FadeOnOverTime extends BridgeCommand {
 
         // We need to increment this many times before we reach 255 while counting from 0
         final int increment = 255 / durationInMinutes;
-        int currentBrightness = 0;
+        long currentBrightness = 0;
 
         // Loop the outside once per minute
         for (int i = 0; i < durationInMinutes; i++) {
@@ -87,7 +85,7 @@ public class FadeOnOverTime extends BridgeCommand {
                 // Loop the inside 6 times per minute
                 for (int j = 0; j <= 5; j++) {
                     // It seems that any variable used in a lambda must be final. Interesting.
-                    final int finalCurrentBrightness = currentBrightness;
+                    final long finalCurrentBrightness = currentBrightness;
 
                     // Update the light and increase the brightness a bit
                     lightsToTurnOn.forEach((lightName) -> {

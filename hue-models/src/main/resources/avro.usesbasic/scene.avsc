@@ -1,0 +1,17 @@
+{"namespace": "com.cgm.java.hue.models",
+ "type": "record",
+ "name": "Scene",
+ "fields": [
+     {"name": "id", "type": ["null", "string"]},
+     {"name": "name", "type": ["null", "string"]},
+     {"name": "lights", "type": ["null", {"type": "array", "items": "string"}]},
+     {"name": "owner", "type": ["null", "string"]},
+     {"name": "recycle", "type": ["null", "string"]},
+     {"name": "locked", "type": ["null", "string"]},
+     {"name": "appdata", "type": ["null", {"type": "array", "items": "string"}]},
+     {"name": "picture", "type": ["null", "string"]},
+     {"name": "lastupdated", "type": ["null", "string"]},
+     {"name": "version", "type": ["null", "string"]},
+     {"name": "lightstates", "type": ["null", {"type": "array", "items": "string"}]}
+ ]
+}
