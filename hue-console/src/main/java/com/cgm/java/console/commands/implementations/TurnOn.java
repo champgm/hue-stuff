@@ -54,6 +54,7 @@ public class TurnOn extends BridgeCommand {
         System.out.println();
 
         // Figure out which requested lights actually match the available lights, and turn them on
+        final HueBridgePutter hueBridgePutter = new HueBridgePutter();
         final List<String> lightsToTurnOn = Arrays.stream(lightNames).filter(nameToLightMap::containsKey).collect(Collectors.toList());
         System.out.println("These lights matched your input: ");
         lightsToTurnOn.forEach((lightName) -> {
@@ -67,7 +68,7 @@ public class TurnOn extends BridgeCommand {
                 newStateBuilder.setBri(254L);
             }
 
-            HueBridgePutter.setLightState(bridgeIp, hueId, lights.indexOf(light), newStateBuilder.build());
+            hueBridgePutter.setLightState(bridgeIp, hueId, lights.indexOf(light), newStateBuilder.build());
         });
 
         return 0;
