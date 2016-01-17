@@ -22,4 +22,12 @@
         <servlet-name>GetLights</servlet-name>
         <url-pattern>/getlights/*</url-pattern>
     </servlet-mapping>
+    <servlet>
+        <servlet-name>GetScenes</servlet-name>
+        <servlet-class>com.cgm.java.hue.web.GetScenes</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>GetScenes</servlet-name>
+        <url-pattern>/getscenes/*</url-pattern>
+    </servlet-mapping>
 </web-app>

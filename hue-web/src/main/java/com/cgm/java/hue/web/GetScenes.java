@@ -10,44 +10,32 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.cgm.java.hue.models.Light;
+import com.cgm.java.hue.models.Scene;
 import com.cgm.java.hue.utilities.HueBridgeGetter;
 import com.cgm.java.hue.utilities.HueConfiguration;
 
-/**
- * Servlet implementation class HueServlet
- */
 @WebServlet("/HueServlet")
-public class GetLights extends HttpServlet {
-    private static final long serialVersionUID = 1L;
+public class GetScenes extends HttpServlet {
+    private static final long serialVersionUID = 2L;
     private static final HueBridgeGetter HUE_BRIDGE_GETTER = new HueBridgeGetter();
 
-    /**
-     * {@link HttpServlet#HttpServlet()}
-     */
-    public GetLights() {
+    public GetScenes() {
         super();
         // TODO Auto-generated constructor stub
     }
 
-    /**
-     * {@link HttpServlet#doGet(HttpServletRequest, HttpServletResponse)}
-     */
     protected void doGet(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
         final PrintWriter writer = response.getWriter();
         final HueConfiguration hueConfiguration = new HueConfiguration();
         final String bridgeIP = hueConfiguration.getIP();
         final String bridgeToken = hueConfiguration.getToken();
 
-        final List<Light> list = HUE_BRIDGE_GETTER.getLights(bridgeIP, bridgeToken);
-        for (final Light light : list) {
+        final List<Scene> list = HUE_BRIDGE_GETTER.getScenes(bridgeIP, bridgeToken);
+        for (final Scene light : list) {
             writer.append(light.toString()).append("\n");
         }
     }
 
-    /**
-     * {@link HttpServlet#doPost(HttpServletRequest, HttpServletResponse )}
-     */
     protected void doPost(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
         // TODO Auto-generated method stub
         doGet(request, response);

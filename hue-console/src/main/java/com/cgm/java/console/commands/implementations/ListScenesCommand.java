@@ -9,16 +9,16 @@ import com.cgm.java.console.commands.BridgeCommand;
 import com.cgm.java.hue.utilities.HueBridgeCommands;
 
 /**
- * Prints the raw JSON for all available lights
+ * Prints the raw JSON for all available Scenes
  */
-public class ListLightsCommand extends BridgeCommand {
+public class ListScenesCommand extends BridgeCommand {
 
     @Override
     protected int run(final CommandLine line) throws UnknownHostException {
         setIpAndId(line);
-        final String fullLightsList = HUE_BRIDGE_GETTER.rawGet(bridgeIp, hueId, HueBridgeCommands.LIGHTS);
-        System.out.println("Here is all available information on currently connected lights:");
-        System.out.println(fullLightsList);
+        final String fullScenesList = HUE_BRIDGE_GETTER.rawGet(bridgeIp, hueId, HueBridgeCommands.SCENES);
+        System.out.println("Here is all available information on currently available scenes:");
+        System.out.println(fullScenesList);
 
         return 0;
     }
@@ -27,12 +27,12 @@ public class ListLightsCommand extends BridgeCommand {
     public void usage() {
         final HelpFormatter formatter = new HelpFormatter();
         formatter.printHelp(getName() + " <bridge IP> <hue ID>",
-                "A command to print a JSON dump of all connected lights.",
+                "A command to print a JSON dump of all available scenes.",
                 getOptions(), null);
     }
 
     @Override
     public String getName() {
-        return "listlights";
+        return "listscenes";
     }
 }

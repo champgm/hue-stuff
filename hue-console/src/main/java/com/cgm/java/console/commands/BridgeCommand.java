@@ -5,10 +5,17 @@ import java.net.UnknownHostException;
 
 import org.apache.commons.cli.CommandLine;
 
+import com.cgm.java.hue.utilities.HueBridgeGetter;
+
 /**
  * A super class
  */
 public abstract class BridgeCommand extends Command {
+    /**
+     * The instance of {@link com.cgm.java.hue.utilities.HueBridgeGetter} used to retrieve data from the Hue Bridge
+     */
+    protected static final HueBridgeGetter HUE_BRIDGE_GETTER = new HueBridgeGetter();
+
     /**
      * The IP address for the bridge
      */
