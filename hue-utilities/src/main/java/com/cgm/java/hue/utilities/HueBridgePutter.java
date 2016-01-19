@@ -48,21 +48,6 @@ public class HueBridgePutter {
         return hitURI(uri, state.toString());
     }
 
-    /**
-     * Use
-     * {@link com.cgm.java.hue.utilities.HueBridgePutter#setLightState(String, String, String, com.cgm.java.hue.models.State)}
-     * instead.
-     */
-    @Deprecated
-    public String setLightState(final String bridgeIp, final String hueId, final int lightIndex, final State state) {
-        Preconditions.checkArgument(StringUtils.isNotBlank(bridgeIp), "bridgeIp may not be null or empty.");
-        Preconditions.checkArgument(StringUtils.isNotBlank(hueId), "hueId may not be null or empty.");
-        Preconditions.checkNotNull(state, "state may not be null.");
-
-        final int baseOneIndex = lightIndex + 1;
-        return setLightState(bridgeIp, hueId, String.valueOf(baseOneIndex), state);
-    }
-
     private static String hitURI(final String uri, final String body) {
         CloseableHttpClient httpClient = null;
         InputStream contentStream = null;

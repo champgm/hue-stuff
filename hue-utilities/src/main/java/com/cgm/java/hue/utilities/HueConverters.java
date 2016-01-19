@@ -19,6 +19,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class HueConverters {
     private static final Logger LOGGER = LoggerFactory.getLogger(HueConverters.class);
 
+    /**
+     * Converts one JSON Scene into a {@link com.cgm.java.hue.models.Scene}
+     */
     public static final BiFunction<String, String, Scene> JSON_TO_SCENE = (id, jsonString) -> {
         try {
             // The hue folks like to change the normal array format of "thing" : ["1","2","3"] into just "thing": {}
@@ -38,6 +41,9 @@ public class HueConverters {
         return null;
     };
 
+    /**
+     * Converts one JSON Light into a {@link com.cgm.java.hue.models.Light}
+     */
     public static final BiFunction<Integer, String, Light> JSON_TO_LIGHT = (id, jsonString) -> {
         try {
             ObjectMapper objectMapper = new ObjectMapper();
@@ -53,6 +59,9 @@ public class HueConverters {
         return null;
     };
 
+    /**
+     * Converts one JSON State into a {@link com.cgm.java.hue.models.State}
+     */
     public static final Function<String, State> JSON_TO_STATE = (jsonString) -> {
         try {
             ObjectMapper objectMapper = new ObjectMapper();

@@ -21,6 +21,7 @@ import com.cgm.java.utilities.lambdas.Conversion;
 /**
  * A command to turn on lights
  */
+@Deprecated
 public class FadeOnOverTime extends BridgeCommand {
     private static final String NAME_OPTION = "name";
     private static final String DURATION_IN_MINUTES_OPTION = "minutes";
@@ -67,9 +68,9 @@ public class FadeOnOverTime extends BridgeCommand {
 
                 final State.Builder newStateBuilder = State.newBuilder(light.getState()).setOn(false).setBri(0L);
                 System.out.println("Turning '" + lightName + "' off.");
-                hueBridgePutter.setLightState(bridgeIp, hueId, lights.indexOf(light), newStateBuilder.build());
+                hueBridgePutter.setLightState(bridgeIp, hueId, light.getId().toString(), newStateBuilder.build());
                 Thread.sleep(ONE_SECOND);
-                hueBridgePutter.setLightState(bridgeIp, hueId, lights.indexOf(light), newStateBuilder.build());
+                hueBridgePutter.setLightState(bridgeIp, hueId, light.getId().toString(), newStateBuilder.build());
                 Thread.sleep(ONE_SECOND);
             } catch (InterruptedException e) {
                 e.printStackTrace();
@@ -93,7 +94,7 @@ public class FadeOnOverTime extends BridgeCommand {
                         final Light light = nameToLightMap.get(lightName);
                         System.out.println("Setting '" + lightName + "' to brightness: " + finalCurrentBrightness);
                         final State.Builder newStateBuilder = State.newBuilder(light.getState()).setOn(true).setBri(finalCurrentBrightness);
-                        hueBridgePutter.setLightState(bridgeIp, hueId, lights.indexOf(light), newStateBuilder.build());
+                        hueBridgePutter.setLightState(bridgeIp, hueId, light.getId().toString(), newStateBuilder.build());
                     });
 
                     // Delay 10 seconds. If we do that 6 times it'll be about a minute. Close enough.
@@ -109,20 +110,6 @@ public class FadeOnOverTime extends BridgeCommand {
             }
         }
 
-        // lightsToTurnOn.forEach((lightName) -> {
-        // System.out.println(lightName);
-        // final Light light = nameToLightMap.get(lightName);
-        //
-        // final State.Builder newStateBuilder = State.newBuilder(light.getState()).setOn(true);
-        // if (brightnesses != null && brightnesses.length > 0) {
-        // newStateBuilder.setBri(Integer.valueOf(brightnesses[0]));
-        // } else {
-        // newStateBuilder.setBri(254);
-        // }
-        //
-        // HueBridgePutter.setLightState(bridgeIp, hueId, lights.indexOf(light), newStateBuilder.build());
-        // });
-        //
         return 0;
     }
 

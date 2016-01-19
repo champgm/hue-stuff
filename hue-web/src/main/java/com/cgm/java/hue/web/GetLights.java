@@ -14,25 +14,16 @@ import com.cgm.java.hue.models.Light;
 import com.cgm.java.hue.utilities.HueBridgeGetter;
 import com.cgm.java.hue.utilities.HueConfiguration;
 
-/**
- * Servlet implementation class HueServlet
- */
 @WebServlet("/HueServlet")
 public class GetLights extends HttpServlet {
     private static final long serialVersionUID = 1L;
     private static final HueBridgeGetter HUE_BRIDGE_GETTER = new HueBridgeGetter();
 
-    /**
-     * {@link HttpServlet#HttpServlet()}
-     */
     public GetLights() {
         super();
         // TODO Auto-generated constructor stub
     }
 
-    /**
-     * {@link HttpServlet#doGet(HttpServletRequest, HttpServletResponse)}
-     */
     protected void doGet(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
         final PrintWriter writer = response.getWriter();
         final HueConfiguration hueConfiguration = new HueConfiguration();
@@ -45,12 +36,8 @@ public class GetLights extends HttpServlet {
         }
     }
 
-    /**
-     * {@link HttpServlet#doPost(HttpServletRequest, HttpServletResponse )}
-     */
     protected void doPost(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
         // TODO Auto-generated method stub
         doGet(request, response);
     }
-
 }

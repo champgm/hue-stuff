@@ -9,6 +9,7 @@ import com.google.common.base.Preconditions;
  * {@link javax.servlet.http.HttpServletResponse} objects
  */
 public enum KnownParameterNames {
+
     LIGHT_ID("lightid");
 
     private final String name;

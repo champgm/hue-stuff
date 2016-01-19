@@ -6,7 +6,6 @@
         {"name": "bri", "type": ["null", "long"]},
         {"name": "alert", "type": ["null", "string"]},
         {"name": "reachable", "type": ["null", "boolean"]},
-
         {"name": "colormode", "type": ["null", "string"]},
         {"name": "hue", "type": ["null", "string"]},
         {"name": "sat", "type": ["null", "string"]},

@@ -60,16 +60,19 @@ public class HueBridgeGetter {
     /**
      * Same as {@link HueBridgeGetter#rawGet(String, String, String)} but with the ability to
      * add extra stuff to the URL
-     * 
+     *
      * @param bridgeIP
+     *            the IP address of the bridge
      * @param token
+     *            the user ID that should already be registered with the bridge
      * @param apiCall
+     *            the api command to call
      * @param additional
      *            a list of stuff to add to the URI. For example, a normal call to LIGHTS will build a URI like
      *            "/api/1234/lights" but if you want a SPECIFIC light, you should add its ID into this list. Adding "1"
      *            to the list would make the requested URI "/api/77584ee540184794d3af91523c34302/lights/1". Adding
      *            "1","2","3","4" would make it "/api/77584ee540184794d3af91523c34302/lights/1/2/3/4"
-     * @return
+     * @return the raw results of the get
      */
     public String rawGet(final String bridgeIP, final String token, final String apiCall, final List<String> additional) {
         Preconditions.checkArgument(StringUtils.isNotBlank(bridgeIP), "bridgeIP may not be null or empty.");
@@ -116,16 +119,27 @@ public class HueBridgeGetter {
         return new ArrayList<>(resultList);
     }
 
-    public Light getLight(final String bridgeIp, final String hueId, final String lightIdString) {
+    /**
+     * Retrieves one light from the bridge
+     * 
+     * @param bridgeIp
+     *            the IP address of the bridge
+     * @param hueId
+     *            the user ID that should already be registered with the bridge
+     * @param lightId
+     *            the ID of the light to retrieve
+     * @return one {@link com.cgm.java.hue.models.Light} from the bridge
+     */
+    public Light getLight(final String bridgeIp, final String hueId, final String lightId) {
         Preconditions.checkArgument(StringUtils.isNotBlank(bridgeIp), "bridgeIp may not be null or empty.");
         Preconditions.checkArgument(StringUtils.isNotBlank(hueId), "hueId may not be null or empty.");
-        Preconditions.checkArgument(StringUtils.isNotBlank(lightIdString), "lightIdString may not be null or empty.");
-        final Integer lightId = Integer.valueOf(lightIdString);
+        Preconditions.checkArgument(StringUtils.isNotBlank(lightId), "lightId may not be null or empty.");
+        final Integer lightIdInteger = Integer.valueOf(lightId);
 
-        final String rawJsonResult = rawGet(bridgeIp, hueId, HueBridgeCommands.LIGHTS, ImmutableList.of(lightIdString));
-        final Light light = HueConverters.JSON_TO_LIGHT.apply(lightId, rawJsonResult);
+        final String rawJsonResult = rawGet(bridgeIp, hueId, HueBridgeCommands.LIGHTS, ImmutableList.of(lightId));
+        final Light light = HueConverters.JSON_TO_LIGHT.apply(lightIdInteger, rawJsonResult);
 
-        return Light.newBuilder(light).setId(lightIdString).build();
+        return Light.newBuilder(light).setId(lightId).build();
     }
 
     /**
@@ -136,7 +150,7 @@ public class HueBridgeGetter {
      *            the IP address of the bridge
      * @param hueId
      *            the user ID that should already be registered with the bridge
-     * @return an {@link java.util.ArrayList} of {@link com.cgm.java.hue.models.Scene}s
+     * @return a {@link java.util.List} of {@link com.cgm.java.hue.models.Scene}s
      */
     public List<Scene> getScenes(final String bridgeIp, final String hueId) {
         Preconditions.checkArgument(StringUtils.isNotBlank(bridgeIp), "bridgeIp may not be null or empty.");
