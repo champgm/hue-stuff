@@ -1,0 +1,87 @@
+/*style tabs*/
+#tabs {
+	position: relative;
+    width: 500px;
+    height: 400px;
+}
+
+/*style section under tabs*/
+#tabs section {
+	position: absolute;
+	display: block;
+	top: 30px;
+	left: 0;
+	right: 0;
+	height: 300px;
+	padding: 10px 20px;
+	background-color: #ddd;
+	border-radius: 10px;
+	border: 1px solid  #e6e6e6;
+	z-index: 0;
+}
+
+#tabs section h2 {
+	position: absolute;
+	font-size: 1em;
+	font-weight: normal;
+	width: 120px;
+	height: 30px;
+	top: -30px;
+	left: 8px;
+	padding: 0;
+	margin: 0;
+	color: #999;
+	background-color: #ddd;
+	border-radius: 10px 10px 0 0;
+}
+
+#tabs > section:first-child > h2  {
+	z-index: 1; 
+	background-color: #fff;	
+}
+
+/*style section which is the first child of the parent*/
+#tabs section:first-child {
+/*The z-index property specifies the stack order of an element.
+An element with greater stack order is always in front of an element with a lower stack order.
+Note: z-index only works on positioned elements (position:absolute, position:relative, or position:fixed).*/
+	z-index: 1; 
+	background-color: #fff;
+}
+
+/*position the 2nd section child*/
+#tabs section:nth-child(2) h2 {
+	left: 132px;
+}
+
+/*position the 3nd section child*/
+#tabs section:nth-child(3) h2 {
+	left: 254px;
+}
+
+/*style hyper link a*/
+#tabs section h2 a {
+	display: block;
+	width: 100%;
+	line-height: 30px;
+	text-align: center;
+	text-decoration: none;
+	color: inherit;
+}
+
+/*target is the element being linked to*/
+#tabs section:target,
+#tabs section:target h2 {
+	color: #333;
+	background-color: #fff;
+	z-index: 2;
+}
+
+#tabs section,
+#tabs section h2 {
+	-webkit-transition: all 500ms ease;
+	-moz-transition: all 500ms ease;
+	-ms-transition: all 500ms ease;
+	-o-transition: all 500ms ease;
+	transition: all 500ms ease;
+}
