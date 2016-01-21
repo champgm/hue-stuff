@@ -12,12 +12,11 @@ import com.google.common.base.Preconditions;
 public class LightUtil extends BridgeConfiguredUtil {
     /**
      * Toggles the light with the given ID
-     * 
-     * @param lightId
-     *            the ID of the light to toggle
-     * @return whatever the bridge's response was
+     *
+     * @param lightId the ID of the light to toggle
+     * @return the light state, retrieved from the bridge after being toggled
      */
-    public static String toggleLight(final String lightId) {
+    public static Light toggleLight(final String lightId) {
         Preconditions.checkArgument(StringUtils.isNotBlank(lightId), "lightId may not be null or empty.");
 
         // Get the light
@@ -28,7 +27,10 @@ public class LightUtil extends BridgeConfiguredUtil {
         final Boolean onState = state.getOn();
         final State newState = State.newBuilder(state).setOn(!onState).build();
 
-        // Put and return result.
-        return HUE_BRIDGE_PUTTER.setLightState(BRIDGE_IP, BRIDGE_TOKEN, String.valueOf(light.getId()), newState);
+        // Put the new state
+        HUE_BRIDGE_PUTTER.setLightState(BRIDGE_IP, BRIDGE_TOKEN, String.valueOf(light.getId()), newState);
+
+        //Get the resulting light and return it
+        return HUE_BRIDGE_GETTER.getLight(BRIDGE_IP, BRIDGE_TOKEN, lightId);
     }
 }

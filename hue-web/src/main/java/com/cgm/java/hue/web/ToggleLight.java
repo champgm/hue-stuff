@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.cgm.java.hue.models.Light;
 import com.cgm.java.hue.utilities.LightUtil;
 import com.cgm.java.hue.web.util.KnownParameterNames;
 
@@ -23,9 +24,9 @@ public class ToggleLight extends HttpServlet {
     protected void doGet(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
         final String lightId = request.getParameter(KnownParameterNames.LIGHT_ID.getName());
 
-        final String result = LightUtil.toggleLight(lightId);
+        final Light result = LightUtil.toggleLight(lightId);
 
-        response.getWriter().write(result);
+        response.getWriter().write(result.toString());
     }
 
     protected void doPost(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
