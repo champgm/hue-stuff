@@ -2,6 +2,7 @@ package com.cgm.java.hue.web;
 
 import java.io.IOException;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -18,19 +19,20 @@ public class ToggleLight extends HttpServlet {
 
     public ToggleLight() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
     protected void doGet(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
         final String lightId = request.getParameter(KnownParameterNames.LIGHT_ID.getName());
 
         final Light result = LightUtil.toggleLight(lightId);
+        
+        request.setAttribute("light", result);
 
-        response.getWriter().write(result.toString());
+        RequestDispatcher view = request.getRequestDispatcher("index.jsp");
+		view.forward(request, response);
     }
 
     protected void doPost(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
-        // TODO Auto-generated method stub
         doGet(request, response);
     }
 }
