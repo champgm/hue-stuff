@@ -40,4 +40,13 @@
     <servlet-name>ToggleLight</servlet-name>
     <url-pattern>/togglelight/*</url-pattern>
   </servlet-mapping>
+
+  <servlet>
+    <servlet-name>ActivateScene</servlet-name>
+    <servlet-class>com.cgm.java.hue.web.ActivateScene</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ActivateScene</servlet-name>
+    <url-pattern>/activatescene/*</url-pattern>
+  </servlet-mapping>
 </web-app>

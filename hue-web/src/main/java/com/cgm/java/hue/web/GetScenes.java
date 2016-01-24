@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.cgm.java.hue.models.Scene;
 import com.cgm.java.hue.utilities.HueBridgeGetter;
 import com.cgm.java.hue.utilities.HueConfiguration;
+import com.cgm.java.hue.web.util.KnownParameterNames;
 
 @WebServlet("/HueServlet")
 public class GetScenes extends HttpServlet {
@@ -28,7 +29,7 @@ public class GetScenes extends HttpServlet {
         final String bridgeToken = hueConfiguration.getToken();
 
         final List<Scene> list = HUE_BRIDGE_GETTER.getScenes(bridgeIP, bridgeToken);
-        request.setAttribute("scenelist", list);
+        request.setAttribute(KnownParameterNames.SCENE_LIST.getName(), list);
     }
 
     protected void doPost(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
