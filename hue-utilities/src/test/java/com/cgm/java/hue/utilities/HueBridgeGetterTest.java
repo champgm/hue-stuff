@@ -26,7 +26,7 @@ public class HueBridgeGetterTest {
 
         final HueBridgeGetter spiedBridgeGetter = Mockito.spy(new HueBridgeGetter());
         final String expectedUri = spiedBridgeGetter.buildUri(HUE_CONFIGURATION.getIP(), HUE_CONFIGURATION.getToken(), "lights");
-        Mockito.doReturn(fullLightDump).when(spiedBridgeGetter).hitURI(expectedUri);
+        Mockito.doReturn(fullLightDump).when(spiedBridgeGetter).getURI(expectedUri);
 
         final List<Light> lights = spiedBridgeGetter.getLights(HUE_CONFIGURATION.getIP(), HUE_CONFIGURATION.getToken());
         Assert.assertEquals(7, lights.size());
@@ -77,10 +77,10 @@ public class HueBridgeGetterTest {
 
         final HueBridgeGetter spiedBridgeGetter = Mockito.spy(new HueBridgeGetter());
         final String expectedUri = spiedBridgeGetter.buildUri(HUE_CONFIGURATION.getIP(), HUE_CONFIGURATION.getToken(), "scenes");
-        Mockito.doReturn(fullSceneDump).when(spiedBridgeGetter).hitURI(expectedUri);
+        Mockito.doReturn(fullSceneDump).when(spiedBridgeGetter).getURI(expectedUri);
 
         final List<Scene> scenes = spiedBridgeGetter.getScenes(HUE_CONFIGURATION.getIP(), HUE_CONFIGURATION.getToken());
-        Assert.assertEquals(32, scenes.size());
+        Assert.assertEquals(33, scenes.size());
         final List<CharSequence> sceneIds = scenes.stream().map(Scene::getId).map(String::valueOf).collect(Collectors.toList());
     }
 }

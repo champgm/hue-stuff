@@ -2,13 +2,14 @@
  "type": "record",
  "name": "State",
  "fields": [
-        {"name": "on", "type": ["null", "boolean"]},
-        {"name": "bri", "type": ["null", "long"]},
-        {"name": "alert", "type": ["null", "string"]},
-        {"name": "reachable", "type": ["null", "boolean"]},
-        {"name": "colormode", "type": ["null", "string"]},
-        {"name": "hue", "type": ["null", "string"]},
-        {"name": "sat", "type": ["null", "string"]},
-        {"name": "effect", "type": ["null", "string"]}
+        {"name": "on", "type": ["null", "boolean"], "default": null},
+        {"name": "bri", "type": ["null", "long"], "default": null},
+        {"name": "alert", "type": ["null", "string"], "default": null},
+        {"name": "reachable", "type": ["null", "boolean"], "default": null},
+        {"name": "colormode", "type": ["null", "string"], "default": null},
+        {"name": "hue", "type": ["null", "string"], "default": null},
+        {"name": "sat", "type": ["null", "string"], "default": null},
+        {"name": "effect", "type": ["null", "string"], "default": null},
+        {"name": "xy", "type": ["null", {"type": "array", "items": "float"}], "default": null}
  ]
 }

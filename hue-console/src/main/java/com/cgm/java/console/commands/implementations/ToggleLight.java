@@ -14,7 +14,7 @@ import org.apache.commons.collections.ListUtils;
 import com.cgm.java.console.commands.BridgeCommand;
 import com.cgm.java.hue.models.Light;
 import com.cgm.java.hue.models.State;
-import com.cgm.java.hue.utilities.HueBridgePutter;
+import com.cgm.java.hue.utilities.HueBridgeSetter;
 import com.cgm.java.utilities.lambdas.Conversion;
 
 /**
@@ -41,7 +41,7 @@ public class ToggleLight extends BridgeCommand {
         }
 
         // Collect all lights and keep them in a map
-        final List<Light> lights = HUE_BRIDGE_GETTER.getLights(bridgeIp, hueId);
+        final List<Light> lights = HUE_BRIDGE_GETTER.getLights(bridgeIp, token);
         final Map<String, Light> nameToLightMap = lights.stream().collect(Collectors.toMap(Conversion.LIGHT_TO_NAME, (light) -> light));
         final Map<String, Light> idToLightMap = lights.stream().collect(Collectors.toMap(Conversion.LIGHT_TO_ID, (light) -> light));
         System.out.println("These lights were found: ");
@@ -49,7 +49,7 @@ public class ToggleLight extends BridgeCommand {
         System.out.println();
 
         // Figure out which requested lights actually match the available lights, and turn them on
-        final HueBridgePutter hueBridgePutter = new HueBridgePutter();
+        final HueBridgeSetter hueBridgeSetter = new HueBridgeSetter();
         final List<String> lightNamesToggle = Arrays.stream(lightNames).filter(nameToLightMap::containsKey).collect(Collectors.toList());
         final List<String> lightIdsToToggle = Arrays.stream(lightIds).filter(idToLightMap::containsKey).collect(Collectors.toList());
         final List<String> union = ListUtils.union(lightNamesToggle, lightIdsToToggle);
@@ -63,7 +63,7 @@ public class ToggleLight extends BridgeCommand {
 
             final State newState = extractAndToggleState(light);
 
-            hueBridgePutter.setLightState(bridgeIp, hueId, light.getId().toString(), newState);
+            hueBridgeSetter.setLightState(bridgeIp, token, light.getId().toString(), newState);
         });
 
         return 0;

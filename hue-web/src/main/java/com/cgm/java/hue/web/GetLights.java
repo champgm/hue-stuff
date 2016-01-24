@@ -27,8 +27,8 @@ public class GetLights extends HttpServlet {
         final String bridgeIP = hueConfiguration.getIP();
         final String bridgeToken = hueConfiguration.getToken();
 
-        final List<Light> list = HUE_BRIDGE_GETTER.getLights(bridgeIP, bridgeToken);        
-        request.setAttribute("hueLightList", list);
+        final List<Light> list = HUE_BRIDGE_GETTER.getLights(bridgeIP, bridgeToken);
+        request.setAttribute("lightlist", list);
     }
 
     protected void doPost(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
