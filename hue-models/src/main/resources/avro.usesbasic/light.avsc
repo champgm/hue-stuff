@@ -2,13 +2,13 @@
  "type": "record",
  "name": "Light",
  "fields": [
-     {"name": "id", "type": ["null", "string"]},
-     {"name": "state", "type": ["null", "State"]},
-     {"name": "type", "type": ["null", "string"]},
-     {"name": "name", "type": ["null", "string"]},
-     {"name": "modelid", "type": ["null", "string"]},
-     {"name": "manufacturername", "type": ["null", "string"]},
-     {"name": "uniqueid", "type": ["null", "string"]},
-     {"name": "swversion", "type": ["null", "string"]}
+     {"name": "id", "type": ["null", "string"], "default": null},
+     {"name": "state", "type": ["null", "State"], "default": null},
+     {"name": "type", "type": ["null", "string"], "default": null},
+     {"name": "name", "type": ["null", "string"], "default": null},
+     {"name": "modelid", "type": ["null", "string"], "default": null},
+     {"name": "manufacturername", "type": ["null", "string"], "default": null},
+     {"name": "uniqueid", "type": ["null", "string"], "default": null},
+     {"name": "swversion", "type": ["null", "string"], "default": null}
  ]
 }

@@ -23,11 +23,9 @@ public class ToggleLight extends HttpServlet {
 
     protected void doGet(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
         final String lightId = request.getParameter(KnownParameterNames.LIGHT_ID.getName());
-
         final Light result = LightUtil.toggleLight(lightId);
         
-        request.setAttribute("light", result);
-
+        request.setAttribute(KnownParameterNames.LIGHT.getName(), result);
         RequestDispatcher view = request.getRequestDispatcher("index.jsp");
 		view.forward(request, response);
     }

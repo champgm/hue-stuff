@@ -2,16 +2,16 @@
  "type": "record",
  "name": "Scene",
  "fields": [
-     {"name": "id", "type": ["null", "string"]},
-     {"name": "name", "type": ["null", "string"]},
-     {"name": "lights", "type": ["null", {"type": "array", "items": "string"}]},
-     {"name": "owner", "type": ["null", "string"]},
-     {"name": "recycle", "type": ["null", "string"]},
-     {"name": "locked", "type": ["null", "string"]},
-     {"name": "appdata", "type": ["null", {"type": "array", "items": "string"}]},
-     {"name": "picture", "type": ["null", "string"]},
-     {"name": "lastupdated", "type": ["null", "string"]},
-     {"name": "version", "type": ["null", "string"]},
-     {"name": "lightstates", "type": ["null", {"type": "array", "items": "string"}]}
+     {"name": "id", "type": ["null", "string"], "default": null},
+     {"name": "name", "type": ["null", "string"], "default": null},
+     {"name": "lights", "type": ["null", {"type": "array", "items": "string"}], "default": null},
+     {"name": "owner", "type": ["null", "string"], "default": null},
+     {"name": "recycle", "type": ["null", "string"], "default": null},
+     {"name": "locked", "type": ["null", "string"], "default": null},
+     {"name": "appdata", "type": ["null", {"type": "array", "items": "string"}], "default": null},
+     {"name": "picture", "type": ["null", "string"], "default": null},
+     {"name": "lastupdated", "type": ["null", "string"], "default": null},
+     {"name": "version", "type": ["null", "string"], "default": null},
+     {"name": "lightstates", "type": ["null", {"type": "array", "items": "State"}], "default": null}
  ]
 }

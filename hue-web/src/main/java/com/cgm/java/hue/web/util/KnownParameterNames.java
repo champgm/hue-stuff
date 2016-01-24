@@ -10,7 +10,12 @@ import com.google.common.base.Preconditions;
  */
 public enum KnownParameterNames {
 
-    LIGHT_ID("lightid");
+    LIGHT_ID("lightid"),
+    SCENE_ID("sceneid"),
+    LIGHT("light"),
+    SCENE("scene"),
+    LIGHT_LIST("lightlist"),
+    SCENE_LIST("scenelist");
 
     private final String name;
 

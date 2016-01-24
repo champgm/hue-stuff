@@ -15,7 +15,7 @@ import org.slf4j.LoggerFactory;
 import com.cgm.java.console.commands.BridgeCommand;
 import com.cgm.java.hue.models.Light;
 import com.cgm.java.hue.models.State;
-import com.cgm.java.hue.utilities.HueBridgePutter;
+import com.cgm.java.hue.utilities.HueBridgeSetter;
 import com.cgm.java.utilities.lambdas.Conversion;
 
 /**
@@ -50,7 +50,7 @@ public class FadeOnOverTime extends BridgeCommand {
         }
         final Integer durationInMinutes = Integer.valueOf(durations[0]);
 
-        final List<Light> lights = HUE_BRIDGE_GETTER.getLights(bridgeIp, hueId);
+        final List<Light> lights = HUE_BRIDGE_GETTER.getLights(bridgeIp, token);
         final Map<String, Light> nameToLightMap = lights.stream().collect(Collectors.toMap(Conversion.LIGHT_TO_NAME, (light) -> light));
         System.out.println("These lights were found: ");
         nameToLightMap.keySet().forEach(System.out::println);
@@ -60,7 +60,7 @@ public class FadeOnOverTime extends BridgeCommand {
         System.out.println("These lights matched your input: ");
         lightsToTurnOn.forEach(System.out::println);
 
-        final HueBridgePutter hueBridgePutter = new HueBridgePutter();
+        final HueBridgeSetter hueBridgeSetter = new HueBridgeSetter();
         // Turn the lights off and set their brightness to 0
         lightsToTurnOn.forEach((lightName) -> {
             try {
@@ -68,9 +68,9 @@ public class FadeOnOverTime extends BridgeCommand {
 
                 final State.Builder newStateBuilder = State.newBuilder(light.getState()).setOn(false).setBri(0L);
                 System.out.println("Turning '" + lightName + "' off.");
-                hueBridgePutter.setLightState(bridgeIp, hueId, light.getId().toString(), newStateBuilder.build());
+                hueBridgeSetter.setLightState(bridgeIp, token, light.getId().toString(), newStateBuilder.build());
                 Thread.sleep(ONE_SECOND);
-                hueBridgePutter.setLightState(bridgeIp, hueId, light.getId().toString(), newStateBuilder.build());
+                hueBridgeSetter.setLightState(bridgeIp, token, light.getId().toString(), newStateBuilder.build());
                 Thread.sleep(ONE_SECOND);
             } catch (InterruptedException e) {
                 e.printStackTrace();
@@ -94,7 +94,7 @@ public class FadeOnOverTime extends BridgeCommand {
                         final Light light = nameToLightMap.get(lightName);
                         System.out.println("Setting '" + lightName + "' to brightness: " + finalCurrentBrightness);
                         final State.Builder newStateBuilder = State.newBuilder(light.getState()).setOn(true).setBri(finalCurrentBrightness);
-                        hueBridgePutter.setLightState(bridgeIp, hueId, light.getId().toString(), newStateBuilder.build());
+                        hueBridgeSetter.setLightState(bridgeIp, token, light.getId().toString(), newStateBuilder.build());
                     });
 
                     // Delay 10 seconds. If we do that 6 times it'll be about a minute. Close enough.

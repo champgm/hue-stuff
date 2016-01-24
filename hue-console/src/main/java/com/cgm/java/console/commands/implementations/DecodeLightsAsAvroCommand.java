@@ -18,7 +18,7 @@ public class DecodeLightsAsAvroCommand extends BridgeCommand {
         setIpAndId(line);
 
         // This command got a lot smaller with some API...
-        final Collection<Light> lightsSet = HUE_BRIDGE_GETTER.getLights(bridgeIp, hueId);
+        final Collection<Light> lightsSet = HUE_BRIDGE_GETTER.getLights(bridgeIp, token);
 
         System.out.println("=============================================================");
         System.out.println("Here is the light output after being decoded into avro models");

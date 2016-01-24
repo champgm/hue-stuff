@@ -1,49 +1,34 @@
 package com.cgm.java.hue.utilities;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.StringWriter;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
-import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
-import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClients;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.cgm.java.hue.models.Light;
 import com.cgm.java.hue.models.Scene;
-import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 
 /**
  * This is a collection of static methods for calling Hue Bridge APIs.
  */
-public class HueBridgeGetter {
+public class HueBridgeGetter extends HttpInteractor {
     private static final Logger LOGGER = LoggerFactory.getLogger(HueBridgeGetter.class);
-    private static final String LIGHT_ID_REGEX = ",\"\\d*\":";
-    private static final String SCENE_ID_REGEX = "\"\\w*-\\w*-\\w*\":";
 
     /**
      * This method just does a get with hard coded commands. Good luck!
-     * 
+     *
      * @param bridgeIP
-     *            the IP address of the bridge
+     *         the IP address of the bridge
      * @param token
-     *            the user ID that should already be registered with the bridge
+     *         the user ID that should already be registered with the bridge
      * @param apiCall
-     *            the api command to call
+     *         the api command to call
      * @return whatever the hue bridge returns. Ideally this will be a bunch of JSON, but it could be some HTML that
-     *         says your URL is invalid
+     * says your URL is invalid
      */
     public String rawGet(final String bridgeIP, final String token, final String apiCall) {
         Preconditions.checkArgument(StringUtils.isNotBlank(bridgeIP), "bridgeIP may not be null or empty.");
@@ -54,24 +39,24 @@ public class HueBridgeGetter {
         // http://<bridge IP>/api/<user ID>/commands
         final String uri = buildUri(bridgeIP, token, apiCall);
         LOGGER.info("Will attempt to GET: " + uri);
-        return hitURI(uri);
+        return getURI(uri);
     }
 
     /**
-     * Same as {@link HueBridgeGetter#rawGet(String, String, String)} but with the ability to
+     * Same as {@link com.cgm.java.hue.utilities.HueBridgeGetter#rawGet(String, String, String)} but with the ability to
      * add extra stuff to the URL
      *
      * @param bridgeIP
-     *            the IP address of the bridge
+     *         the IP address of the bridge
      * @param token
-     *            the user ID that should already be registered with the bridge
+     *         the user ID that should already be registered with the bridge
      * @param apiCall
-     *            the api command to call
+     *         the api command to call
      * @param additional
-     *            a list of stuff to add to the URI. For example, a normal call to LIGHTS will build a URI like
-     *            "/api/1234/lights" but if you want a SPECIFIC light, you should add its ID into this list. Adding "1"
-     *            to the list would make the requested URI "/api/77584ee540184794d3af91523c34302/lights/1". Adding
-     *            "1","2","3","4" would make it "/api/77584ee540184794d3af91523c34302/lights/1/2/3/4"
+     *         a list of stuff to add to the URI. For example, a normal call to LIGHTS will build a URI like
+     *         "/api/1234/lights" but if you want a SPECIFIC light, you should add its ID into this list. Adding "1" to
+     *         the list would make the requested URI "/api/77584ee540184794d3af91523c34302/lights/1". Adding
+     *         "1","2","3","4" would make it "/api/77584ee540184794d3af91523c34302/lights/1/2/3/4"
      * @return the raw results of the get
      */
     public String rawGet(final String bridgeIP, final String token, final String apiCall, final List<String> additional) {
@@ -85,61 +70,72 @@ public class HueBridgeGetter {
         for (final String thing : additional) {
             newUriBuilder.append("/").append(thing);
         }
-        return hitURI(newUriBuilder.toString());
+        return getURI(newUriBuilder.toString());
     }
 
     /**
      * Calls the bridge to get a list of currently configured lights and returns a collection of them parsed out into
      * {@link com.cgm.java.hue.models.Light} objects
-     * 
+     *
      * @param bridgeIp
-     *            the IP address of the bridge
-     * @param hueId
-     *            the user ID that should already be registered with the bridge
+     *         the IP address of the bridge
+     * @param token
+     *         the user ID that should already be registered with the bridge
      * @return an {@link java.util.ArrayList} of {@link com.cgm.java.hue.models.Light}s.
      */
-    public List<Light> getLights(final String bridgeIp, final String hueId) {
+    public List<Light> getLights(final String bridgeIp, final String token) {
         Preconditions.checkArgument(StringUtils.isNotBlank(bridgeIp), "bridgeIp may not be null or empty.");
-        Preconditions.checkArgument(StringUtils.isNotBlank(hueId), "hueId may not be null or empty.");
+        Preconditions.checkArgument(StringUtils.isNotBlank(token), "token may not be null or empty.");
 
-        final String rawJsonResults = rawGet(bridgeIp, hueId, HueBridgeCommands.LIGHTS);
+        final String rawJsonResults = rawGet(bridgeIp, token, HueBridgeCommands.LIGHTS);
 
-        // Strip this off: '{"1":'
-        final String jsonLightsString = rawJsonResults.substring(5);
-
-        // Items are separated by ,"#":
-        final String[] jsonLightsArray = jsonLightsString.split(LIGHT_ID_REGEX);
-
-        // Convert the array to an ArrayList
-        final ArrayList<String> jsonLightsArrayList = new ArrayList<>(Arrays.asList(jsonLightsArray));
-
-        // Use a BiFunction and .indexOf to gather each light's json and its id (its index in the array + 1)
-        final List<Light> resultList = jsonLightsArrayList.stream().map(jsonString -> HueConverters.JSON_TO_LIGHT.apply(jsonLightsArrayList.indexOf(jsonString) + 1, jsonString)).collect(Collectors.toList());
-
-        return new ArrayList<>(resultList);
+        return new ArrayList<>(HueJsonParser.parseLightsFromJson(rawJsonResults));
     }
 
     /**
      * Retrieves one light from the bridge
-     * 
+     *
      * @param bridgeIp
-     *            the IP address of the bridge
-     * @param hueId
-     *            the user ID that should already be registered with the bridge
+     *         the IP address of the bridge
+     * @param token
+     *         the user ID that should already be registered with the bridge
      * @param lightId
-     *            the ID of the light to retrieve
+     *         the ID of the light to retrieve
      * @return one {@link com.cgm.java.hue.models.Light} from the bridge
      */
-    public Light getLight(final String bridgeIp, final String hueId, final String lightId) {
+    public Light getLight(final String bridgeIp, final String token, final String lightId) {
         Preconditions.checkArgument(StringUtils.isNotBlank(bridgeIp), "bridgeIp may not be null or empty.");
-        Preconditions.checkArgument(StringUtils.isNotBlank(hueId), "hueId may not be null or empty.");
+        Preconditions.checkArgument(StringUtils.isNotBlank(token), "token may not be null or empty.");
         Preconditions.checkArgument(StringUtils.isNotBlank(lightId), "lightId may not be null or empty.");
         final Integer lightIdInteger = Integer.valueOf(lightId);
 
-        final String rawJsonResult = rawGet(bridgeIp, hueId, HueBridgeCommands.LIGHTS, ImmutableList.of(lightId));
-        final Light light = HueConverters.JSON_TO_LIGHT.apply(lightIdInteger, rawJsonResult);
+        final String rawJsonResult = rawGet(bridgeIp, token, HueBridgeCommands.LIGHTS, ImmutableList.of(lightId));
+        final Light light = HueJsonParser.parseLightFromJson(lightId, rawJsonResult);
 
         return Light.newBuilder(light).setId(lightId).build();
+    }
+
+    /**
+     * Calls the bridge to get a specific {@link com.cgm.java.hue.models.Scene}
+     *
+     * @param bridgeIp
+     *         the IP address of the bridge
+     * @param token
+     *         the user ID that should already be registered with the bridge
+     * @param sceneId
+     *         the ID of the {@link com.cgm.java.hue.models.Scene} to retrieve
+     * @return a {@link com.cgm.java.hue.models.Scene}
+     */
+    public Scene getScene(final String bridgeIp, final String token, final String sceneId) {
+        Preconditions.checkArgument(StringUtils.isNotBlank(bridgeIp), "bridgeIp may not be null or empty.");
+        Preconditions.checkArgument(StringUtils.isNotBlank(token), "token may not be null or empty.");
+        Preconditions.checkArgument(StringUtils.isNotBlank(sceneId), "sceneId may not be null or empty.");
+
+        // Getting scenes requires the format /api/<username>/scenes/<id>
+        final String getSceneUri = buildUri(bridgeIp, token, HueBridgeCommands.SCENES, ImmutableList.of(sceneId));
+        final String sceneJson = getURI(getSceneUri);
+
+        return HueJsonParser.parseSceneFromJson(sceneId, sceneJson);
     }
 
     /**
@@ -147,79 +143,17 @@ public class HueBridgeGetter {
      * {@link com.cgm.java.hue.models.Scene} objects
      *
      * @param bridgeIp
-     *            the IP address of the bridge
-     * @param hueId
-     *            the user ID that should already be registered with the bridge
+     *         the IP address of the bridge
+     * @param token
+     *         the user ID that should already be registered with the bridge
      * @return a {@link java.util.List} of {@link com.cgm.java.hue.models.Scene}s
      */
-    public List<Scene> getScenes(final String bridgeIp, final String hueId) {
+    public List<Scene> getScenes(final String bridgeIp, final String token) {
         Preconditions.checkArgument(StringUtils.isNotBlank(bridgeIp), "bridgeIp may not be null or empty.");
-        Preconditions.checkArgument(StringUtils.isNotBlank(hueId), "hueId may not be null or empty.");
+        Preconditions.checkArgument(StringUtils.isNotBlank(token), "token may not be null or empty.");
 
-        final String rawJsonResults = rawGet(bridgeIp, hueId, HueBridgeCommands.SCENES);
+        final String rawJsonResults = rawGet(bridgeIp, token, HueBridgeCommands.SCENES);
 
-        // Strip this off: '{'
-        final String scenesJsonString = rawJsonResults.substring(1);
-
-        // Items are separated by ,"the-scene-ID":
-        final ArrayList<String> sceneJsonArrayList = new ArrayList<>(Arrays.asList(scenesJsonString.split(SCENE_ID_REGEX)));
-        // this seems hacky, but since the raw json will start with a scene ID, the first item in this array will be
-        // blank, so...
-        sceneJsonArrayList.remove(0);
-
-        final Pattern lightIdPattern = Pattern.compile(SCENE_ID_REGEX);
-        final Matcher patternMatcher = lightIdPattern.matcher(scenesJsonString);
-        final ArrayList<String> sceneIds = new ArrayList<>(sceneJsonArrayList.size());
-        while (patternMatcher.find()) {
-            final String untrimmedSceneId = patternMatcher.group();
-            sceneIds.add(untrimmedSceneId.substring(1, untrimmedSceneId.length() - 2));
-        }
-
-        final ImmutableList.Builder<Scene> resultBuilder = ImmutableList.builder();
-        for (int i = 0; i < sceneIds.size(); i++) {
-            final String sceneId = sceneIds.get(i);
-            final String sceneJson = sceneJsonArrayList.get(i);
-            System.out.println("Attempting to convert: " + sceneJson);
-            final Scene parsedScene = HueConverters.JSON_TO_SCENE.apply(sceneId, sceneJson);
-            resultBuilder.add(parsedScene);
-        }
-        return resultBuilder.build();
-    }
-
-    @VisibleForTesting
-    protected String buildUri(final String bridgeIP, final String token, final String apiCall) {
-        return "http://" + bridgeIP + "/api/" + token + "/" + apiCall;
-    }
-
-    @VisibleForTesting
-    protected String hitURI(final String uri) {
-        CloseableHttpClient httpClient = null;
-        InputStream contentStream = null;
-        try {
-            // Apache httpclient is pretty handy
-            final HttpGet httpGet = new HttpGet(uri);
-            httpClient = HttpClients.createDefault();
-            final CloseableHttpResponse getResponse = httpClient.execute(httpGet);
-            contentStream = getResponse.getEntity().getContent();
-
-            // But we just need the full contents of the stream, so dump it into a string
-            final StringWriter fullContentWriter = new StringWriter();
-            IOUtils.copy(contentStream, fullContentWriter, "UTF8");
-
-            return fullContentWriter.toString();
-        } catch (IOException e) {
-            throw new RuntimeException("Error while executing a raw HTTP get.", e);
-        } finally {
-            try {
-                if (httpClient != null) {
-                    httpClient.close();
-                }
-                if (contentStream != null) {
-                    contentStream.close();
-                }
-            } catch (IOException e) {
-                LOGGER.error("Error closing HTTP client after call.");
-            }
-        }
+        return new ArrayList<>(HueJsonParser.parseScenesFromJson(rawJsonResults));
     }
 }
