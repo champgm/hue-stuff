@@ -3,6 +3,7 @@ package com.cgm.java.console;
 import java.util.HashMap;
 
 import com.cgm.java.console.commands.Command;
+import com.google.common.base.Preconditions;
 
 /**
  * This is a holder and runner for available {@link com.cgm.java.console.commands.Command}s
@@ -13,9 +14,9 @@ public class CommandHandler {
 
     /**
      * Creates an instance
-     * 
+     *
      * @param banner
-     *            the string that should be printed before processing begins
+     *         the string that should be printed before processing begins
      */
     public CommandHandler(final String banner) {
         this.banner = banner;
@@ -31,16 +32,14 @@ public class CommandHandler {
 
     /**
      * Add a command to be handled by this class
-     * 
+     *
      * @param newCommand
-     *            the new command to add
+     *         the new command to add
      * @return this instance
      */
     public CommandHandler addCommand(final Command newCommand) {
         final Command command = commandList.get(newCommand.getName());
-        if (command != null) {
-            throw new RuntimeException("Duplicate command encountered while trying to add command: " + newCommand.getName());
-        }
+        Preconditions.checkState(command == null, "Duplicate command encountered while trying to add command: " + newCommand.getName());
 
         commandList.put(newCommand.getName(), newCommand);
         return this;
@@ -49,12 +48,11 @@ public class CommandHandler {
     /**
      * Run with a set of arguments. This handler will look for the input command and pass along its arguments and
      * options.
-     * 
+     *
      * @param inputArguments
-     *            ALL given arguments
+     *         ALL given arguments
      * @return 0 if successful
      * @throws Exception
-     *             if
      */
     public int run(final String[] inputArguments) throws Exception {
         System.out.println(banner);

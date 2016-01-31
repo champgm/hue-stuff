@@ -33,9 +33,9 @@ public class ToggleLight extends BridgeCommand {
     @Override
     protected int run(final CommandLine line) throws RuntimeException, UnknownHostException {
         setIpAndId(line);
-        final String[] lightNames = line.hasOption(NAME_OPTION) ? line.getOptionValues(NAME_OPTION) : new String[] {};
-        final String[] lightIds = line.hasOption(ID_OPTION) ? line.getOptionValues(ID_OPTION) : new String[] {};
-        if ((lightNames == null || lightNames.length < 1) && (lightIds == null || lightIds.length < 1)) {
+        final String[] lightNames = line.getOptionValues(NAME_OPTION) == null ? new String[]{} : line.getOptionValues(NAME_OPTION);
+        final String[] lightIds = line.getOptionValues(ID_OPTION) == null ? new String[]{} : line.getOptionValues(ID_OPTION);
+        if (lightNames.length < 1 && lightIds.length < 1) {
             usage();
             throw new IllegalArgumentException("You must specify at least one light to turn on.");
         }
@@ -53,6 +53,7 @@ public class ToggleLight extends BridgeCommand {
         final List<String> lightNamesToggle = Arrays.stream(lightNames).filter(nameToLightMap::containsKey).collect(Collectors.toList());
         final List<String> lightIdsToToggle = Arrays.stream(lightIds).filter(idToLightMap::containsKey).collect(Collectors.toList());
         final List<String> union = ListUtils.union(lightNamesToggle, lightIdsToToggle);
+
         System.out.println("These lights matched your input: ");
         union.forEach((lightIdentifier) -> {
             System.out.println(lightIdentifier);

@@ -1,6 +1,5 @@
 package com.cgm.java.console.commands;
 
-import java.net.UnknownHostException;
 import java.util.Arrays;
 
 import org.apache.commons.cli.CommandLine;
@@ -24,7 +23,7 @@ public abstract class Command {
 
     /**
      * Gets all options
-     * 
+     *
      * @return an {@link org.apache.commons.cli.Options} object containing the available options
      */
     public Options getOptions() {
@@ -35,12 +34,12 @@ public abstract class Command {
 
     /**
      * Runs the command
-     * 
+     *
      * @param args
-     *            all arguments, including the name of the command
+     *         all arguments, including the name of the command
      * @return 0 if successful
      * @throws java.lang.Exception
-     *             if there are issues parsing the options or any unhandled issues while running the command.
+     *         if there are issues parsing the options or any unhandled issues while running the command.
      */
     public final int run(final String[] args) throws Exception {
 
@@ -65,8 +64,13 @@ public abstract class Command {
 
     /**
      * Run the implementing command.
+     *
+     * @param line
+     *         the {@link org.apache.commons.cli.CommandLine} containing options and arumgents.
+     * @return 0 if successful
+     * @throws Exception
      */
-    protected abstract int run(final CommandLine line) throws RuntimeException, UnknownHostException;
+    protected abstract int run(final CommandLine line) throws Exception;
 
     /**
      * Returns the name of the command.

@@ -10,6 +10,7 @@ import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Options;
 import org.apache.commons.collections.ListUtils;
+import org.apache.commons.lang.StringUtils;
 
 import com.cgm.java.console.commands.BridgeCommand;
 import com.cgm.java.hue.models.Light;
@@ -34,20 +35,20 @@ public class TurnOn extends BridgeCommand {
     @Override
     protected int run(final CommandLine line) throws RuntimeException, UnknownHostException {
         setIpAndId(line);
-        final String[] lightNames = line.hasOption(NAME_OPTION) ? line.getOptionValues(NAME_OPTION) : new String[] {};
-        final String[] lightIds = line.hasOption(ID_OPTION) ? line.getOptionValues(ID_OPTION) : new String[] {};
-        if ((lightNames == null || lightNames.length < 1) && (lightIds == null || lightIds.length < 1)) {
+        final String[] lightNames = line.getOptionValues(NAME_OPTION) == null ? new String[]{} : line.getOptionValues(NAME_OPTION);
+        final String[] lightIds = line.getOptionValues(ID_OPTION) == null ? new String[]{} : line.getOptionValues(ID_OPTION);
+        if (lightNames.length < 1 && lightIds.length < 1) {
             usage();
             throw new IllegalArgumentException("You must specify at least one light to turn on.");
         }
 
-        final String[] brightnesses = line.getOptionValues(BRIGHTNESS_OPTION);
-        if (brightnesses != null && brightnesses.length > 1) {
+        final String[] brightnesses = line.getOptionValues(BRIGHTNESS_OPTION) == null ? new String[]{} : line.getOptionValues(BRIGHTNESS_OPTION);
+        if (brightnesses.length > 1) {
             usage();
             throw new IllegalArgumentException("You may only specify one brightness.");
         }
 
-        // Collect all lights and keep them in a map
+        // Collect all lights and keep them in maps
         final List<Light> lights = HUE_BRIDGE_GETTER.getLights(bridgeIp, token);
         final Map<String, Light> nameToLightMap = lights.stream().collect(Collectors.toMap(Conversion.LIGHT_TO_NAME, (light) -> light));
         final Map<String, Light> idToLightMap = lights.stream().collect(Collectors.toMap(Conversion.LIGHT_TO_ID, (light) -> light));
@@ -60,6 +61,7 @@ public class TurnOn extends BridgeCommand {
         final List<String> lightNamesToTurnOn = Arrays.stream(lightNames).filter(idToLightMap::containsKey).collect(Collectors.toList());
         final List<String> lightIdsToTurnOn = Arrays.stream(lightIds).filter(idToLightMap::containsKey).collect(Collectors.toList());
         final List<String> union = ListUtils.union(lightNamesToTurnOn, lightIdsToTurnOn);
+
         System.out.println("These lights matched your input: ");
         union.forEach((lightIdentifier) -> {
             System.out.println(lightIdentifier);
@@ -68,7 +70,7 @@ public class TurnOn extends BridgeCommand {
                 light = nameToLightMap.get(lightIdentifier);
             }
 
-            final State.Builder newStateBuilder = createNewState(brightnesses, light);
+            final State.Builder newStateBuilder = createNewState(brightnesses[0], light);
 
             hueBridgeSetter.setLightState(bridgeIp, token, light.getId().toString(), newStateBuilder.build());
         });
@@ -76,10 +78,10 @@ public class TurnOn extends BridgeCommand {
         return 0;
     }
 
-    private State.Builder createNewState(final String[] brightnesses, final Light light) {
+    private State.Builder createNewState(final String brightness, final Light light) {
         final State.Builder newStateBuilder = State.newBuilder(light.getState()).setOn(true);
-        if (brightnesses != null && brightnesses.length > 0) {
-            newStateBuilder.setBri(Long.valueOf(brightnesses[0]));
+        if (StringUtils.isNotEmpty(brightness)) {
+            newStateBuilder.setBri(Long.valueOf(brightness));
         } else {
             newStateBuilder.setBri(254L);
         }

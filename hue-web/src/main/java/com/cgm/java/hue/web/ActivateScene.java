@@ -38,7 +38,7 @@ public class ActivateScene extends HttpServlet {
         final ArrayList<CharSequence> lightIds = new ArrayList<>(scene.getLights());
         final ArrayList<State> lightStates = new ArrayList<>(scene.getLightstates());
 
-        Preconditions.checkState(lightIds.size() == lightStates.size(), "Retrieved light IDs and light states do not match for the requested scene: \n" + scene);
+        Preconditions.checkState(lightIds.size() == lightStates.size(), "The number of retrieved light IDs and light states do not match for the requested scene: \n" + scene);
         for (int i = 0; i < lightIds.size(); i++) {
             HUE_BRIDGE_SETTER.setLightState(bridgeIP, bridgeToken, lightIds.get(i).toString(), lightStates.get(i));
         }
