@@ -12,7 +12,7 @@ import com.cgm.java.console.commands.BridgeCommand;
 import com.cgm.java.hue.models.Scene;
 
 /**
- * A command which will attempt to retrieve, delete, and then use POST to re-create a specified {@link
+ * A command which will attempt to retrieve a scene and then use POST to re-create a specified {@link
  * com.cgm.java.hue.models.Scene}. This is needed because it seems that {@link com.cgm.java.hue.models.Scene}s created
  * with the "Phillips Hue" app on Android always end up as "Version 1", which means they are missing some key attributes
  * like individual {@link com.cgm.java.hue.models.Light} {@link com.cgm.java.hue.models.State}s.
@@ -31,12 +31,13 @@ public class UpgradeSceneVersion extends BridgeCommand {
         System.out.println();
 
         System.out.println("These scenes will be updated:");
-        for (final Scene currentScene : currentScenes) {
-            if (sceneIds.contains(currentScene.getId().toString())) {
-                HUE_BRIDGE_SETTER.deleteScene(bridgeIp, token, currentScene.getId().toString());
-                HUE_BRIDGE_SETTER.postNewScene(bridgeIp, token, currentScene);
-            }
-        }
+        currentScenes.stream().filter(currentScene -> sceneIds.contains(currentScene.getId().toString()))
+                .forEach(currentScene -> {
+                    System.out.println(currentScene.getId() + ": " + currentScene.getName());
+                    // Don't do this yet... the app can't see non-V1 scenes.
+                    // HUE_BRIDGE_SETTER.deleteScene(bridgeIp, token, currentScene.getId().toString());
+                    HUE_BRIDGE_SETTER.postNewScene(bridgeIp, token, currentScene);
+                });
 
         return 0;
     }

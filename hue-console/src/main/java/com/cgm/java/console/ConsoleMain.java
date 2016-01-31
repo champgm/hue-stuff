@@ -21,13 +21,12 @@ public class ConsoleMain {
         allCommands.addAll(reflections.getSubTypesOf(Command.class));
         allCommands.addAll(reflections.getSubTypesOf(BridgeCommand.class));
 
-        // final Set<Class<? extends Command>> allCommands =
-        allCommands.stream().forEach(classToInstantiate -> {
+        allCommands.stream().forEach(commandToInstantiate -> {
             try {
-                final Command command = classToInstantiate.newInstance();
+                final Command command = commandToInstantiate.newInstance();
                 commandHandler.addCommand(command);
             } catch (Exception e) {
-                throw new RuntimeException("Could not instantiate command class: " + classToInstantiate.getName(), e);
+                throw new RuntimeException("Could not instantiate command class: " + commandToInstantiate.getName(), e);
             }
         });
 

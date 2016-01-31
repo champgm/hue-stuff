@@ -12,16 +12,15 @@ import org.apache.commons.cli.Options;
 import com.cgm.java.console.commands.BridgeCommand;
 import com.cgm.java.hue.models.Scene;
 import com.cgm.java.utilities.lambdas.Conversion;
-import com.google.common.base.Preconditions;
 
 /**
  * A command which will attempt to use POST to create a new, Version 2, {@link com.cgm.java.hue.models.Scene} on the
- * bridge. It will print the raw response from the bridge. Please note, it is not possible to set the
- * {@link com.cgm.java.hue.models.Light} {@link com.cgm.java.hue.models.State}s when creating a
- * {@link com.cgm.java.hue.models.Scene} in this manner. The CURRENT states of the specified
- * {@link com.cgm.java.hue.models.Light}s will be retrieved, stored in this {@link com.cgm.java.hue.models.Scene}, and
- * restored later when the {@link com.cgm.java.hue.models.Scene} is toggled on.
- * 
+ * bridge. It will print the raw response from the bridge. Please note, it is not possible to set the {@link
+ * com.cgm.java.hue.models.Light} {@link com.cgm.java.hue.models.State}s when creating a {@link
+ * com.cgm.java.hue.models.Scene} in this manner. The CURRENT states of the specified {@link
+ * com.cgm.java.hue.models.Light}s will be retrieved, stored in this {@link com.cgm.java.hue.models.Scene}, and restored
+ * later when the {@link com.cgm.java.hue.models.Scene} is toggled on.
+ * <p/>
  * NOTE: If you create a {@link com.cgm.java.hue.models.Scene} with undesirable {@link com.cgm.java.hue.models.Light}
  * {@link com.cgm.java.hue.models.State}s, you SHOULD be able to set the lights and then run this command again with the
  * same parameters. It SHOULD overwrite the previously created {@link com.cgm.java.hue.models.Scene}
@@ -33,8 +32,18 @@ public class AddScene extends BridgeCommand {
     @Override
     protected int run(final CommandLine line) throws UnknownHostException {
         setIpAndId(line);
-        final String sceneName = Preconditions.checkNotNull(line.getOptionValue(NAME_OPTION), "You must enter a Scene name.");
-        final String[] lightIds = Preconditions.checkNotNull(line.getOptionValues(LIGHT_ID), "You must enter at least one Light ID");
+
+        final String sceneName = line.getOptionValue(NAME_OPTION);
+        if (sceneName == null) {
+            usage();
+            throw new IllegalArgumentException("You must enter a scene name.");
+        }
+
+        final String[] lightIds = line.getOptionValues(LIGHT_ID);
+        if (lightIds == null || lightIds.length < 1) {
+            usage();
+            throw new IllegalArgumentException("You must enter at least one light ID for the new scene.");
+        }
         final List<CharSequence> charSequenceLightIds = Arrays.stream(lightIds).map(Conversion.STRING_TO_SEQUENCE).collect(Collectors.toList());
 
         System.out.println("This will be the name of the new Scene: " + sceneName);
@@ -51,7 +60,7 @@ public class AddScene extends BridgeCommand {
 
         final Scene scene = HUE_BRIDGE_GETTER.getScene(bridgeIp, token, newSceneId);
 
-        System.out.println("Here are the contents of your new scene: " + scene.toString());
+        System.out.println("Here are the contents of your new scene: \n" + scene.toString());
 
         return 0;
     }

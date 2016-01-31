@@ -33,14 +33,14 @@ public class TurnOff extends BridgeCommand {
     @Override
     protected int run(final CommandLine line) throws RuntimeException, UnknownHostException {
         setIpAndId(line);
-        final String[] lightNames = line.hasOption(NAME_OPTION) ? line.getOptionValues(NAME_OPTION) : new String[] {};
-        final String[] lightIds = line.hasOption(ID_OPTION) ? line.getOptionValues(ID_OPTION) : new String[] {};
-        if ((lightNames == null || lightNames.length < 1) && (lightIds == null || lightIds.length < 1)) {
+        final String[] lightNames = line.getOptionValues(NAME_OPTION) == null ? new String[]{} : line.getOptionValues(NAME_OPTION);
+        final String[] lightIds = line.getOptionValues(ID_OPTION) == null ? new String[]{} : line.getOptionValues(ID_OPTION);
+        if (lightNames.length < 1 && lightIds.length < 1) {
             usage();
-            throw new IllegalArgumentException("You must specify at least one light to turn on.");
+            throw new IllegalArgumentException("You must specify at least one light to turn off.");
         }
 
-        // Collect all lights and keep them in a map
+        // Collect all lights and keep them in maps
         final List<Light> lights = HUE_BRIDGE_GETTER.getLights(bridgeIp, token);
         final Map<String, Light> nameToLightMap = lights.stream().collect(Collectors.toMap(Conversion.LIGHT_TO_NAME, (light) -> light));
         final Map<String, Light> idToLightMap = lights.stream().collect(Collectors.toMap(Conversion.LIGHT_TO_ID, (light) -> light));
@@ -53,6 +53,7 @@ public class TurnOff extends BridgeCommand {
         final List<String> lightNamesToTurnOn = Arrays.stream(lightNames).filter(idToLightMap::containsKey).collect(Collectors.toList());
         final List<String> lightIdsToTurnOn = Arrays.stream(lightIds).filter(idToLightMap::containsKey).collect(Collectors.toList());
         final List<String> union = ListUtils.union(lightNamesToTurnOn, lightIdsToTurnOn);
+
         System.out.println("These lights matched your input: ");
         union.forEach((lightIdentifier) -> {
             System.out.println(lightIdentifier);
