@@ -38,7 +38,7 @@ public class HueBridgeSetter extends HttpInteractor {
         // http://<bridge ip address>/api/1234/lights/1/state
         // final String uri = "http://" + bridgeIp + "/api/" + token + "/" + HueBridgeCommands.LIGHTS + "/" + lightId +
         // "/state";
-        final String uri = buildUri(bridgeIp, token, HueBridgeCommands.LIGHTS, ImmutableList.of(lightId, "/state"));
+        final String uri = buildUri(bridgeIp, token, HueBridgeCommands.LIGHTS, ImmutableList.of(lightId, "state"));
         return putURI(uri, state.toString());
     }
 
