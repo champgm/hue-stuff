@@ -2,7 +2,6 @@ package com.cgm.java.hue.web;
 
 import java.io.IOException;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -38,11 +37,6 @@ public class ToggleLight extends HttpServlet {
         LOGGER.info("Attempting to toggle the light with ID: " + lightId);
         final Light toggledLight = LIGHT_UTIL.toggleLight(HUE_CONFIGURATION.getIP(), HUE_CONFIGURATION.getToken(), lightId);
         LOGGER.info("State successfully toggled to ON = " + toggledLight.getState().getOn());
-
-        // Return the result
-        request.setAttribute(KnownParameterNames.LIGHT.getName(), toggledLight);
-        final RequestDispatcher view = request.getRequestDispatcher("index.jsp");
-        view.forward(request, response);
     }
 
     protected void doPost(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
