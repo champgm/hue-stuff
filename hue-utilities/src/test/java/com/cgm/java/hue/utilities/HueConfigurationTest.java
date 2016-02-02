@@ -4,16 +4,23 @@ import junit.framework.Assert;
 
 import org.junit.Test;
 
-/**
- * Created by mac on 1/2/16.
- */
 public class HueConfigurationTest {
-
 
     @Test
     public void testConfigurationRead() throws Exception {
         final HueConfiguration hueConfiguration = new HueConfiguration();
-        Assert.assertEquals("1.2.3.4",hueConfiguration.getIP());
-        Assert.assertEquals( "1234a5678b",hueConfiguration.getToken());
+        Assert.assertEquals("999.999.999.999", hueConfiguration.getIP());
+        Assert.assertEquals("1234a5678b", hueConfiguration.getToken());
+    }
+
+    @Test
+    public void testInvalidFiles() {
+        final String fileName = "garbage";
+        try {
+            final HueConfiguration garbage = new HueConfiguration(fileName);
+        } catch (Exception e) {
+            final String message = e.getMessage();
+            Assert.assertTrue(message.contains("Failed to import configuration from file: " + fileName));
+        }
     }
 }

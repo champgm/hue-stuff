@@ -18,15 +18,16 @@ import com.cgm.java.hue.web.util.KnownParameterNames;
 public class GetLights extends HttpServlet {
     private static final long serialVersionUID = 1L;
     private static final HueBridgeGetter HUE_BRIDGE_GETTER = new HueBridgeGetter();
+    private static final HueConfiguration HUE_CONFIGURATION = new HueConfiguration();
 
     public GetLights() {
         super();
     }
 
     protected void doGet(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
-        final HueConfiguration hueConfiguration = new HueConfiguration();
-        final String bridgeIP = hueConfiguration.getIP();
-        final String bridgeToken = hueConfiguration.getToken();
+
+        final String bridgeIP = HUE_CONFIGURATION.getIP();
+        final String bridgeToken = HUE_CONFIGURATION.getToken();
 
         final List<Light> list = HUE_BRIDGE_GETTER.getLights(bridgeIP, bridgeToken);
         request.setAttribute(KnownParameterNames.LIGHT_LIST.getName(), list);

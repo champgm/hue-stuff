@@ -9,6 +9,7 @@ import org.mockito.Mockito;
 
 import com.cgm.java.hue.models.Light;
 import com.cgm.java.hue.models.Scene;
+import com.google.common.collect.ImmutableList;
 
 public class HueBridgeGetterTest {
     private static final HueConfiguration HUE_CONFIGURATION = new HueConfiguration();
@@ -82,5 +83,53 @@ public class HueBridgeGetterTest {
         final List<Scene> scenes = spiedBridgeGetter.getScenes(HUE_CONFIGURATION.getIP(), HUE_CONFIGURATION.getToken());
         Assert.assertEquals(33, scenes.size());
         final List<CharSequence> sceneIds = scenes.stream().map(Scene::getId).map(String::valueOf).collect(Collectors.toList());
+        sceneIds.forEach(sceneId -> Assert.assertTrue(fullSceneDump.contains(sceneId)));
+    }
+
+    @Test
+    public void testRawGet() {
+        final String expectedUri = "http://" + HUE_CONFIGURATION.getIP() + "/api/" + HUE_CONFIGURATION.getToken() + "/lights";
+        final HueBridgeGetter spiedBridgeGetter = Mockito.spy(new HueBridgeGetter());
+        final String expected = "success";
+        Mockito.doReturn(expected).when(spiedBridgeGetter).getURI(expectedUri);
+
+        final String actual = spiedBridgeGetter.rawGet(HUE_CONFIGURATION.getIP(), HUE_CONFIGURATION.getToken(), HueBridgeCommands.LIGHTS);
+        Assert.assertEquals(expected, actual);
+    }
+
+    @Test
+    public void testRawGetWithExtras() {
+        final String expectedUri = "http://" + HUE_CONFIGURATION.getIP() + "/api/" + HUE_CONFIGURATION.getToken() + "/lights/some/extra/stuff";
+        final HueBridgeGetter spiedBridgeGetter = Mockito.spy(new HueBridgeGetter());
+        final String expected = "success";
+        Mockito.doReturn(expected).when(spiedBridgeGetter).getURI(expectedUri);
+
+        final String actual = spiedBridgeGetter.rawGet(HUE_CONFIGURATION.getIP(), HUE_CONFIGURATION.getToken(), HueBridgeCommands.LIGHTS, ImmutableList.of("some", "extra", "stuff"));
+        Assert.assertEquals(expected, actual);
+    }
+
+    @Test
+    public void testGetLight() {
+        final String lightId = "4";
+        final String rawLight = "{\"state\": {\"on\":false,\"bri\":246,\"hue\":34492,\"sat\":232,\"effect\":\"none\",\"xy\":[0.3151,0.3252],\"ct\":155,\"alert\":\"select\",\"colormode\":\"xy\",\"reachable\":true}, \"type\": \"Extended color light\", \"name\": \"ColorLamp2\", \"modelid\": \"LCT007\", \"manufacturername\": \"Philips\",\"uniqueid\":\"00:17:88:01:10:41:02:2d-0b\", \"swversion\": \"66014919\"}";
+        final String expectedUri = "http://" + HUE_CONFIGURATION.getIP() + "/api/" + HUE_CONFIGURATION.getToken() + "/lights/4";
+        final HueBridgeGetter spiedBridgeGetter = Mockito.spy(new HueBridgeGetter());
+
+        Mockito.doReturn(rawLight).when(spiedBridgeGetter).getURI(expectedUri);
+        final Light light = spiedBridgeGetter.getLight(HUE_CONFIGURATION.getIP(), HUE_CONFIGURATION.getToken(), lightId);
+        Assert.assertEquals("ColorLamp2", light.getName());
+    }
+
+    @Test
+    public void testGetScene() {
+        final String sceneId = "1234test";
+        final String rawScene = "{\"name\":\"All Off v2\",\"lights\":[\"1\",\"2\",\"3\",\"4\",\"5\",\"6\",\"7\"],\"owner\":\"1234\",\"recycle\":true,\"locked\":false,\"appdata\":{},\"picture\":\"\",\"lastupdated\":\"2016-01-23T17:49:54\",\"version\":2,\"lightstates\":{\"1\":{\"on\":false},\"2\":{\"on\":false},\"3\":{\"on\":false},\"4\":{\"on\":false},\"5\":{\"on\":false},\"6\":{\"on\":false},\"7\":{\"on\":false}}}";
+        final String expectedUri = "http://" + HUE_CONFIGURATION.getIP() + "/api/" + HUE_CONFIGURATION.getToken() + "/scenes/1234test";
+        final HueBridgeGetter spiedBridgeGetter = Mockito.spy(new HueBridgeGetter());
+
+        Mockito.doReturn(rawScene).when(spiedBridgeGetter).getURI(expectedUri);
+
+        final Scene scene = spiedBridgeGetter.getScene(HUE_CONFIGURATION.getIP(), HUE_CONFIGURATION.getToken(), sceneId);
+        Assert.assertEquals("All Off v2", scene.getName());
     }
 }

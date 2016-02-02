@@ -42,20 +42,20 @@ public class HttpInteractor {
     }
 
     @VisibleForTesting
-    protected static String postURI(final String uri, final String body) {
+    protected String postURI(final String uri, final String body) {
         final HttpPost httpPost = new HttpPost(uri);
         httpPost.setEntity(new ByteArrayEntity(body.getBytes()));
         return hitURI(httpPost);
     }
 
     @VisibleForTesting
-    protected static String deleteURI(final String uri) {
+    protected String deleteURI(final String uri) {
         final HttpDelete httpDelete = new HttpDelete(uri);
         return hitURI(httpDelete);
     }
 
     @VisibleForTesting
-    protected static String putURI(final String uri, final String body) {
+    protected String putURI(final String uri, final String body) {
         final HttpPut httpPut = new HttpPut(uri);
         httpPut.setEntity(new ByteArrayEntity(body.getBytes()));
         return hitURI(httpPut);
@@ -67,7 +67,9 @@ public class HttpInteractor {
         return hitURI(httpGet);
     }
 
-    protected static String hitURI(final HttpRequestBase request) {
+    @VisibleForTesting
+    protected String hitURI(final HttpRequestBase request) {
+        LOGGER.info("Attempting to hit URI: " + request.getURI());
         CloseableHttpClient httpClient = null;
         InputStream contentStream = null;
         try {
