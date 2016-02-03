@@ -87,7 +87,7 @@ public class HueJsonParser {
      * Attempts to parse Hue JSON into a {@link com.cgm.java.hue.models.State}
      *
      * @param rawJsonState
-     *         the raw Hue JSON
+     *            the raw Hue JSON
      * @return a {@link com.cgm.java.hue.models.State}
      */
     public static State parseStateFromJson(final String rawJsonState) {
@@ -99,9 +99,9 @@ public class HueJsonParser {
      * Attempts to parse Hue JSON into a {@link com.cgm.java.hue.models.Light}
      *
      * @param lightId
-     *         the light's ID
+     *            the light's ID
      * @param rawJsonLight
-     *         the raw Hue JSON
+     *            the raw Hue JSON
      * @return a {@link com.cgm.java.hue.models.Light}
      */
     public static Light parseLightFromJson(final String lightId, final String rawJsonLight) {
@@ -113,7 +113,7 @@ public class HueJsonParser {
      * Attempts to parse Hue JSON into a collection of {@link com.cgm.java.hue.models.Scene}s
      *
      * @param rawJsonScenes
-     *         the raw Hue JSON
+     *            the raw Hue JSON
      * @return a collection of {@link com.cgm.java.hue.models.Scene}s
      */
     public static Collection<Scene> parseScenesFromJson(final String rawJsonScenes) {
@@ -148,9 +148,9 @@ public class HueJsonParser {
      * Parses a {@link com.cgm.java.hue.models.Scene} from Hue JSON
      *
      * @param sceneId
-     *         the ID of the scene
+     *            the ID of the scene
      * @param rawJsonScene
-     *         the raw JSON from the hue bridge
+     *            the raw JSON from the hue bridge
      * @return a parsed {@link com.cgm.java.hue.models.Scene}
      */
     public static Scene parseSceneFromJson(final String sceneId, final String rawJsonScene) {
@@ -186,7 +186,7 @@ public class HueJsonParser {
      * Attempts to parse Hue JSON into a collection of {@link com.cgm.java.hue.models.Light}s
      *
      * @param rawJsonLights
-     *         the raw Hue JSON
+     *            the raw Hue JSON
      * @return a collection of {@link com.cgm.java.hue.models.Light}s
      */
     public static Collection<Light> parseLightsFromJson(final String rawJsonLights) {
