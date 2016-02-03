@@ -15,6 +15,7 @@ public enum KnownParameterNames {
     TOGGLE_GROUP_RESULT("togglegroupresult"),
     SCENE_ID("sceneid"),
     LIGHT("light"),
+    LIGHT_STATE("lightstate"),
     SCENE("scene"),
     LIGHT_LIST("lightlist"),
     GROUP_LIST("grouplist"),
