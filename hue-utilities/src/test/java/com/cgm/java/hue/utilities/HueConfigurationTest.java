@@ -1,6 +1,6 @@
 package com.cgm.java.hue.utilities;
 
-import junit.framework.Assert;
+import org.junit.Assert;
 
 import org.junit.Test;
 
@@ -18,6 +18,7 @@ public class HueConfigurationTest {
         final String fileName = "garbage";
         try {
             final HueConfiguration garbage = new HueConfiguration(fileName);
+            Assert.assertNotNull(garbage);
         } catch (Exception e) {
             final String message = e.getMessage();
             Assert.assertTrue(message.contains("Failed to import configuration from file: " + fileName));

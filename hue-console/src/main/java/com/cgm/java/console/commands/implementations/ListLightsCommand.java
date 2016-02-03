@@ -17,7 +17,7 @@ public class ListLightsCommand extends BridgeCommand {
     protected int run(final CommandLine line) throws UnknownHostException {
         setIpAndId(line);
         final String fullLightsList = HUE_BRIDGE_GETTER.rawGet(bridgeIp, token, HueBridgeCommands.LIGHTS);
-        System.out.println("Here is the raw JSON for currently connected lights:");
+        System.out.println("Here is the raw JSON for currently connected lights: ");
         System.out.println(fullLightsList);
 
         System.out.println("Here are those lights converted into AVRO: ");

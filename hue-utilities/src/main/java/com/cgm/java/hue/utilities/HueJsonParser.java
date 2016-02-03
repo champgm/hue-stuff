@@ -32,6 +32,7 @@ public class HueJsonParser {
      */
     public static final BiFunction<String, String, Scene> JSON_TO_SCENE = (id, jsonString) -> {
         try {
+            LOGGER.info("Attempting to parse one scene from raw JSON: " + jsonString);
             // The hue folks like to change the normal array format of "thing" : ["1","2","3"] into just "thing": {}
             // when it is empty, instead of []. The avro JSON converter hates this, so replace those {}'s with [].
             // TODO: this may or may not cause a bunch of issues in the future.
@@ -41,7 +42,10 @@ public class HueJsonParser {
             // Seems like the Scene model is a little crazy. Just ignore failures for now.
             objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
             final Scene scene = objectMapper.readValue(nullifiedJson.getBytes(), Scene.class);
-            return Scene.newBuilder(scene).setId(String.valueOf(id)).build();
+            final Scene sceneWithId = Scene.newBuilder(scene).setId(String.valueOf(id)).build();
+
+            LOGGER.info("Successfully parsed a scene: " + sceneWithId);
+            return sceneWithId;
         } catch (IOException e) {
             LOGGER.error("Error reading JSON as Scene: " + jsonString);
             e.printStackTrace();
@@ -53,12 +57,17 @@ public class HueJsonParser {
      */
     public static final BiFunction<Integer, String, Light> JSON_TO_LIGHT = (id, jsonString) -> {
         try {
+            LOGGER.info("Attempting to parse one scene from raw JSON: " + jsonString);
+
             ObjectMapper objectMapper = new ObjectMapper();
             // The pointsymbol field has numerical field names. That's annoying, but it's also deprecated.
             // So, let's just drop it from the model and ignore it for now.
             objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
             final Light light = objectMapper.readValue(jsonString.getBytes(), Light.class);
-            return Light.newBuilder(light).setId(String.valueOf(id)).build();
+
+            final Light lightWithId = Light.newBuilder(light).setId(String.valueOf(id)).build();
+            LOGGER.info("Successfully parsed a light: " + lightWithId);
+            return lightWithId;
         } catch (IOException e) {
             LOGGER.error("Error reading JSON as Light: " + jsonString);
             e.printStackTrace();
@@ -70,8 +79,11 @@ public class HueJsonParser {
      */
     public static final Function<String, State> JSON_TO_STATE = (jsonString) -> {
         try {
+            LOGGER.info("Attempting to parse one state from raw JSON: " + jsonString);
             ObjectMapper objectMapper = new ObjectMapper();
-            return objectMapper.readValue(jsonString.getBytes(), State.class);
+            final State state = objectMapper.readValue(jsonString.getBytes(), State.class);
+            LOGGER.info("Successfully parsed a state: " + state);
+            return state;
         } catch (IOException e) {
             LOGGER.error("Error reading JSON as State: " + jsonString);
             e.printStackTrace();
@@ -84,10 +96,13 @@ public class HueJsonParser {
      */
     public static final BiFunction<Integer, String, Group> JSON_TO_GROUP = (id, jsonString) -> {
         try {
+            LOGGER.info("Attempting to parse one group from raw JSON: " + jsonString);
             ObjectMapper objectMapper = new ObjectMapper();
             objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
             final Group group = objectMapper.readValue(jsonString.getBytes(), Group.class);
-            return Group.newBuilder(group).setId(String.valueOf(id)).build();
+            final Group groupWithId = Group.newBuilder(group).setId(String.valueOf(id)).build();
+            LOGGER.info("Successfully parsed a group: " + groupWithId);
+            return groupWithId;
         } catch (IOException e) {
             LOGGER.error("Error reading JSON as Group: " + jsonString);
             e.printStackTrace();

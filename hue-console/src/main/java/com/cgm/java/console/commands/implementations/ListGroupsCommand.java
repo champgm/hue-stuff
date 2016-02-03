@@ -14,7 +14,7 @@ public class ListGroupsCommand extends BridgeCommand {
     protected int run(final CommandLine line) throws UnknownHostException {
         setIpAndId(line);
         final String rawGroupsList = HUE_BRIDGE_GETTER.rawGet(bridgeIp, token, HueBridgeCommands.GROUPS);
-        System.out.println("Here is the raw JSON for currently connected groups:");
+        System.out.println("Here is the raw JSON for currently connected groups: ");
         System.out.println(rawGroupsList);
 
         System.out.println("Here are those lights converted into AVRO: ");

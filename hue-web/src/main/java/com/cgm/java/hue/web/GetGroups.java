@@ -9,27 +9,33 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.cgm.java.hue.models.Group;
 import com.cgm.java.hue.utilities.HueBridgeGetter;
 import com.cgm.java.hue.utilities.HueConfiguration;
 import com.cgm.java.hue.web.util.KnownParameterNames;
 
+/**
+ * This servlet will attempt to retrieve and return all {@link com.cgm.java.hue.models.Group}s currently available on
+ * the bridge
+ */
 @WebServlet("/HueServlet")
 public class GetGroups extends HttpServlet {
+    private static final Logger LOGGER = LoggerFactory.getLogger(GetGroups.class);
     private static final long serialVersionUID = 1L;
     private static final HueBridgeGetter HUE_BRIDGE_GETTER = new HueBridgeGetter();
+    private static final HueConfiguration HUE_CONFIGURATION = new HueConfiguration();
 
     public GetGroups() {
         super();
     }
 
     protected void doGet(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
-        final HueConfiguration hueConfiguration = new HueConfiguration();
-        final String bridgeIP = hueConfiguration.getIP();
-        final String bridgeToken = hueConfiguration.getToken();
-
-        final List<Group> list = HUE_BRIDGE_GETTER.getGroups(bridgeIP, bridgeToken);
-        request.setAttribute(KnownParameterNames.GROUP_LIST.getName(), list);
+        LOGGER.info("Attempting to retrieve all groups.");
+        final List<Group> groups = HUE_BRIDGE_GETTER.getGroups(HUE_CONFIGURATION.getIP(), HUE_CONFIGURATION.getToken());
+        request.setAttribute(KnownParameterNames.GROUP_LIST.getName(), groups);
     }
 
     protected void doPost(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {

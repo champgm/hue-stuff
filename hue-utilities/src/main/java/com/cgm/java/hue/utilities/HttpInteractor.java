@@ -33,7 +33,9 @@ public class HttpInteractor {
         for (final String additionalPart : additionalParts) {
             uriBuilder.append("/").append(additionalPart);
         }
-        return uriBuilder.toString();
+        final String resultUri = uriBuilder.toString();
+        LOGGER.info("Built URI: " + resultUri);
+        return resultUri;
     }
 
     @VisibleForTesting
@@ -45,12 +47,15 @@ public class HttpInteractor {
     protected String postURI(final String uri, final String body) {
         final HttpPost httpPost = new HttpPost(uri);
         httpPost.setEntity(new ByteArrayEntity(body.getBytes()));
+        LOGGER.info("Building POST with URI: " + uri);
+        LOGGER.info("Building POST with body: " + body);
         return hitURI(httpPost);
     }
 
     @VisibleForTesting
     protected String deleteURI(final String uri) {
         final HttpDelete httpDelete = new HttpDelete(uri);
+        LOGGER.info("Building DELETE with URI: " + uri);
         return hitURI(httpDelete);
     }
 
@@ -58,12 +63,15 @@ public class HttpInteractor {
     protected String putURI(final String uri, final String body) {
         final HttpPut httpPut = new HttpPut(uri);
         httpPut.setEntity(new ByteArrayEntity(body.getBytes()));
+        LOGGER.info("Building PUT with URI: " + uri);
+        LOGGER.info("Building PUT with body: " + body);
         return hitURI(httpPut);
     }
 
     @VisibleForTesting
     protected String getURI(final String uri) {
         final HttpGet httpGet = new HttpGet(uri);
+        LOGGER.info("Building GET with URI: " + uri);
         return hitURI(httpGet);
     }
 
@@ -82,7 +90,9 @@ public class HttpInteractor {
             final StringWriter fullContentWriter = new StringWriter();
             IOUtils.copy(contentStream, fullContentWriter, "UTF8");
 
-            return fullContentWriter.toString();
+            final String rawResponse = fullContentWriter.toString();
+            LOGGER.info("Raw response: " + rawResponse);
+            return rawResponse;
         } catch (IOException e) {
             throw new RuntimeException("Error while executing an HTTP call.", e);
         } finally {
