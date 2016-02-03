@@ -14,6 +14,7 @@ import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.cgm.java.hue.models.Group;
 import com.cgm.java.hue.models.Light;
 import com.cgm.java.hue.models.Scene;
 import com.cgm.java.hue.models.State;
@@ -78,8 +79,23 @@ public class HueJsonParser {
 
         return null;
     };
-    private static final String LIGHT_ID_SPLIT_REGEX = ",\"\\d*\":";
-    private static final String LIGHT_ID_REPLACE_REGEX = "\"\\d*\":";
+    /**
+     * Converts one JSON Group into a {@link com.cgm.java.hue.models.Group}
+     */
+    public static final BiFunction<Integer, String, Group> JSON_TO_GROUP = (id, jsonString) -> {
+        try {
+            ObjectMapper objectMapper = new ObjectMapper();
+            objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+            final Group group = objectMapper.readValue(jsonString.getBytes(), Group.class);
+            return Group.newBuilder(group).setId(String.valueOf(id)).build();
+        } catch (IOException e) {
+            LOGGER.error("Error reading JSON as Group: " + jsonString);
+            e.printStackTrace();
+        }
+        return null;
+    };
+    private static final String NUMERICAL_ID_SPLIT_REGEX = ",\"\\d*\":";
+    private static final String NUMERICAL_ID_REPLACE_REGEX = "\"\\d*\":";
     private static final String LIGHT_STATES_HEADER = ",\"lightstates\":";
     private static final String SCENE_ID_REGEX = "(\")[^\":,]*(\":\\{\"name)";
 
@@ -169,9 +185,9 @@ public class HueJsonParser {
         final String bracesRemoved = bracedStateCollection.substring(1, bracedStateCollection.length() - 1);
 
         // Split, remove IDs, and join
-        final String[] split = bracesRemoved.split(LIGHT_ID_SPLIT_REGEX);
+        final String[] split = bracesRemoved.split(NUMERICAL_ID_SPLIT_REGEX);
         for (int i = 0; i < split.length; i++) {
-            final String idStripped = split[i].replaceAll(LIGHT_ID_REPLACE_REGEX, "");
+            final String idStripped = split[i].replaceAll(NUMERICAL_ID_REPLACE_REGEX, "");
             split[i] = idStripped;
         }
         final String joined = StringUtils.join(split, ",");
@@ -180,6 +196,44 @@ public class HueJsonParser {
         // Add the last bracket and brace
         resultBuilder.append("]}");
         return JSON_TO_SCENE.apply(sceneId, resultBuilder.toString());
+    }
+
+    /**
+     * Parses the JSON response from the bridge for all {@link com.cgm.java.hue.models.Group}s
+     *
+     * @param rawJsonGroups
+     *            the raw JSON for the group
+     * @return a collection of {@link com.cgm.java.hue.models.Group}s
+     */
+    public static Collection<Group> parseGroupsFromJson(final String rawJsonGroups) {
+        final String jsonGroups = replaceEmptyArray(rawJsonGroups);
+        // Strip this off: '{"1":'
+        final String jsonLightsString = jsonGroups.substring(5);
+
+        // Items are separated by ,"#":
+        final String[] jsonGroupsArray = jsonLightsString.split(NUMERICAL_ID_SPLIT_REGEX);
+
+        // Convert the array to an ArrayList
+        final ArrayList<String> jsonGroupsArrayList = new ArrayList<>(Arrays.asList(jsonGroupsArray));
+
+        // Use a BiFunction and .indexOf to gather each light's json and its id (its index in the array + 1)
+        return jsonGroupsArrayList.stream()
+                .map(jsonString -> JSON_TO_GROUP.apply(jsonGroupsArrayList.indexOf(jsonString) + 1, jsonString))
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * Parses the JSON response from the bridge for a single {@link com.cgm.java.hue.models.Group}
+     * 
+     * @param groupId
+     *            the id the group should have
+     * @param rawJsonGroup
+     *            the raw JSON for the group
+     * @return a {@link com.cgm.java.hue.models.Group}
+     */
+    public static Group parseGroupFromJson(final String groupId, final String rawJsonGroup) {
+        final String jsonLight = HueJsonParser.replaceEmptyArray(rawJsonGroup);
+        return JSON_TO_GROUP.apply(Integer.valueOf(groupId), jsonLight);
     }
 
     /**
@@ -195,7 +249,7 @@ public class HueJsonParser {
         final String jsonLightsString = jsonLights.substring(5);
 
         // Items are separated by ,"#":
-        final String[] jsonLightsArray = jsonLightsString.split(LIGHT_ID_SPLIT_REGEX);
+        final String[] jsonLightsArray = jsonLightsString.split(NUMERICAL_ID_SPLIT_REGEX);
 
         // Convert the array to an ArrayList
         final ArrayList<String> jsonLightsArrayList = new ArrayList<>(Arrays.asList(jsonLightsArray));

@@ -11,10 +11,13 @@ import com.google.common.base.Preconditions;
 public enum KnownParameterNames {
 
     LIGHT_ID("lightid"),
+    GROUP_ID("groupid"),
+    TOGGLE_GROUP_RESULT("togglegroupresult"),
     SCENE_ID("sceneid"),
     LIGHT("light"),
     SCENE("scene"),
     LIGHT_LIST("lightlist"),
+    GROUP_LIST("grouplist"),
     SCENE_LIST("scenelist");
 
     private final String name;

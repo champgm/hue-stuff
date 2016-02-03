@@ -33,6 +33,15 @@
   </servlet-mapping>
 
   <servlet>
+    <servlet-name>GetGroups</servlet-name>
+    <servlet-class>com.cgm.java.hue.web.GetGroups</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>GetGroups</servlet-name>
+    <url-pattern>/getgroups/*</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
     <servlet-name>ToggleLight</servlet-name>
     <servlet-class>com.cgm.java.hue.web.ToggleLight</servlet-class>
   </servlet>
