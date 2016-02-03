@@ -1,0 +1,10 @@
+{"namespace": "com.cgm.java.hue.models",
+ "type": "record",
+ "name": "SensorState",
+ "fields": [
+        {"name": "daylight", "type": ["null", "string"], "default": null},
+        {"name": "lastupdated", "type": ["null", "string"], "default": null},
+        {"name": "buttonevent", "type": ["null", "long"], "default": null},
+        {"name": "status", "type": ["null", "string"], "default": null}
+ ]
+}

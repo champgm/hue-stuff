@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import com.cgm.java.hue.models.Group;
 import com.cgm.java.hue.models.Light;
 import com.cgm.java.hue.models.Scene;
+import com.cgm.java.hue.models.Sensor;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 
@@ -164,7 +165,7 @@ public class HueBridgeGetter extends HttpInteractor {
     /**
      * Calls the bridge to get a list of currently configured groups and returns a collection of them parsed out into
      * {@link com.cgm.java.hue.models.Group} objects
-     * 
+     *
      * @param bridgeIp
      *            the IP address of the bridge
      * @param token
@@ -198,8 +199,50 @@ public class HueBridgeGetter extends HttpInteractor {
 
         LOGGER.info("Attempting to get group: " + groupId);
         // Getting groups requires the format /api/<username>/groups/<id>
-        final String getSceneUri = buildUri(bridgeIp, token, HueBridgeCommands.GROUPS, ImmutableList.of(groupId));
-        final String sceneJson = getURI(getSceneUri);
+        final String getGroupUri = buildUri(bridgeIp, token, HueBridgeCommands.GROUPS, ImmutableList.of(groupId));
+        final String sceneJson = getURI(getGroupUri);
         return HueJsonParser.parseGroupFromJson(groupId, sceneJson);
+    }
+
+    /**
+     * Calls the bridge to get a list of currently configured sensors and returns a collection of them parsed out into
+     * {@link com.cgm.java.hue.models.Sensor} objects
+     *
+     * @param bridgeIp
+     *            the IP address of the bridge
+     * @param token
+     *            the user ID that should already be registered with the bridge
+     * @return a {@link java.util.List} of {@link com.cgm.java.hue.models.Sensor}s
+     */
+    public List<Sensor> getSensors(final String bridgeIp, final String token) {
+        Preconditions.checkArgument(StringUtils.isNotBlank(bridgeIp), "bridgeIp may not be null or empty.");
+        Preconditions.checkArgument(StringUtils.isNotBlank(token), "token may not be null or empty.");
+
+        LOGGER.info("Attempting to get all groups");
+        final String rawJsonResults = rawGet(bridgeIp, token, HueBridgeCommands.SENSORS);
+        return new ArrayList<>(HueJsonParser.parseSensorsFromJson(rawJsonResults));
+    }
+
+    /**
+     * Calls the bridge to get a specific {@link com.cgm.java.hue.models.Sensor}
+     *
+     * @param bridgeIp
+     *            the IP address of the bridge
+     * @param token
+     *            the user ID that should already be registered with the bridge
+     * @param sensorId
+     *            the ID of the {@link com.cgm.java.hue.models.Sensor} to retrieve
+     * @return a {@link com.cgm.java.hue.models.Sensor}
+     */
+    public Sensor getSensor(final String bridgeIp, final String token, final String sensorId) {
+        Preconditions.checkArgument(StringUtils.isNotBlank(bridgeIp), "bridgeIp may not be null or empty.");
+        Preconditions.checkArgument(StringUtils.isNotBlank(token), "token may not be null or empty.");
+        Preconditions.checkArgument(StringUtils.isNotBlank(sensorId), "sensorId may not be null or empty.");
+
+        LOGGER.info("Attempting to get sensor: " + sensorId);
+        // Getting groups requires the format /api/<username>/sensors/<id>
+        final String getSensorUri = buildUri(bridgeIp, token, HueBridgeCommands.SENSORS, ImmutableList.of(sensorId));
+        final String sceneJson = getURI(getSensorUri);
+        return HueJsonParser.parseSensorFromJson(sensorId, sceneJson);
     }
 }

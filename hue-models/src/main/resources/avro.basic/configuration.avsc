@@ -1,0 +1,13 @@
+{"namespace": "com.cgm.java.hue.models",
+ "type": "record",
+ "name": "Configuration",
+ "fields": [
+        {"name": "on", "type": ["null", "boolean"], "default": null},
+        {"name": "battery", "type": ["null", "long"], "default": null},
+        {"name": "reachable", "type": ["null", "boolean"], "default": null},
+        {"name": "lat", "type": ["null", "string"], "default": null},
+        {"name": "long", "type": ["null", "string"], "default": null},
+        {"name": "sunriseoffset", "type": ["null", "string"], "default": null},
+        {"name": "sunsetoffset", "type": ["null", "string"], "default": null}
+ ]
+}

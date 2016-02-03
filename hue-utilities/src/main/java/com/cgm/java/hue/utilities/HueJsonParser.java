@@ -17,6 +17,7 @@ import org.slf4j.LoggerFactory;
 import com.cgm.java.hue.models.Group;
 import com.cgm.java.hue.models.Light;
 import com.cgm.java.hue.models.Scene;
+import com.cgm.java.hue.models.Sensor;
 import com.cgm.java.hue.models.State;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -68,6 +69,26 @@ public class HueJsonParser {
             final Light lightWithId = Light.newBuilder(light).setId(String.valueOf(id)).build();
             LOGGER.info("Successfully parsed a light: " + lightWithId);
             return lightWithId;
+        } catch (IOException e) {
+            LOGGER.error("Error reading JSON as Light: " + jsonString);
+            e.printStackTrace();
+        }
+        return null;
+    };
+    /**
+     * Converts one JSON Sensor into a {@link com.cgm.java.hue.models.Sensor}
+     */
+    public static final BiFunction<Integer, String, Sensor> JSON_TO_SENSOR = (id, jsonString) -> {
+        try {
+            LOGGER.info("Attempting to parse one sensor from raw JSON: " + jsonString);
+
+            ObjectMapper objectMapper = new ObjectMapper();
+            objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+            final Sensor sensor = objectMapper.readValue(jsonString.getBytes(), Sensor.class);
+
+            final Sensor sensorWithId = Sensor.newBuilder(sensor).setId(String.valueOf(id)).build();
+            LOGGER.info("Successfully parsed a sensor: " + sensorWithId);
+            return sensorWithId;
         } catch (IOException e) {
             LOGGER.error("Error reading JSON as Light: " + jsonString);
             e.printStackTrace();
@@ -232,14 +253,12 @@ public class HueJsonParser {
         final ArrayList<String> jsonGroupsArrayList = new ArrayList<>(Arrays.asList(jsonGroupsArray));
 
         // Use a BiFunction and .indexOf to gather each light's json and its id (its index in the array + 1)
-        return jsonGroupsArrayList.stream()
-                .map(jsonString -> JSON_TO_GROUP.apply(jsonGroupsArrayList.indexOf(jsonString) + 1, jsonString))
-                .collect(Collectors.toList());
+        return jsonGroupsArrayList.stream().map(jsonString -> JSON_TO_GROUP.apply(jsonGroupsArrayList.indexOf(jsonString) + 1, jsonString)).collect(Collectors.toList());
     }
 
     /**
      * Parses the JSON response from the bridge for a single {@link com.cgm.java.hue.models.Group}
-     * 
+     *
      * @param groupId
      *            the id the group should have
      * @param rawJsonGroup
@@ -247,8 +266,8 @@ public class HueJsonParser {
      * @return a {@link com.cgm.java.hue.models.Group}
      */
     public static Group parseGroupFromJson(final String groupId, final String rawJsonGroup) {
-        final String jsonLight = HueJsonParser.replaceEmptyArray(rawJsonGroup);
-        return JSON_TO_GROUP.apply(Integer.valueOf(groupId), jsonLight);
+        final String jsonGroup = HueJsonParser.replaceEmptyArray(rawJsonGroup);
+        return JSON_TO_GROUP.apply(Integer.valueOf(groupId), jsonGroup);
     }
 
     /**
@@ -272,6 +291,43 @@ public class HueJsonParser {
         // Use a BiFunction and .indexOf to gather each light's json and its id (its index in the array + 1)
         return jsonLightsArrayList.stream().map(jsonString -> JSON_TO_LIGHT.apply(jsonLightsArrayList.indexOf(jsonString) + 1, jsonString)).collect(Collectors.toList());
     }
+
+    /**
+     * Parses the JSON response from the bridge for all {@link com.cgm.java.hue.models.Sensor}s
+     *
+     * @param rawJsonSensors
+     *            the raw JSON for the sensor
+     * @return a collection of {@link com.cgm.java.hue.models.Sensor}s
+     */
+    public static Collection<Sensor> parseSensorsFromJson(final String rawJsonSensors) {
+        final String jsonSensors = replaceEmptyArray(rawJsonSensors);
+        // Strip this off: '{"1":'
+        final String jsonSensorString = jsonSensors.substring(5);
+
+        // Items are separated by ,"#":
+        final String[] jsonSensorArray = jsonSensorString.split(NUMERICAL_ID_SPLIT_REGEX);
+
+        // Convert the array to an ArrayList
+        final ArrayList<String> jsonSensorsArrayList = new ArrayList<>(Arrays.asList(jsonSensorArray));
+
+        // Use a BiFunction and .indexOf to gather each light's json and its id (its index in the array + 1)
+        return jsonSensorsArrayList.stream().map(jsonString -> JSON_TO_SENSOR.apply(jsonSensorsArrayList.indexOf(jsonString) + 1, jsonString)).collect(Collectors.toList());
+    }
+
+    /**
+     * Parses the JSON response from the bridge for a single {@link com.cgm.java.hue.models.Sensor}
+     *
+     * @param groupId
+     *            the id the group should have
+     * @param rawJsonSensor
+     *            the raw JSON for the sensor
+     * @return a {@link com.cgm.java.hue.models.Sensor}
+     */
+    public static Sensor parseSensorFromJson(final String groupId, final String rawJsonSensor) {
+        final String jsonSensor = HueJsonParser.replaceEmptyArray(rawJsonSensor);
+        return JSON_TO_SENSOR.apply(Integer.valueOf(groupId), jsonSensor);
+    }
+
 
     private static String replaceEmptyArray(final String inputJson) {
         // The hue folks like to change the normal array format of "thing" : ["1","2","3"] into just "thing": {}

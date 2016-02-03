@@ -19,7 +19,8 @@ public enum KnownParameterNames {
     SCENE("scene"),
     LIGHT_LIST("lightlist"),
     GROUP_LIST("grouplist"),
-    SCENE_LIST("scenelist");
+    SCENE_LIST("scenelist"),
+    SENSOR_LIST("sensorlist");
 
     private final String name;
 
