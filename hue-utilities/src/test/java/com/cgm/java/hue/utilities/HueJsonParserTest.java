@@ -9,6 +9,7 @@ import junit.framework.Assert;
 
 import org.junit.Test;
 
+import com.cgm.java.hue.models.Group;
 import com.cgm.java.hue.models.Light;
 import com.cgm.java.hue.models.Scene;
 import com.cgm.java.hue.models.State;
@@ -121,6 +122,37 @@ public class HueJsonParserTest {
     }
 
     @Test
+    public void testConversionOfSingleJsonToGroup() throws Exception {
+        final String lightJson =
+                "{\"name\":\"Bedroom\"," +
+                        "\"lights\":[\"5\",\"4\"]," +
+                        "\"type\":\"LightGroup\"," +
+                        "\"action\": {\"on\":false,\"bri\":254,\"alert\":\"none\"}}";
+
+        final Group groupAvro = HueJsonParser.parseGroupFromJson("1", lightJson);
+        Assert.assertEquals("1", groupAvro.getId());
+        Assert.assertEquals("Bedroom", groupAvro.getName());
+    }
+
+    @Test
+    public void testConversionOfFullGroupDump() {
+        final String fullDump =
+                "{" +
+                        "\"1\":{\"name\":\"Bedroom\",\"lights\":[\"5\",\"4\"],\"type\":\"LightGroup\",\"action\": {\"on\":false,\"bri\":254,\"alert\":\"none\"}}," +
+                        "\"2\":{\"name\":\"Den\",\"lights\":[\"1\",\"2\",\"3\",\"6\",\"7\"],\"type\":\"LightGroup\",\"action\": {\"on\":false,\"bri\":1,\"hue\":34494,\"sat\":232,\"effect\":\"none\",\"xy\":[0.3151,0.3252],\"ct\":155,\"alert\":\"select\",\"colormode\":\"hs\"}}" +
+                        "}";
+
+        final ImmutableSet<String> expectedIds = ImmutableSet.of("1","2");
+
+        final Collection<Group> groups = HueJsonParser.parseGroupsFromJson(fullDump);
+        final List<CharSequence> groupIds = groups.stream().map(Group::getId).collect(Collectors.toList());
+        for (final String expectedId : expectedIds) {
+            Assert.assertTrue("Expected ID, '" + expectedId + "' not found.", groupIds.contains(expectedId));
+        }
+        Assert.assertEquals(2, groups.size());
+    }
+
+    @Test
     public void testConversionOfJsonToState() throws Exception {
         final String stateJson =
                 " {\"on\":false," + "\"bri\":254," + "" + "\"alert\":\"none\"," + "" + "\"reachable\":true}";
@@ -140,5 +172,7 @@ public class HueJsonParserTest {
         Assert.assertNull(badLight);
         final State badState = HueJsonParser.JSON_TO_STATE.apply("bad data");
         Assert.assertNull(badState);
+        final Group badGroup = HueJsonParser.JSON_TO_GROUP.apply(1, "bad data");
+        Assert.assertNull(badGroup);
     }
 }

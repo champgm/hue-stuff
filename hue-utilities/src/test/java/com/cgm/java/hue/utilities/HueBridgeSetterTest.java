@@ -27,6 +27,21 @@ public class HueBridgeSetterTest {
     }
 
     @Test
+    public void testSetGroupStateSuccess() {
+        final HueBridgeSetter hueBridgeSetter = Mockito.spy(new HueBridgeSetter());
+        final String groupId = "groupId";
+        final State groupAction = State.newBuilder().setOn(false).build();
+        final String expectedUri = "http://" + HUE_CONFIGURATION.getIP() + "/api/" + HUE_CONFIGURATION.getToken() + "/groups/groupId/action";
+        final String expectedResult = "expected result";
+
+        Mockito.doReturn(expectedResult).when(hueBridgeSetter).putURI(expectedUri, groupAction.toString());
+
+        final String actualResult = hueBridgeSetter.setGroupState(HUE_CONFIGURATION.getIP(), HUE_CONFIGURATION.getToken(), groupId, groupAction);
+        Assert.assertEquals(expectedResult, actualResult);
+    }
+
+
+    @Test
     public void testPostNewSceneSuccess() {
         final HueBridgeSetter hueBridgeSetter = Mockito.spy(new HueBridgeSetter());
         final String expectedSceneId = "sceneId";
@@ -111,16 +126,50 @@ public class HueBridgeSetterTest {
     }
 
     @Test
-    public void testDeleteScenePreconditions() {
-        breakHueBridgeSetterDelete("ip", "token", null);
-        breakHueBridgeSetterDelete("ip", null, "sceneId");
-        breakHueBridgeSetterDelete(null, "token", "sceneId");
-        breakHueBridgeSetterDelete("ip", "token", "");
-        breakHueBridgeSetterDelete("ip", "", "sceneId");
-        breakHueBridgeSetterDelete("", "token", "sceneId");
+    public void testDeleteGroupSuccess() {
+        final HueBridgeSetter hueBridgeSetter = Mockito.spy(new HueBridgeSetter());
+        final String groupId = "groupId";
+        final String expectedUri = "http://" + HUE_CONFIGURATION.getIP() + "/api/" + HUE_CONFIGURATION.getToken() + "/groups/" + groupId;
+        final String expectedDeleteResult = "Delete Result";
+        Mockito.doReturn(expectedDeleteResult).when(hueBridgeSetter).deleteURI(expectedUri);
+
+        final String deleteResult = hueBridgeSetter
+                .deleteGroup(HUE_CONFIGURATION.getIP(), HUE_CONFIGURATION.getToken(), groupId);
+
+        Assert.assertEquals(expectedDeleteResult, deleteResult);
     }
 
-    private void breakHueBridgeSetterDelete(final String ip, final String token, final String sceneId) {
+    @Test
+    public void testDeleteScenePreconditions() {
+        breakHueBridgeSetterDeleteScene("ip", "token", null);
+        breakHueBridgeSetterDeleteScene("ip", null, "sceneId");
+        breakHueBridgeSetterDeleteScene(null, "token", "sceneId");
+        breakHueBridgeSetterDeleteScene("ip", "token", "");
+        breakHueBridgeSetterDeleteScene("ip", "", "sceneId");
+        breakHueBridgeSetterDeleteScene("", "token", "sceneId");
+    }
+
+    @Test
+    public void testDeleteGroupPreconditions() {
+        breakHueBridgeSetterDeleteGroup("ip", "token", null);
+        breakHueBridgeSetterDeleteGroup("ip", null, "groupId");
+        breakHueBridgeSetterDeleteGroup(null, "token", "groupId");
+        breakHueBridgeSetterDeleteGroup("ip", "token", "");
+        breakHueBridgeSetterDeleteGroup("ip", "", "groupId");
+        breakHueBridgeSetterDeleteGroup("", "token", "groupId");
+    }
+
+    private void breakHueBridgeSetterDeleteGroup(final String ip, final String token, final String groupId) {
+        final HueBridgeSetter hueBridgeSetter = new HueBridgeSetter();
+        try {
+            hueBridgeSetter.deleteGroup(ip, token, groupId);
+            Assert.fail();
+        } catch (IllegalArgumentException iae) {
+            // Good.
+        }
+    }
+
+    private void breakHueBridgeSetterDeleteScene(final String ip, final String token, final String sceneId) {
         final HueBridgeSetter hueBridgeSetter = new HueBridgeSetter();
         try {
             hueBridgeSetter.deleteScene(ip, token, sceneId);

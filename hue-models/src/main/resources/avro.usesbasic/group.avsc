@@ -1,0 +1,11 @@
+{"namespace": "com.cgm.java.hue.models",
+ "type": "record",
+ "name": "Group",
+ "fields": [
+     {"name": "id", "type": ["null", "string"], "default": null},
+     {"name": "name", "type": ["null", "string"], "default": null},
+     {"name": "lights", "type": ["null", {"type": "array", "items": "string"}], "default": null},
+     {"name": "type", "type": ["null", "string"], "default": null},
+     {"name": "action", "type": ["null", "State"], "default": null}
+ ]
+}

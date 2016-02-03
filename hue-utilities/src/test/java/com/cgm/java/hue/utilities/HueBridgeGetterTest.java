@@ -7,6 +7,7 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.mockito.Mockito;
 
+import com.cgm.java.hue.models.Group;
 import com.cgm.java.hue.models.Light;
 import com.cgm.java.hue.models.Scene;
 import com.google.common.collect.ImmutableList;
@@ -131,5 +132,38 @@ public class HueBridgeGetterTest {
 
         final Scene scene = spiedBridgeGetter.getScene(HUE_CONFIGURATION.getIP(), HUE_CONFIGURATION.getToken(), sceneId);
         Assert.assertEquals("All Off v2", scene.getName());
+    }
+
+    @Test
+    public void testProcessOfFullGroupsDump() {
+        final String fullGroupDump = "{" +
+                "\"1\":{\"name\":\"Bedroom\",\"lights\":[\"5\",\"4\"],\"type\":\"LightGroup\",\"action\": {\"on\":false,\"bri\":254,\"alert\":\"none\"}}," +
+                "\"2\":{\"name\":\"Den\",\"lights\":[\"1\",\"2\",\"3\",\"6\",\"7\"],\"type\":\"LightGroup\",\"action\": {\"on\":false,\"bri\":1,\"hue\":34494,\"sat\":232,\"effect\":\"none\",\"xy\":[0.3151,0.3252],\"ct\":155,\"alert\":\"select\",\"colormode\":\"hs\"}}" +
+                "}";
+
+        final HueBridgeGetter spiedBridgeGetter = Mockito.spy(new HueBridgeGetter());
+        final String expectedUri = spiedBridgeGetter.buildUri(HUE_CONFIGURATION.getIP(), HUE_CONFIGURATION.getToken(), "groups");
+        Mockito.doReturn(fullGroupDump).when(spiedBridgeGetter).getURI(expectedUri);
+
+        final List<Group> groups = spiedBridgeGetter.getGroups(HUE_CONFIGURATION.getIP(), HUE_CONFIGURATION.getToken());
+        Assert.assertEquals(2, groups.size());
+        final List<CharSequence> groupIds = groups.stream().map(Group::getId).map(String::valueOf).collect(Collectors.toList());
+        Assert.assertTrue("The light IDs are base 0, so there should not be a light with ID 0", !groupIds.contains("0"));
+        Assert.assertTrue(groupIds.contains("2"));
+        Assert.assertTrue(groupIds.contains("1"));
+        Assert.assertTrue(!groupIds.contains("3"));
+    }
+
+    @Test
+    public void testProcessOfSingleGroup() {
+        final String singleGroup = "{\"name\":\"Den\",\"lights\":[\"1\",\"2\",\"3\",\"6\",\"7\"],\"type\":\"LightGroup\",\"action\": {\"on\":false,\"bri\":1,\"hue\":34494,\"sat\":232,\"effect\":\"none\",\"xy\":[0.3151,0.3252],\"ct\":155,\"alert\":\"select\",\"colormode\":\"hs\"}}";
+
+        final HueBridgeGetter spiedBridgeGetter = Mockito.spy(new HueBridgeGetter());
+        final String expectedUri = spiedBridgeGetter.buildUri(HUE_CONFIGURATION.getIP(), HUE_CONFIGURATION.getToken(), "groups", ImmutableList.of("2"));
+        Mockito.doReturn(singleGroup).when(spiedBridgeGetter).getURI(expectedUri);
+
+        final Group group = spiedBridgeGetter.getGroup(HUE_CONFIGURATION.getIP(), HUE_CONFIGURATION.getToken(), "2");
+        Assert.assertEquals("2", group.getId());
+        Assert.assertEquals("Den", group.getName());
     }
 }

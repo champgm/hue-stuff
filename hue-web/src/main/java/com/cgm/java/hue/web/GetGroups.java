@@ -1,36 +1,35 @@
 package com.cgm.java.hue.web;
 
 import java.io.IOException;
+import java.util.List;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.cgm.java.hue.models.Light;
+import com.cgm.java.hue.models.Group;
+import com.cgm.java.hue.utilities.HueBridgeGetter;
 import com.cgm.java.hue.utilities.HueConfiguration;
-import com.cgm.java.hue.utilities.LightUtil;
 import com.cgm.java.hue.web.util.KnownParameterNames;
 
 @WebServlet("/HueServlet")
-public class ToggleLight extends HttpServlet {
+public class GetGroups extends HttpServlet {
     private static final long serialVersionUID = 1L;
-    private static final HueConfiguration HUE_CONFIGURATION = new HueConfiguration();
-    private static final LightUtil LIGHT_UTIL = new LightUtil();
+    private static final HueBridgeGetter HUE_BRIDGE_GETTER = new HueBridgeGetter();
 
-    public ToggleLight() {
+    public GetGroups() {
         super();
     }
 
     protected void doGet(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
-        final String lightId = request.getParameter(KnownParameterNames.LIGHT_ID.getName());
-        final Light toggledLight = LIGHT_UTIL.toggleLight(HUE_CONFIGURATION.getIP(), HUE_CONFIGURATION.getToken(), lightId);
+        final HueConfiguration hueConfiguration = new HueConfiguration();
+        final String bridgeIP = hueConfiguration.getIP();
+        final String bridgeToken = hueConfiguration.getToken();
 
-        request.setAttribute(KnownParameterNames.LIGHT.getName(), toggledLight);
-        final RequestDispatcher view = request.getRequestDispatcher("index.jsp");
-        view.forward(request, response);
+        final List<Group> list = HUE_BRIDGE_GETTER.getGroups(bridgeIP, bridgeToken);
+        request.setAttribute(KnownParameterNames.GROUP_LIST.getName(), list);
     }
 
     protected void doPost(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
