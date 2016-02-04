@@ -1,6 +1,6 @@
 package com.cgm.java.hue.utilities;
 
-import junit.framework.Assert;
+import org.junit.Assert;
 
 import org.junit.Test;
 import org.mockito.Mockito;
@@ -40,7 +40,6 @@ public class HueBridgeSetterTest {
         Assert.assertEquals(expectedResult, actualResult);
     }
 
-
     @Test
     public void testPostNewSceneSuccess() {
         final HueBridgeSetter hueBridgeSetter = Mockito.spy(new HueBridgeSetter());
@@ -49,12 +48,7 @@ public class HueBridgeSetterTest {
         final Scene scene = Scene.newBuilder().setName(sceneName).setLights(ImmutableList.of("4", "9", "1")).build();
         final String expectedUri = "http://" + HUE_CONFIGURATION.getIP() + "/api/" + HUE_CONFIGURATION.getToken() + "/scenes";
         final String successJson = "[{\"success\":{\"id\":\"" + expectedSceneId + "\"}}]";
-        final String expectedRequestBody =
-                "{\"name\":\"" +
-                        sceneName +
-                        "\", \"lights\":[\"" +
-                        "4\",\"9\",\"1" +
-                        "\"]}";
+        final String expectedRequestBody = "{\"name\":\"" + sceneName + "\", \"lights\":[\"" + "4\",\"9\",\"1" + "\"]}";
 
         Mockito.doReturn(successJson).when(hueBridgeSetter).postURI(expectedUri, expectedRequestBody);
 
@@ -70,12 +64,7 @@ public class HueBridgeSetterTest {
         final Scene scene = Scene.newBuilder().setName(sceneName).setLights(ImmutableList.of("4", "9", "1")).build();
         final String expectedUri = "http://" + HUE_CONFIGURATION.getIP() + "/api/" + HUE_CONFIGURATION.getToken() + "/scenes";
         final String failureJson = "[{\"error\": {\"type\": 5,\"address\": \"/scenes/lights\",\"description\": \"invalid/missing parameters in body\"}}]";
-        final String expectedRequestBody =
-                "{\"name\":\"" +
-                        sceneName +
-                        "\", \"lights\":[\"" +
-                        "4\",\"9\",\"1" +
-                        "\"]}";
+        final String expectedRequestBody = "{\"name\":\"" + sceneName + "\", \"lights\":[\"" + "4\",\"9\",\"1" + "\"]}";
 
         Mockito.doReturn(failureJson).when(hueBridgeSetter).postURI(expectedUri, expectedRequestBody);
 
@@ -94,12 +83,7 @@ public class HueBridgeSetterTest {
         final Scene scene = Scene.newBuilder().setName(sceneName).setLights(ImmutableList.of("4", "9", "1")).build();
         final String expectedUri = "http://" + HUE_CONFIGURATION.getIP() + "/api/" + HUE_CONFIGURATION.getToken() + "/scenes";
         final String unparseableJson = "[{\"error\": {\"type\": 5,\"address\": \"/scenes/lights\",\"description\": \"success\"}}]";
-        final String expectedRequestBody =
-                "{\"name\":\"" +
-                        sceneName +
-                        "\", \"lights\":[\"" +
-                        "4\",\"9\",\"1" +
-                        "\"]}";
+        final String expectedRequestBody = "{\"name\":\"" + sceneName + "\", \"lights\":[\"" + "4\",\"9\",\"1" + "\"]}";
 
         Mockito.doReturn(unparseableJson).when(hueBridgeSetter).postURI(expectedUri, expectedRequestBody);
 
@@ -119,8 +103,7 @@ public class HueBridgeSetterTest {
         final String expectedDeleteResult = "Delete Result";
         Mockito.doReturn(expectedDeleteResult).when(hueBridgeSetter).deleteURI(expectedUri);
 
-        final String deleteResult = hueBridgeSetter
-                .deleteScene(HUE_CONFIGURATION.getIP(), HUE_CONFIGURATION.getToken(), sceneId);
+        final String deleteResult = hueBridgeSetter.deleteScene(HUE_CONFIGURATION.getIP(), HUE_CONFIGURATION.getToken(), sceneId);
 
         Assert.assertEquals(expectedDeleteResult, deleteResult);
     }
@@ -133,8 +116,7 @@ public class HueBridgeSetterTest {
         final String expectedDeleteResult = "Delete Result";
         Mockito.doReturn(expectedDeleteResult).when(hueBridgeSetter).deleteURI(expectedUri);
 
-        final String deleteResult = hueBridgeSetter
-                .deleteGroup(HUE_CONFIGURATION.getIP(), HUE_CONFIGURATION.getToken(), groupId);
+        final String deleteResult = hueBridgeSetter.deleteGroup(HUE_CONFIGURATION.getIP(), HUE_CONFIGURATION.getToken(), groupId);
 
         Assert.assertEquals(expectedDeleteResult, deleteResult);
     }

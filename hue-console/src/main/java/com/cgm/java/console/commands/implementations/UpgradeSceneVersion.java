@@ -25,12 +25,12 @@ public class UpgradeSceneVersion extends BridgeCommand {
         setIpAndId(line);
         final List<String> sceneIds = Arrays.asList(line.getOptionValues(ID_OPTION));
 
-        System.out.println("Here is all available information on currently available scenes:");
+        System.out.println("Here is all available information on currently available scenes: ");
         final List<Scene> currentScenes = HUE_BRIDGE_GETTER.getScenes(bridgeIp, token);
         currentScenes.forEach(System.out::println);
         System.out.println();
 
-        System.out.println("These scenes will be updated:");
+        System.out.println("These scenes will be updated: ");
         currentScenes.stream().filter(currentScene -> sceneIds.contains(currentScene.getId().toString()))
                 .forEach(currentScene -> {
                     System.out.println(currentScene.getId() + ": " + currentScene.getName());

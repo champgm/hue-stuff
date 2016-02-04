@@ -17,7 +17,7 @@ public class ListScenesCommand extends BridgeCommand {
     protected int run(final CommandLine line) throws UnknownHostException {
         setIpAndId(line);
         final String fullScenesList = HUE_BRIDGE_GETTER.rawGet(bridgeIp, token, HueBridgeCommands.SCENES);
-        System.out.println("Here is the raw JSON for currently available scenes:");
+        System.out.println("Here is the raw JSON for currently available scenes: ");
         System.out.println(fullScenesList);
 
         System.out.println("Here are those scenes converted into AVRO: ");

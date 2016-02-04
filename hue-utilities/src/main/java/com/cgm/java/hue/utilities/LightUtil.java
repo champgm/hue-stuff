@@ -24,6 +24,7 @@ public class LightUtil {
      */
     public Light toggleLight(final String bridgeIp, final String token, final String lightId) {
         Preconditions.checkArgument(StringUtils.isNotBlank(lightId), "lightId may not be null or empty.");
+        LOGGER.info("Attempting to toggle one light with ID: " + lightId);
 
         // Get the light
         final Light light = getHueBridgeGetter().getLight(bridgeIp, token, lightId);

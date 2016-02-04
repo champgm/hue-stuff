@@ -1,6 +1,6 @@
 package com.cgm.java.hue.utilities;
 
-import junit.framework.Assert;
+import org.junit.Assert;
 
 import org.junit.Test;
 import org.mockito.Mockito;

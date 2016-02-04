@@ -56,6 +56,8 @@ public class HueBridgeSetter extends HttpInteractor {
         Preconditions.checkArgument(StringUtils.isNotBlank(token), "token may not be null or empty.");
         Preconditions.checkArgument(scene != null, "scene may not be null.");
 
+        LOGGER.info("Attempting to create a new scene with name: " + scene.getName());
+
         // Scene post calls look like this:
         // http://<bridge ip address>/api/1234/scenes
         final String uri = buildUri(bridgeIp, token, HueBridgeCommands.SCENES);
@@ -84,7 +86,10 @@ public class HueBridgeSetter extends HttpInteractor {
             final String[] splitResult = rawResponse.split(splitOnId);
             final String secondPart = splitResult[1];
             final String[] secondSplit = secondPart.split("\"");
-            return secondSplit[0];
+            final String newSceneId = secondSplit[0];
+
+            LOGGER.info("Scene created successfully with ID: " + newSceneId);
+            return newSceneId;
         } catch (Exception e) {
             throw new RuntimeException("Error while parsing response to a POST of a new scene.\n" +
                     "Attempted URI was: " + uri + "\n" +
@@ -110,6 +115,7 @@ public class HueBridgeSetter extends HttpInteractor {
         Preconditions.checkArgument(StringUtils.isNotBlank(token), "token may not be null or empty.");
         Preconditions.checkArgument(StringUtils.isNotBlank(sceneId), "sceneId may not be null or empty.");
 
+        LOGGER.info("Attempting to delete a scene: " + sceneId);
         final String uri = buildUri(bridgeIp, token, HueBridgeCommands.SCENES, ImmutableList.of(sceneId));
         return deleteURI(uri);
     }
@@ -133,6 +139,8 @@ public class HueBridgeSetter extends HttpInteractor {
         Preconditions.checkArgument(StringUtils.isNotBlank(groupId), "groupId may not be null or empty.");
         Preconditions.checkNotNull(state, "state may not be null.");
 
+        LOGGER.info("Attempting to set the state of group with ID: " + groupId);
+        LOGGER.info("Desired state: " + state);
         // set-action calls look like this:
         // http://<bridge ip address>/api/1234/groups/1/action
         final String uri = buildUri(bridgeIp, token, HueBridgeCommands.GROUPS, ImmutableList.of(groupId, "action"));
@@ -155,6 +163,7 @@ public class HueBridgeSetter extends HttpInteractor {
         Preconditions.checkArgument(StringUtils.isNotBlank(token), "token may not be null or empty.");
         Preconditions.checkArgument(StringUtils.isNotBlank(groupId), "groupId may not be null or empty.");
 
+        LOGGER.info("Attempting to delete a group: " + groupId);
         final String uri = buildUri(bridgeIp, token, HueBridgeCommands.GROUPS, ImmutableList.of(groupId));
         return deleteURI(uri);
     }

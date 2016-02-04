@@ -9,26 +9,32 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.cgm.java.hue.models.Scene;
 import com.cgm.java.hue.utilities.HueBridgeGetter;
 import com.cgm.java.hue.utilities.HueConfiguration;
 import com.cgm.java.hue.web.util.KnownParameterNames;
 
+/**
+ * This servlet will attempt to retrieve and return all {@link com.cgm.java.hue.models.Scene}s currently available on
+ * the bridge
+ */
 @WebServlet("/HueServlet")
 public class GetScenes extends HttpServlet {
+    private static final Logger LOGGER = LoggerFactory.getLogger(GetScenes.class);
     private static final long serialVersionUID = 2L;
     private static final HueBridgeGetter HUE_BRIDGE_GETTER = new HueBridgeGetter();
+    private static final HueConfiguration HUE_CONFIGURATION = new HueConfiguration();
 
     public GetScenes() {
         super();
     }
 
     protected void doGet(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
-        final HueConfiguration hueConfiguration = new HueConfiguration();
-        final String bridgeIP = hueConfiguration.getIP();
-        final String bridgeToken = hueConfiguration.getToken();
-
-        final List<Scene> list = HUE_BRIDGE_GETTER.getScenes(bridgeIP, bridgeToken);
+        LOGGER.info("Attempting to retrieve all scenes.");
+        final List<Scene> list = HUE_BRIDGE_GETTER.getScenes(HUE_CONFIGURATION.getIP(), HUE_CONFIGURATION.getToken());
         request.setAttribute(KnownParameterNames.SCENE_LIST.getName(), list);
     }
 
