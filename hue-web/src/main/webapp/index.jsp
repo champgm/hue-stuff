@@ -7,13 +7,9 @@
 <!DOCTYPE html>
 <html lang="en">
 	<head>
-		<script type="text/javascript">
-		function doFunction(clicked_id){
-    		/* alert(clicked_id); */
-			window.location.replace("togglelight?lightid=" + clicked_id);
-		}
-		</script>
-		
+		<script type="text/javascript" src="http://code.jquery.com/jquery-2.2.0.min.js"></script>
+		<script type="text/javascript" src="js/buttonEvents.js"></script>
+				
 		<meta charset="utf-8">
 
 		<!-- Always force latest IE rendering engine (even in intranet) & Chrome Frame
@@ -42,25 +38,33 @@
 			
 			<div id="tabs">
 					<section id="tab1">
-						<h2><a href="#tab1">Tab 1</a></h2>
-						<p>This content appears on tab 1.</p>
+						<h2><a href="#tab1">Lights</a></h2>
+						<p></p>
 				
 						<p>										
-						<c:forEach items="${hueLightList}" var="light">
+						<c:forEach items="${lightlist}" var="light" varStatus="status">	
+						
 							<c:choose>
-								<c:when test="${light.getState().getOn()}">
-							    	<button id="${light.getId()}" style="background-color:green" onclick="doFunction(this.id)">Light: <c:out value="${light.getId()}"/>  ON </button><br/>         					
-								</c:when>
 								<c:when test="${!light.getState().getOn()}">
-							    	<button id="${light.getId()}" style="background-color:red" onclick="doFunction(this.id)">Light: <c:out value="${light.getId()}"/> OFF </button><br/>         					
+									<button class="light-toggler" id="${light.getId()}">
+							    	<img src="images/gray_light_icon.png" alt="" width=90px height=90px/><c:out value="${light.getName()}"/></button>       					
+								</c:when>
+								<c:when test="${light.getState().getOn()}">
+									<button class="light-toggler on" id="${light.getId()}">
+							    	<img src="images/gray_light_icon.png" alt="" width=90px height=90px/><c:out value="${light.getName()}"/></button>       					
 								</c:when>
 							</c:choose>
+								
+							<c:if test="${status.count % 3 == 0}"> 
+								<br />
+							</c:if>
+							
 						</c:forEach> 
-					
+						
 					</section>
 	
 					<section id="tab2">
-						<h2><a href="#tab2">Tab 2</a></h2>
+						<h2><a href="#tab2">Scenes</a></h2>
 						<p>This content appears on tab 2.</p>
 						
 						
@@ -76,7 +80,7 @@
 
 			<footer>
 				<p>
-					footer
+					
 				</p>
 			</footer>
 		</div>
