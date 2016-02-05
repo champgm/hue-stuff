@@ -1,0 +1,15 @@
+{"namespace": "com.cgm.java.hue.models",
+ "type": "record",
+ "name": "Sensor",
+ "fields": [
+     {"name": "id", "type": ["null", "string"], "default": null},
+     {"name": "name", "type": ["null", "string"], "default": null},
+     {"name": "state", "type": ["null", "SensorState"], "default": null},
+     {"name": "config", "type": ["null", "Configuration"], "default": null},
+     {"name": "type", "type": ["null", "string"], "default": null},
+     {"name": "modelid", "type": ["null", "string"], "default": null},
+     {"name": "manufacturername", "type": ["null", "string"], "default": null},
+     {"name": "uniqueid", "type": ["null", "string"], "default": null},
+     {"name": "swversion", "type": ["null", "string"], "default": null}
+ ]
+}

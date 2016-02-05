@@ -59,7 +59,6 @@ public class HueBridgeSetterTest {
     @Test
     public void testPostNewSceneBadResponse() {
         final HueBridgeSetter hueBridgeSetter = Mockito.spy(new HueBridgeSetter());
-        final String expectedSceneId = "sceneId";
         final String sceneName = "sceneName";
         final Scene scene = Scene.newBuilder().setName(sceneName).setLights(ImmutableList.of("4", "9", "1")).build();
         final String expectedUri = "http://" + HUE_CONFIGURATION.getIP() + "/api/" + HUE_CONFIGURATION.getToken() + "/scenes";
@@ -69,7 +68,7 @@ public class HueBridgeSetterTest {
         Mockito.doReturn(failureJson).when(hueBridgeSetter).postURI(expectedUri, expectedRequestBody);
 
         try {
-            final String resultSceneId = hueBridgeSetter.postNewScene(HUE_CONFIGURATION.getIP(), HUE_CONFIGURATION.getToken(), scene);
+            hueBridgeSetter.postNewScene(HUE_CONFIGURATION.getIP(), HUE_CONFIGURATION.getToken(), scene);
         } catch (RuntimeException rte) {
             final String message = rte.getMessage();
             Assert.assertTrue(message, message.contains("POSTing of new scene failed."));
@@ -88,7 +87,7 @@ public class HueBridgeSetterTest {
         Mockito.doReturn(unparseableJson).when(hueBridgeSetter).postURI(expectedUri, expectedRequestBody);
 
         try {
-            final String resultSceneId = hueBridgeSetter.postNewScene(HUE_CONFIGURATION.getIP(), HUE_CONFIGURATION.getToken(), scene);
+            hueBridgeSetter.postNewScene(HUE_CONFIGURATION.getIP(), HUE_CONFIGURATION.getToken(), scene);
         } catch (RuntimeException rte) {
             final String message = rte.getMessage();
             Assert.assertTrue(message, message.contains("Error while parsing response to a POST of a new scene."));
