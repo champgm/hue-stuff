@@ -35,6 +35,7 @@ public class GetLightsServlet extends HttpServlet {
     protected void doGet(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
         LOGGER.info("Attempting to retrieve all lights.");
         final List<Light> list = HUE_BRIDGE_GETTER.getLights(HUE_CONFIGURATION.getIP(), HUE_CONFIGURATION.getToken());
+        LOGGER.info("Retrieved lights: " + list);
         request.setAttribute(KnownParameterNames.LIGHT_LIST.getName(), list);
     }
 

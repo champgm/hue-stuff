@@ -35,6 +35,7 @@ public class GetScenesServlet extends HttpServlet {
     protected void doGet(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
         LOGGER.info("Attempting to retrieve all scenes.");
         final List<Scene> list = HUE_BRIDGE_GETTER.getScenes(HUE_CONFIGURATION.getIP(), HUE_CONFIGURATION.getToken());
+        LOGGER.info("Retrieved scenes: " + list);
         request.setAttribute(KnownParameterNames.SCENE_LIST.getName(), list);
     }
 

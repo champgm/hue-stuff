@@ -35,6 +35,7 @@ public class GetSensorsServlet extends HttpServlet {
     protected void doGet(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
         LOGGER.info("Attempting to retrieve all sensors.");
         final List<Sensor> list = HUE_BRIDGE_GETTER.getSensors(HUE_CONFIGURATION.getIP(), HUE_CONFIGURATION.getToken());
+        LOGGER.info("Retrieved sensors: " + list);
         request.setAttribute(KnownParameterNames.SENSOR_LIST.getName(), list);
     }
 
