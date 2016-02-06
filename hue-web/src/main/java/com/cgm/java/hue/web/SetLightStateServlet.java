@@ -24,14 +24,14 @@ import com.cgm.java.hue.web.util.KnownParameterNames;
  * {@link com.cgm.java.hue.models.Light} ID.
  */
 @WebServlet("/HueServlet")
-public class SetLightState extends HttpServlet {
-    private static final Logger LOGGER = LoggerFactory.getLogger(SetLightState.class);
+public class SetLightStateServlet extends HttpServlet {
+    private static final Logger LOGGER = LoggerFactory.getLogger(SetLightStateServlet.class);
     private static final long serialVersionUID = 1L;
     private static final HueConfiguration HUE_CONFIGURATION = new HueConfiguration();
     private static final HueBridgeSetter HUE_BRIDGE_SETTER = new HueBridgeSetter();
     private static final HueBridgeGetter HUE_BRIDGE_GETTER = new HueBridgeGetter();
 
-    public SetLightState() {
+    public SetLightStateServlet() {
         super();
     }
 

@@ -10,6 +10,7 @@ import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Options;
 import org.apache.commons.collections.ListUtils;
+import org.apache.commons.lang.StringUtils;
 
 import com.cgm.java.console.commands.BridgeCommand;
 import com.cgm.java.hue.models.Light;
@@ -18,16 +19,17 @@ import com.cgm.java.hue.utilities.HueBridgeSetter;
 import com.cgm.java.utilities.lambdas.Conversion;
 
 /**
- * A command to turn off lights.
+ * A command to turn on lights
  */
-public class TurnOff extends BridgeCommand {
-    private static final String NAME_OPTION = "name";
+public class TurnOnCommand extends BridgeCommand {
     private static final String ID_OPTION = "id";
+    private static final String NAME_OPTION = "name";
+    private static final String BRIGHTNESS_OPTION = "brightness";
 
     @Override
     public void usage() {
         final HelpFormatter formatter = new HelpFormatter();
-        formatter.printHelp(getName() + " <bridge IP> <hue ID>", "A command to turn off a specific light.", getOptions(), null);
+        formatter.printHelp(getName() + " <bridge IP> <hue ID>", "A command to turn on a specific light.", getOptions(), null);
     }
 
     @Override
@@ -37,7 +39,13 @@ public class TurnOff extends BridgeCommand {
         final String[] lightIds = line.getOptionValues(ID_OPTION) == null ? new String[]{} : line.getOptionValues(ID_OPTION);
         if (lightNames.length < 1 && lightIds.length < 1) {
             usage();
-            throw new IllegalArgumentException("You must specify at least one light to turn off.");
+            throw new IllegalArgumentException("You must specify at least one light to turn on.");
+        }
+
+        final String[] brightnesses = line.getOptionValues(BRIGHTNESS_OPTION) == null ? new String[]{} : line.getOptionValues(BRIGHTNESS_OPTION);
+        if (brightnesses.length > 1) {
+            usage();
+            throw new IllegalArgumentException("You may only specify one brightness.");
         }
 
         // Collect all lights and keep them in maps
@@ -45,7 +53,7 @@ public class TurnOff extends BridgeCommand {
         final Map<String, Light> nameToLightMap = lights.stream().collect(Collectors.toMap(Conversion.LIGHT_TO_NAME, (light) -> light));
         final Map<String, Light> idToLightMap = lights.stream().collect(Collectors.toMap(Conversion.LIGHT_TO_ID, (light) -> light));
         System.out.println("These lights were found: ");
-        lights.forEach(System.out::println);
+        idToLightMap.keySet().forEach(System.out::println);
         System.out.println();
 
         // Figure out which requested lights actually match the available lights, and turn them on
@@ -62,7 +70,7 @@ public class TurnOff extends BridgeCommand {
                 light = nameToLightMap.get(lightIdentifier);
             }
 
-            final State.Builder newStateBuilder = createNewState(light);
+            final State.Builder newStateBuilder = createNewState(brightnesses[0], light);
 
             hueBridgeSetter.setLightState(bridgeIp, token, light.getId().toString(), newStateBuilder.build());
         });
@@ -70,19 +78,26 @@ public class TurnOff extends BridgeCommand {
         return 0;
     }
 
-    private State.Builder createNewState(final Light light) {
-        return State.newBuilder(light.getState()).setOn(false);
+    private State.Builder createNewState(final String brightness, final Light light) {
+        final State.Builder newStateBuilder = State.newBuilder(light.getState()).setOn(true);
+        if (StringUtils.isNotEmpty(brightness)) {
+            newStateBuilder.setBri(Long.valueOf(brightness));
+        } else {
+            newStateBuilder.setBri(254L);
+        }
+        return newStateBuilder;
     }
 
     @Override
     public String getName() {
-        return "turnoff";
+        return "turnon";
     }
 
     @Override
     public Options getOptions() {
         final Options options = super.getOptions();
         options.addOption(NAME_OPTION, true, "The name of the light to turn on.");
+        options.addOption(BRIGHTNESS_OPTION, true, "The brightness to set, 0-254.");
         options.addOption(ID_OPTION, true, "The id of the light to turn on.");
         return options;
     }

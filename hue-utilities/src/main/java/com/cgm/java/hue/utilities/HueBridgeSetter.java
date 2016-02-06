@@ -41,6 +41,17 @@ public class HueBridgeSetter extends HttpInteractor {
         return putURI(uri, state.toString());
     }
 
+    public String setLightOnState(final String bridgeIp, final String token, final String lightId, final boolean on) {
+        Preconditions.checkArgument(StringUtils.isNotBlank(bridgeIp), "bridgeIp may not be null or empty.");
+        Preconditions.checkArgument(StringUtils.isNotBlank(token), "token may not be null or empty.");
+        Preconditions.checkArgument(StringUtils.isNotBlank(lightId), "lightId may not be null or empty.");
+
+        // State calls look like this:
+        // http://<bridge ip address>/api/1234/lights/1/state
+        final String uri = buildUri(bridgeIp, token, HueBridgeCommands.LIGHTS, ImmutableList.of(lightId, "state"));
+        return putURI(uri, "{\"on\":" + on + "}");
+    }
+
     /**
      * Attempts to use POST to add a new scene to the bridge.
      *

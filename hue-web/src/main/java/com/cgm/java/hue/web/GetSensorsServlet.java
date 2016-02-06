@@ -12,30 +12,30 @@ import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.cgm.java.hue.models.Group;
+import com.cgm.java.hue.models.Sensor;
 import com.cgm.java.hue.utilities.HueBridgeGetter;
 import com.cgm.java.hue.utilities.HueConfiguration;
 import com.cgm.java.hue.web.util.KnownParameterNames;
 
 /**
- * This servlet will attempt to retrieve and return all {@link com.cgm.java.hue.models.Group}s currently available on
+ * This servlet will attempt to retrieve and return all {@link com.cgm.java.hue.models.Sensor}s currently available on
  * the bridge
  */
 @WebServlet("/HueServlet")
-public class GetGroups extends HttpServlet {
-    private static final Logger LOGGER = LoggerFactory.getLogger(GetGroups.class);
-    private static final long serialVersionUID = 1L;
+public class GetSensorsServlet extends HttpServlet {
+    private static final Logger LOGGER = LoggerFactory.getLogger(GetSensorsServlet.class);
+    private static final long serialVersionUID = 2L;
     private static final HueBridgeGetter HUE_BRIDGE_GETTER = new HueBridgeGetter();
     private static final HueConfiguration HUE_CONFIGURATION = new HueConfiguration();
 
-    public GetGroups() {
+    public GetSensorsServlet() {
         super();
     }
 
     protected void doGet(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
-        LOGGER.info("Attempting to retrieve all groups.");
-        final List<Group> groups = HUE_BRIDGE_GETTER.getGroups(HUE_CONFIGURATION.getIP(), HUE_CONFIGURATION.getToken());
-        request.setAttribute(KnownParameterNames.GROUP_LIST.getName(), groups);
+        LOGGER.info("Attempting to retrieve all sensors.");
+        final List<Sensor> list = HUE_BRIDGE_GETTER.getSensors(HUE_CONFIGURATION.getIP(), HUE_CONFIGURATION.getToken());
+        request.setAttribute(KnownParameterNames.SENSOR_LIST.getName(), list);
     }
 
     protected void doPost(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {

@@ -15,56 +15,56 @@
   <!--<welcome-file>default.jsp</welcome-file>-->
   <!-- </welcome-file-list> -->
   <servlet>
-    <servlet-name>GetLights</servlet-name>
-    <servlet-class>com.cgm.java.hue.web.GetLights</servlet-class>
+    <servlet-name>GetLightsServlet</servlet-name>
+    <servlet-class>com.cgm.java.hue.web.GetLightsServlet</servlet-class>
   </servlet>
   <servlet-mapping>
-    <servlet-name>GetLights</servlet-name>
+    <servlet-name>GetLightsServlet</servlet-name>
     <url-pattern>/getlights/*</url-pattern>
   </servlet-mapping>
 
   <servlet>
-    <servlet-name>GetScenes</servlet-name>
-    <servlet-class>com.cgm.java.hue.web.GetScenes</servlet-class>
+    <servlet-name>GetScenesServlet</servlet-name>
+    <servlet-class>com.cgm.java.hue.web.GetScenesServlet</servlet-class>
   </servlet>
   <servlet-mapping>
-    <servlet-name>GetScenes</servlet-name>
+    <servlet-name>GetScenesServlet</servlet-name>
     <url-pattern>/getscenes/*</url-pattern>
   </servlet-mapping>
 
   <servlet>
-    <servlet-name>GetGroups</servlet-name>
-    <servlet-class>com.cgm.java.hue.web.GetGroups</servlet-class>
+    <servlet-name>GetGroupsServlet</servlet-name>
+    <servlet-class>com.cgm.java.hue.web.GetGroupsServlet</servlet-class>
   </servlet>
   <servlet-mapping>
-    <servlet-name>GetGroups</servlet-name>
+    <servlet-name>GetGroupsServlet</servlet-name>
     <url-pattern>/getgroups/*</url-pattern>
   </servlet-mapping>
 
   <servlet>
-    <servlet-name>ToggleLight</servlet-name>
-    <servlet-class>com.cgm.java.hue.web.ToggleLight</servlet-class>
+    <servlet-name>ToggleLightServlet</servlet-name>
+    <servlet-class>com.cgm.java.hue.web.ToggleLightServlet</servlet-class>
   </servlet>
   <servlet-mapping>
-    <servlet-name>ToggleLight</servlet-name>
+    <servlet-name>ToggleLightServlet</servlet-name>
     <url-pattern>/togglelight/*</url-pattern>
   </servlet-mapping>
 
   <servlet>
-    <servlet-name>SetLightState</servlet-name>
-    <servlet-class>com.cgm.java.hue.web.SetLightState</servlet-class>
+    <servlet-name>SetLightStateServlet</servlet-name>
+    <servlet-class>com.cgm.java.hue.web.SetLightStateServlet</servlet-class>
   </servlet>
   <servlet-mapping>
-    <servlet-name>SetLightState</servlet-name>
+    <servlet-name>SetLightStateServlet</servlet-name>
     <url-pattern>/setlightstate/*</url-pattern>
   </servlet-mapping>
 
   <servlet>
-    <servlet-name>ActivateScene</servlet-name>
-    <servlet-class>com.cgm.java.hue.web.ActivateScene</servlet-class>
+    <servlet-name>ActivateSceneServlet</servlet-name>
+    <servlet-class>com.cgm.java.hue.web.ActivateSceneServlet</servlet-class>
   </servlet>
   <servlet-mapping>
-    <servlet-name>ActivateScene</servlet-name>
+    <servlet-name>ActivateSceneServlet</servlet-name>
     <url-pattern>/activatescene/*</url-pattern>
   </servlet-mapping>
 </web-app>

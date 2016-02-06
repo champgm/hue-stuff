@@ -25,7 +25,7 @@ import com.cgm.java.utilities.lambdas.Conversion;
  * {@link com.cgm.java.hue.models.State}s, you SHOULD be able to set the lights and then run this command again with the
  * same parameters. It SHOULD overwrite the previously created {@link com.cgm.java.hue.models.Scene}
  */
-public class AddScene extends BridgeCommand {
+public class AddSceneCommand extends BridgeCommand {
     private static final String NAME_OPTION = "name";
     private static final String LIGHT_ID = "lightId";
 
