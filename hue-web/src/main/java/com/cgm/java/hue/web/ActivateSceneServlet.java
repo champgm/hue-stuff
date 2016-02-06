@@ -28,14 +28,14 @@ import com.google.common.base.Preconditions;
  * {@link com.cgm.java.hue.models.Scene}
  */
 @WebServlet("/HueServlet")
-public class ActivateScene extends HttpServlet {
-    private static final Logger LOGGER = LoggerFactory.getLogger(ActivateScene.class);
+public class ActivateSceneServlet extends HttpServlet {
+    private static final Logger LOGGER = LoggerFactory.getLogger(ActivateSceneServlet.class);
     private static final long serialVersionUID = 2L;
     private static final HueBridgeGetter HUE_BRIDGE_GETTER = new HueBridgeGetter();
     private static final HueBridgeSetter HUE_BRIDGE_SETTER = new HueBridgeSetter();
     private static final HueConfiguration HUE_CONFIGURATION = new HueConfiguration();;
 
-    public ActivateScene() {
+    public ActivateSceneServlet() {
         super();
     }
 

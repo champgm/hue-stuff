@@ -19,7 +19,7 @@ public class LightUtil {
      * Toggles the light with the given ID
      *
      * @param lightId
-     *            the ID of the light to toggle
+     *         the ID of the light to toggle
      * @return the light state, retrieved from the bridge after being toggled
      */
     public Light toggleLight(final String bridgeIp, final String token, final String lightId) {
@@ -32,10 +32,9 @@ public class LightUtil {
         // Create an opposite-on state
         final State state = light.getState();
         final Boolean onState = state.getOn();
-        final State newState = State.newBuilder(state).setOn(!onState).build();
 
         // Put the new state
-        getHueBridgeSetter().setLightState(bridgeIp, token, String.valueOf(light.getId()), newState);
+        getHueBridgeSetter().setLightOnState(bridgeIp, token, String.valueOf(light.getId()), !onState);
 
         // Get the resulting light and return it
         final Light newLight = getHueBridgeGetter().getLight(bridgeIp, token, lightId);

@@ -22,13 +22,13 @@ import com.cgm.java.hue.web.util.KnownParameterNames;
  * the bridge
  */
 @WebServlet("/HueServlet")
-public class GetScenes extends HttpServlet {
-    private static final Logger LOGGER = LoggerFactory.getLogger(GetScenes.class);
+public class GetScenesServlet extends HttpServlet {
+    private static final Logger LOGGER = LoggerFactory.getLogger(GetScenesServlet.class);
     private static final long serialVersionUID = 2L;
     private static final HueBridgeGetter HUE_BRIDGE_GETTER = new HueBridgeGetter();
     private static final HueConfiguration HUE_CONFIGURATION = new HueConfiguration();
 
-    public GetScenes() {
+    public GetScenesServlet() {
         super();
     }
 

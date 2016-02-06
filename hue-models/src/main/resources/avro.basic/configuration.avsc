@@ -2,12 +2,12 @@
  "type": "record",
  "name": "Configuration",
  "fields": [
-        {"name": "on", "type": ["null", "boolean"], "default": null},
-        {"name": "battery", "type": ["null", "long"], "default": null},
-        {"name": "reachable", "type": ["null", "boolean"], "default": null},
-        {"name": "lat", "type": ["null", "string"], "default": null},
-        {"name": "long", "type": ["null", "string"], "default": null},
-        {"name": "sunriseoffset", "type": ["null", "string"], "default": null},
-        {"name": "sunsetoffset", "type": ["null", "string"], "default": null}
+        {"name": "on", "type": ["boolean", "null"], "default": false},
+        {"name": "battery", "type": ["long", "null"], "default": 100},
+        {"name": "reachable", "type": ["boolean", "null"], "default": true},
+        {"name": "lat", "type": ["string", "null"], "default": ""},
+        {"name": "long", "type": ["string", "null"], "default": ""},
+        {"name": "sunriseoffset", "type": ["string", "null"], "default": ""},
+        {"name": "sunsetoffset", "type": ["string", "null"], "default": ""}
  ]
 }

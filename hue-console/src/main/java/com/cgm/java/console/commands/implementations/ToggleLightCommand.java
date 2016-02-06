@@ -13,14 +13,13 @@ import org.apache.commons.collections.ListUtils;
 
 import com.cgm.java.console.commands.BridgeCommand;
 import com.cgm.java.hue.models.Light;
-import com.cgm.java.hue.models.State;
-import com.cgm.java.hue.utilities.HueBridgeSetter;
+import com.cgm.java.hue.utilities.LightUtil;
 import com.cgm.java.utilities.lambdas.Conversion;
 
 /**
  * A command to turn on lights
  */
-public class ToggleLight extends BridgeCommand {
+public class ToggleLightCommand extends BridgeCommand {
     private static final String NAME_OPTION = "name";
     private static final String ID_OPTION = "id";
 
@@ -49,11 +48,11 @@ public class ToggleLight extends BridgeCommand {
         System.out.println();
 
         // Figure out which requested lights actually match the available lights, and turn them on
-        final HueBridgeSetter hueBridgeSetter = new HueBridgeSetter();
         final List<String> lightNamesToggle = Arrays.stream(lightNames).filter(nameToLightMap::containsKey).collect(Collectors.toList());
         final List<String> lightIdsToToggle = Arrays.stream(lightIds).filter(idToLightMap::containsKey).collect(Collectors.toList());
         final List<String> union = ListUtils.union(lightNamesToggle, lightIdsToToggle);
 
+        final LightUtil lightUtil = new LightUtil();
         System.out.println("These lights matched your input: ");
         union.forEach((lightIdentifier) -> {
             System.out.println(lightIdentifier);
@@ -62,18 +61,10 @@ public class ToggleLight extends BridgeCommand {
                 light = idToLightMap.get(lightIdentifier);
             }
 
-            final State newState = extractAndToggleState(light);
-
-            hueBridgeSetter.setLightState(bridgeIp, token, light.getId().toString(), newState);
+            lightUtil.toggleLight(bridgeIp,token,light.getId().toString());
         });
 
         return 0;
-    }
-
-    private State extractAndToggleState(final Light light) {
-        final State oldState = light.getState();
-        final State.Builder newStateBuilder = State.newBuilder(oldState).setOn(!oldState.getOn());
-        return newStateBuilder.build();
     }
 
     @Override

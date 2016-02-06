@@ -25,14 +25,14 @@ import com.cgm.java.hue.web.util.KnownParameterNames;
  * testing.
  */
 @WebServlet("/HueServlet")
-public class ToggleGroup extends HttpServlet {
-    private static final Logger LOGGER = LoggerFactory.getLogger(ToggleGroup.class);
+public class ToggleGroupServlet extends HttpServlet {
+    private static final Logger LOGGER = LoggerFactory.getLogger(ToggleGroupServlet.class);
     private static final long serialVersionUID = 2L;
     private static final HueBridgeGetter HUE_BRIDGE_GETTER = new HueBridgeGetter();
     private static final HueBridgeSetter HUE_BRIDGE_SETTER = new HueBridgeSetter();
     private static final HueConfiguration HUE_CONFIGURATION = new HueConfiguration();
 
-    public ToggleGroup() {
+    public ToggleGroupServlet() {
         super();
     }
 

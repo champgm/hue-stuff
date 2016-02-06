@@ -2,9 +2,9 @@
  "type": "record",
  "name": "SensorState",
  "fields": [
-        {"name": "daylight", "type": ["null", "string"], "default": null},
-        {"name": "lastupdated", "type": ["null", "string"], "default": null},
+        {"name": "daylight", "type": ["string", "null"], "default": ""},
+        {"name": "lastupdated", "type": ["string", "null"], "default": ""},
         {"name": "buttonevent", "type": ["null", "long"], "default": null},
-        {"name": "status", "type": ["null", "string"], "default": null}
+        {"name": "status", "type": ["string", "null"], "default": ""}
  ]
 }

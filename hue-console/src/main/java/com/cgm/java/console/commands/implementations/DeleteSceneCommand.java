@@ -11,7 +11,7 @@ import com.cgm.java.console.commands.BridgeCommand;
 /**
  * A command which will attempt to delete {@link com.cgm.java.hue.models.Scene}s with the input IDs.
  */
-public class DeleteScene extends BridgeCommand {
+public class DeleteSceneCommand extends BridgeCommand {
     private static final String ID_OPTION = "sceneId";
 
     @Override

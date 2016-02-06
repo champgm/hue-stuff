@@ -17,7 +17,7 @@ import com.cgm.java.hue.models.Scene;
  * with the "Phillips Hue" app on Android always end up as "Version 1", which means they are missing some key attributes
  * like individual {@link com.cgm.java.hue.models.Light} {@link com.cgm.java.hue.models.State}s.
  */
-public class UpgradeSceneVersion extends BridgeCommand {
+public class UpgradeSceneVersionCommand extends BridgeCommand {
     private static final String ID_OPTION = "id";
 
     @Override
