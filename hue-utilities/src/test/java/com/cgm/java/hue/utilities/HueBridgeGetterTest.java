@@ -9,6 +9,7 @@ import org.mockito.Mockito;
 
 import com.cgm.java.hue.models.Group;
 import com.cgm.java.hue.models.Light;
+import com.cgm.java.hue.models.Rule;
 import com.cgm.java.hue.models.Scene;
 import com.cgm.java.hue.models.Sensor;
 import com.google.common.collect.ImmutableList;
@@ -202,5 +203,51 @@ public class HueBridgeGetterTest {
         final Sensor sensor = spiedBridgeGetter.getSensor(HUE_CONFIGURATION.getIP(), HUE_CONFIGURATION.getToken(), "2");
         Assert.assertEquals("2", sensor.getId());
         Assert.assertEquals("Daylight", sensor.getName());
+    }
+
+    @Test
+    public void testProcessOfFullRulesDump() {
+        final String fullRuleDump = "{" +
+                                    "\"1\":{\"name\":\"Tap 2.4 DenPair -ON\",\"owner\":\"1234\",\"created\":\"2015-12-30T23:59:20\",\"lasttriggered\":\"2016-02-04T23:16:38\",\"timestriggered\": 32,\"status\": \"enabled\",\"conditions\":[{\"address\":\"/rules/2/state/buttonevent\",\"operator\":\"eq\",\"value\":\"18\"},{\"address\":\"/rules/2/state/lastupdated\",\"operator\":\"dx\"}],\"actions\":[{\"address\":\"/groups/0/action\",\"method\":\"PUT\",\"body\":{\"scene\":\"b79ee5717-on-0\"}}]}," +
+                                    "\"2\":{\"name\":\"Tap 2.1 Full den off\",\"owner\":\"1234\",\"created\":\"2015-12-30T23:59:22\",\"lasttriggered\":\"2016-02-07T18:27:44\",\"timestriggered\": 76,\"status\": \"enabled\",\"conditions\":[{\"address\":\"/rules/2/state/buttonevent\",\"operator\":\"eq\",\"value\":\"34\"},{\"address\":\"/rules/2/state/lastupdated\",\"operator\":\"dx\"}],\"actions\":[{\"address\":\"/groups/0/action\",\"method\":\"PUT\",\"body\":{\"scene\":\"85385533d-on-0\"}}]}," +
+                                    "\"3\":{\"name\":\"Tap 2.2 Sunset\",\"owner\":\"1234\",\"created\":\"2015-12-30T23:59:21\",\"lasttriggered\":\"2016-02-07T00:27:17\",\"timestriggered\": 36,\"status\": \"enabled\",\"conditions\":[{\"address\":\"/rules/2/state/buttonevent\",\"operator\":\"eq\",\"value\":\"16\"},{\"address\":\"/rules/2/state/lastupdated\",\"operator\":\"dx\"}],\"actions\":[{\"address\":\"/groups/0/action\",\"method\":\"PUT\",\"body\":{\"scene\":\"28098c28a-on-0\"}}]}," +
+                                    "\"4\":{\"name\":\"Tap 2.3 White and Blue\",\"owner\":\"1234\",\"created\":\"2016-01-12T17:55:15\",\"lasttriggered\":\"2016-02-06T15:21:05\",\"timestriggered\": 27,\"status\": \"enabled\",\"conditions\":[{\"address\":\"/rules/2/state/buttonevent\",\"operator\":\"eq\",\"value\":\"17\"},{\"address\":\"/rules/2/state/lastupdated\",\"operator\":\"dx\"}],\"actions\":[{\"address\":\"/groups/0/action\",\"method\":\"PUT\",\"body\":{\"scene\":\"0a854c238-on-0\"}}]}," +
+                                    "\"5\":{\"name\":\"Dimmer 3.1 \",\"owner\":\"1234\",\"created\":\"2015-12-31T04:16:00\",\"lasttriggered\":\"2016-02-07T03:06:48\",\"timestriggered\": 91,\"status\": \"enabled\",\"conditions\":[{\"address\":\"/rules/3/state/buttonevent\",\"operator\":\"eq\",\"value\":\"1000\"},{\"address\":\"/rules/3/state/lastupdated\",\"operator\":\"dx\"}],\"actions\":[{\"address\":\"/groups/1/action\",\"method\":\"PUT\",\"body\":{\"on\":true}}]}," +
+                                    "\"6\":{\"name\":\"Dimmer 3.2 \",\"owner\":\"1234\",\"created\":\"2015-12-31T04:16:00\",\"lasttriggered\":\"2016-02-06T03:49:50\",\"timestriggered\": 75,\"status\": \"enabled\",\"conditions\":[{\"address\":\"/rules/3/state/buttonevent\",\"operator\":\"eq\",\"value\":\"2001\"},{\"address\":\"/rules/3/state/lastupdated\",\"operator\":\"dx\"}],\"actions\":[{\"address\":\"/groups/1/action\",\"method\":\"PUT\",\"body\":{\"transitiontime\":9,\"bri_inc\":56}}]}," +
+                                    "\"7\":{\"name\":\"Dimmer 3.3 \",\"owner\":\"1234\",\"created\":\"2015-12-31T04:16:00\",\"lasttriggered\":\"2016-01-11T02:48:22\",\"timestriggered\": 11,\"status\": \"enabled\",\"conditions\":[{\"address\":\"/rules/3/state/buttonevent\",\"operator\":\"eq\",\"value\":\"3000\"},{\"address\":\"/rules/3/state/lastupdated\",\"operator\":\"dx\"}],\"actions\":[{\"address\":\"/groups/1/action\",\"method\":\"PUT\",\"body\":{\"transitiontime\":9,\"bri_inc\":-30}}]}," +
+                                    "\"8\":{\"name\":\"Dimmer 3.3 \",\"owner\":\"1234\",\"created\":\"2015-12-31T04:16:00\",\"lasttriggered\":\"2016-01-07T03:33:26\",\"timestriggered\": 14,\"status\": \"enabled\",\"conditions\":[{\"address\":\"/rules/3/state/buttonevent\",\"operator\":\"eq\",\"value\":\"3001\"},{\"address\":\"/rules/3/state/lastupdated\",\"operator\":\"dx\"}],\"actions\":[{\"address\":\"/groups/1/action\",\"method\":\"PUT\",\"body\":{\"transitiontime\":9,\"bri_inc\":-56}}]}," +
+                                    "\"9\":{\"name\":\"Dimmer 3.3 \",\"owner\":\"1234\",\"created\":\"2015-12-31T04:16:00\",\"lasttriggered\":\"2015-12-31T04:18:53\",\"timestriggered\": 3,\"status\": \"enabled\",\"conditions\":[{\"address\":\"/rules/3/state/buttonevent\",\"operator\":\"eq\",\"value\":\"3003\"},{\"address\":\"/rules/3/state/lastupdated\",\"operator\":\"dx\"}],\"actions\":[{\"address\":\"/groups/1/action\",\"method\":\"PUT\",\"body\":{\"bri_inc\":0}}]}," +
+                                    "\"10\":{\"name\":\"Dimmer 3.2 \",\"owner\":\"1234\",\"created\":\"2015-12-31T04:16:01\",\"lasttriggered\":\"2016-02-06T03:49:39\",\"timestriggered\": 29,\"status\": \"enabled\",\"conditions\":[{\"address\":\"/rules/3/state/buttonevent\",\"operator\":\"eq\",\"value\":\"2000\"},{\"address\":\"/rules/3/state/lastupdated\",\"operator\":\"dx\"}],\"actions\":[{\"address\":\"/groups/1/action\",\"method\":\"PUT\",\"body\":{\"transitiontime\":9,\"bri_inc\":30}}]}," +
+                                    "\"11\":{\"name\":\"Dimmer 3.2 \",\"owner\":\"1234\",\"created\":\"2015-12-31T04:16:01\",\"lasttriggered\":\"2016-02-06T03:49:51\",\"timestriggered\": 16,\"status\": \"enabled\",\"conditions\":[{\"address\":\"/rules/3/state/buttonevent\",\"operator\":\"eq\",\"value\":\"2003\"},{\"address\":\"/rules/3/state/lastupdated\",\"operator\":\"dx\"}],\"actions\":[{\"address\":\"/groups/1/action\",\"method\":\"PUT\",\"body\":{\"bri_inc\":0}}]}," +
+                                    "\"12\":{\"name\":\"Dimmer 3.4 \",\"owner\":\"1234\",\"created\":\"2015-12-31T04:16:01\",\"lasttriggered\":\"2016-02-04T13:17:49\",\"timestriggered\": 73,\"status\": \"enabled\",\"conditions\":[{\"address\":\"/rules/3/state/buttonevent\",\"operator\":\"eq\",\"value\":\"4000\"},{\"address\":\"/rules/3/state/lastupdated\",\"operator\":\"dx\"}],\"actions\":[{\"address\":\"/groups/1/action\",\"method\":\"PUT\",\"body\":{\"on\":false}}]}" +
+                                    "}";
+
+        final HueBridgeGetter spiedBridgeGetter = Mockito.spy(new HueBridgeGetter());
+        final String expectedUri = spiedBridgeGetter.buildUri(HUE_CONFIGURATION.getIP(), HUE_CONFIGURATION.getToken(), "rules");
+        Mockito.doReturn(fullRuleDump).when(spiedBridgeGetter).getURI(expectedUri);
+
+        final List<Rule> rules = spiedBridgeGetter.getRules(HUE_CONFIGURATION.getIP(), HUE_CONFIGURATION.getToken());
+        Assert.assertEquals(12, rules.size());
+    }
+
+    @Test
+    public void testProcessOfSingleRule() {
+        final String singleRule = "{\"name\":\"Tap 2.4 DenPair -ON\"," +
+                                    "\"owner\":\"1234\"," +
+                                    "\"created\":\"2015-12-30T23:59:20\"," +
+                                    "\"lasttriggered\":\"2016-02-04T23:16:38\"," +
+                                    "\"timestriggered\": 32," +
+                                    "\"status\": \"enabled\"," +
+                                    "\"conditions\":[{\"address\":\"/sensors/2/state/buttonevent\",\"operator\":\"eq\",\"value\":\"18\"},{\"address\":\"/sensors/2/state/lastupdated\",\"operator\":\"dx\"}]," +
+                                    "\"actions\":[{\"address\":\"/groups/0/action\",\"method\":\"PUT\",\"body\":{\"scene\":\"b79ee5717-on-0\"}}]" +
+                                    "}";
+
+        final HueBridgeGetter spiedBridgeGetter = Mockito.spy(new HueBridgeGetter());
+        final String expectedUri = spiedBridgeGetter.buildUri(HUE_CONFIGURATION.getIP(), HUE_CONFIGURATION.getToken(), "rules", ImmutableList.of("2"));
+        Mockito.doReturn(singleRule).when(spiedBridgeGetter).getURI(expectedUri);
+
+        final Rule rule = spiedBridgeGetter.getRule(HUE_CONFIGURATION.getIP(), HUE_CONFIGURATION.getToken(), "2");
+        Assert.assertEquals("2", rule.getId());
+        Assert.assertEquals("Tap 2.4 DenPair -ON", rule.getName());
     }
 }
