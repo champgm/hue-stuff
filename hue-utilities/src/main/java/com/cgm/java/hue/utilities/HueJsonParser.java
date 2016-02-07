@@ -33,7 +33,7 @@ public class HueJsonParser {
      */
     public static final BiFunction<String, String, Scene> JSON_TO_SCENE = (id, jsonString) -> {
         try {
-            LOGGER.info("Attempting to parse one scene from raw JSON: " + jsonString);
+            LOGGER.debug("Attempting to parse one scene from raw JSON: " + jsonString);
             // The hue folks like to change the normal array format of "thing" : ["1","2","3"] into just "thing": {}
             // when it is empty, instead of []. The avro JSON converter hates this, so replace those {}'s with [].
             // TODO: this may or may not cause a bunch of issues in the future.
@@ -45,7 +45,7 @@ public class HueJsonParser {
             final Scene scene = objectMapper.readValue(nullifiedJson.getBytes(), Scene.class);
             final Scene sceneWithId = Scene.newBuilder(scene).setId(String.valueOf(id)).build();
 
-            LOGGER.info("Successfully parsed a scene: " + sceneWithId);
+            LOGGER.debug("Successfully parsed a scene: " + sceneWithId);
             return sceneWithId;
         } catch (IOException e) {
             LOGGER.error("Error reading JSON as Scene: " + jsonString);
@@ -58,7 +58,7 @@ public class HueJsonParser {
      */
     public static final BiFunction<Integer, String, Light> JSON_TO_LIGHT = (id, jsonString) -> {
         try {
-            LOGGER.info("Attempting to parse one scene from raw JSON: " + jsonString);
+            LOGGER.debug("Attempting to parse one scene from raw JSON: " + jsonString);
 
             ObjectMapper objectMapper = new ObjectMapper();
             // The pointsymbol field has numerical field names. That's annoying, but it's also deprecated.
@@ -67,7 +67,7 @@ public class HueJsonParser {
             final Light light = objectMapper.readValue(jsonString.getBytes(), Light.class);
 
             final Light lightWithId = Light.newBuilder(light).setId(String.valueOf(id)).build();
-            LOGGER.info("Successfully parsed a light: " + lightWithId);
+            LOGGER.debug("Successfully parsed a light: " + lightWithId);
             return lightWithId;
         } catch (IOException e) {
             LOGGER.error("Error reading JSON as Light: " + jsonString);
@@ -80,14 +80,14 @@ public class HueJsonParser {
      */
     public static final BiFunction<Integer, String, Sensor> JSON_TO_SENSOR = (id, jsonString) -> {
         try {
-            LOGGER.info("Attempting to parse one sensor from raw JSON: " + jsonString);
+            LOGGER.debug("Attempting to parse one sensor from raw JSON: " + jsonString);
 
             ObjectMapper objectMapper = new ObjectMapper();
             objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
             final Sensor sensor = objectMapper.readValue(jsonString.getBytes(), Sensor.class);
 
             final Sensor sensorWithId = Sensor.newBuilder(sensor).setId(String.valueOf(id)).build();
-            LOGGER.info("Successfully parsed a sensor: " + sensorWithId);
+            LOGGER.debug("Successfully parsed a sensor: " + sensorWithId);
             return sensorWithId;
         } catch (IOException e) {
             LOGGER.error("Error reading JSON as Light: " + jsonString);
@@ -100,10 +100,10 @@ public class HueJsonParser {
      */
     public static final Function<String, State> JSON_TO_STATE = (jsonString) -> {
         try {
-            LOGGER.info("Attempting to parse one state from raw JSON: " + jsonString);
+            LOGGER.debug("Attempting to parse one state from raw JSON: " + jsonString);
             ObjectMapper objectMapper = new ObjectMapper();
             final State state = objectMapper.readValue(jsonString.getBytes(), State.class);
-            LOGGER.info("Successfully parsed a state: " + state);
+            LOGGER.debug("Successfully parsed a state: " + state);
             return state;
         } catch (IOException e) {
             LOGGER.error("Error reading JSON as State: " + jsonString);
@@ -117,12 +117,12 @@ public class HueJsonParser {
      */
     public static final BiFunction<Integer, String, Group> JSON_TO_GROUP = (id, jsonString) -> {
         try {
-            LOGGER.info("Attempting to parse one group from raw JSON: " + jsonString);
+            LOGGER.debug("Attempting to parse one group from raw JSON: " + jsonString);
             ObjectMapper objectMapper = new ObjectMapper();
             objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
             final Group group = objectMapper.readValue(jsonString.getBytes(), Group.class);
             final Group groupWithId = Group.newBuilder(group).setId(String.valueOf(id)).build();
-            LOGGER.info("Successfully parsed a group: " + groupWithId);
+            LOGGER.debug("Successfully parsed a group: " + groupWithId);
             return groupWithId;
         } catch (IOException e) {
             LOGGER.error("Error reading JSON as Group: " + jsonString);

@@ -40,7 +40,7 @@ public class HueBridgeGetter extends HttpInteractor {
         // Hue API calls are normally of the format
         // http://<bridge IP>/api/<user ID>/commands
         final String uri = buildUri(bridgeIP, token, apiCall);
-        LOGGER.info("Will attempt to raw GET: " + uri);
+        LOGGER.debug("Will attempt to raw GET: " + uri);
         return getURI(uri);
     }
 
@@ -75,7 +75,7 @@ public class HueBridgeGetter extends HttpInteractor {
         }
 
         final String newUri = newUriBuilder.toString();
-        LOGGER.info("Will attempt to raw GET: " + newUri);
+        LOGGER.debug("Will attempt to raw GET: " + newUri);
         return getURI(newUri);
     }
 
@@ -93,7 +93,7 @@ public class HueBridgeGetter extends HttpInteractor {
         Preconditions.checkArgument(StringUtils.isNotBlank(bridgeIp), "bridgeIp may not be null or empty.");
         Preconditions.checkArgument(StringUtils.isNotBlank(token), "token may not be null or empty.");
 
-        LOGGER.info("Attempting to get all lights.");
+        LOGGER.debug("Attempting to get all lights.");
         final String rawJsonResults = rawGet(bridgeIp, token, HueBridgeCommands.LIGHTS);
         return new ArrayList<>(HueJsonParser.parseLightsFromJson(rawJsonResults));
     }
@@ -114,7 +114,7 @@ public class HueBridgeGetter extends HttpInteractor {
         Preconditions.checkArgument(StringUtils.isNotBlank(token), "token may not be null or empty.");
         Preconditions.checkArgument(StringUtils.isNotBlank(lightId), "lightId may not be null or empty.");
 
-        LOGGER.info("Attempting to get light: " + lightId);
+        LOGGER.debug("Attempting to get light: " + lightId);
         final String rawJsonResult = rawGet(bridgeIp, token, HueBridgeCommands.LIGHTS, ImmutableList.of(lightId));
         final Light light = HueJsonParser.parseLightFromJson(lightId, rawJsonResult);
         return Light.newBuilder(light).setId(lightId).build();
@@ -136,7 +136,7 @@ public class HueBridgeGetter extends HttpInteractor {
         Preconditions.checkArgument(StringUtils.isNotBlank(token), "token may not be null or empty.");
         Preconditions.checkArgument(StringUtils.isNotBlank(sceneId), "sceneId may not be null or empty.");
 
-        LOGGER.info("Attempting to get scene: " + sceneId);
+        LOGGER.debug("Attempting to get scene: " + sceneId);
         // Getting scenes requires the format /api/<username>/scenes/<id>
         final String getSceneUri = buildUri(bridgeIp, token, HueBridgeCommands.SCENES, ImmutableList.of(sceneId));
         final String sceneJson = getURI(getSceneUri);
@@ -157,7 +157,7 @@ public class HueBridgeGetter extends HttpInteractor {
         Preconditions.checkArgument(StringUtils.isNotBlank(bridgeIp), "bridgeIp may not be null or empty.");
         Preconditions.checkArgument(StringUtils.isNotBlank(token), "token may not be null or empty.");
 
-        LOGGER.info("Attempting to get all scenes");
+        LOGGER.debug("Attempting to get all scenes");
         final String rawJsonResults = rawGet(bridgeIp, token, HueBridgeCommands.SCENES);
         return new ArrayList<>(HueJsonParser.parseScenesFromJson(rawJsonResults));
     }
@@ -176,7 +176,7 @@ public class HueBridgeGetter extends HttpInteractor {
         Preconditions.checkArgument(StringUtils.isNotBlank(bridgeIp), "bridgeIp may not be null or empty.");
         Preconditions.checkArgument(StringUtils.isNotBlank(token), "token may not be null or empty.");
 
-        LOGGER.info("Attempting to get all groups");
+        LOGGER.debug("Attempting to get all groups");
         final String rawJsonResults = rawGet(bridgeIp, token, HueBridgeCommands.GROUPS);
         return new ArrayList<>(HueJsonParser.parseGroupsFromJson(rawJsonResults));
     }
@@ -197,7 +197,7 @@ public class HueBridgeGetter extends HttpInteractor {
         Preconditions.checkArgument(StringUtils.isNotBlank(token), "token may not be null or empty.");
         Preconditions.checkArgument(StringUtils.isNotBlank(groupId), "groupId may not be null or empty.");
 
-        LOGGER.info("Attempting to get group: " + groupId);
+        LOGGER.debug("Attempting to get group: " + groupId);
         // Getting groups requires the format /api/<username>/groups/<id>
         final String getGroupUri = buildUri(bridgeIp, token, HueBridgeCommands.GROUPS, ImmutableList.of(groupId));
         final String sceneJson = getURI(getGroupUri);
@@ -218,7 +218,7 @@ public class HueBridgeGetter extends HttpInteractor {
         Preconditions.checkArgument(StringUtils.isNotBlank(bridgeIp), "bridgeIp may not be null or empty.");
         Preconditions.checkArgument(StringUtils.isNotBlank(token), "token may not be null or empty.");
 
-        LOGGER.info("Attempting to get all groups");
+        LOGGER.debug("Attempting to get all groups");
         final String rawJsonResults = rawGet(bridgeIp, token, HueBridgeCommands.SENSORS);
         return new ArrayList<>(HueJsonParser.parseSensorsFromJson(rawJsonResults));
     }
@@ -239,7 +239,7 @@ public class HueBridgeGetter extends HttpInteractor {
         Preconditions.checkArgument(StringUtils.isNotBlank(token), "token may not be null or empty.");
         Preconditions.checkArgument(StringUtils.isNotBlank(sensorId), "sensorId may not be null or empty.");
 
-        LOGGER.info("Attempting to get sensor: " + sensorId);
+        LOGGER.debug("Attempting to get sensor: " + sensorId);
         // Getting groups requires the format /api/<username>/sensors/<id>
         final String getSensorUri = buildUri(bridgeIp, token, HueBridgeCommands.SENSORS, ImmutableList.of(sensorId));
         final String sceneJson = getURI(getSensorUri);

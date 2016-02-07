@@ -35,6 +35,7 @@ public class GetGroupsServlet extends HttpServlet {
     protected void doGet(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
         LOGGER.info("Attempting to retrieve all groups.");
         final List<Group> groups = HUE_BRIDGE_GETTER.getGroups(HUE_CONFIGURATION.getIP(), HUE_CONFIGURATION.getToken());
+        LOGGER.info("Retrieved groups: " + groups);
         request.setAttribute(KnownParameterNames.GROUP_LIST.getName(), groups);
     }
 
