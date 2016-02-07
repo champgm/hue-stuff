@@ -9,7 +9,8 @@ body {
     height: 850px;
 }
 
-/*style section; this is the whole section area (including h2)*/
+/*style section; this is the whole section area (including negative h2)*/
+/*section really starts below h2, and we define h2 negative*/
 #tabs section {
 	position: absolute;
 	display: block;
@@ -132,6 +133,21 @@ button.light-toggler {
 
 button.light-toggler.on {
     background: red;
+}
+
+button.scene {
+  -webkit-border-radius: 28;
+  -moz-border-radius: 28;
+  border-radius: 28px;
+  font-family: Arial;
+  color: #ffffff;
+  font-size: 12px;
+  background: #dbdbdb;
+  padding: 20px 100px 20px 50px;
+  text-decoration: none;
+  width: 220px;
+  height: 150px;
+  margin: 20px
 }
 
 
