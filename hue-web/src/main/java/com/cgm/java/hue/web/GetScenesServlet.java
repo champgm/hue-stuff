@@ -2,6 +2,7 @@ package com.cgm.java.hue.web;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -33,10 +34,20 @@ public class GetScenesServlet extends HttpServlet {
     }
 
     protected void doGet(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
+        final Boolean onlyV2 = Boolean.valueOf(request.getParameter(KnownParameterNames.SCENE_V2.getName()));
+
         LOGGER.info("Attempting to retrieve all scenes.");
-        final List<Scene> list = HUE_BRIDGE_GETTER.getScenes(HUE_CONFIGURATION.getIP(), HUE_CONFIGURATION.getToken());
-        LOGGER.info("Retrieved scenes: " + list);
-        request.setAttribute(KnownParameterNames.SCENE_LIST.getName(), list);
+        final List<Scene> allScenes = HUE_BRIDGE_GETTER.getScenes(HUE_CONFIGURATION.getIP(), HUE_CONFIGURATION.getToken());
+        LOGGER.info("Retrieved scenes: " + allScenes);
+
+        if (onlyV2) {
+            final List<Scene> v2Scenes = allScenes.stream()
+                    .filter(scene -> scene.getVersion().equals("2"))
+                    .collect(Collectors.toList());
+            request.setAttribute(KnownParameterNames.SCENE_LIST.getName(), v2Scenes);
+        } else {
+            request.setAttribute(KnownParameterNames.SCENE_LIST.getName(), allScenes);
+        }
     }
 
     protected void doPost(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {

@@ -17,6 +17,7 @@ public enum KnownParameterNames {
     LIGHT("light"),
     LIGHT_STATE("lightstate"),
     SCENE("scene"),
+    SCENE_V2("v2"),
     LIGHT_LIST("lightlist"),
     GROUP_LIST("grouplist"),
     SCENE_LIST("scenelist"),
