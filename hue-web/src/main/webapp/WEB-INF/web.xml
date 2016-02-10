@@ -42,6 +42,24 @@
   </servlet-mapping>
 
   <servlet>
+    <servlet-name>GetSensorsServlet</servlet-name>
+    <servlet-class>com.cgm.java.hue.web.GetSensorsServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>GetSensorsServlet</servlet-name>
+    <url-pattern>/getsensors/*</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>GetRulesServlet</servlet-name>
+    <servlet-class>com.cgm.java.hue.web.GetRulesServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>GetRulesServlet</servlet-name>
+    <url-pattern>/getrules/*</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
     <servlet-name>ToggleLightServlet</servlet-name>
     <servlet-class>com.cgm.java.hue.web.ToggleLightServlet</servlet-class>
   </servlet>

@@ -1,0 +1,9 @@
+{"namespace": "com.cgm.java.hue.models",
+ "type": "record",
+ "name": "Condition",
+ "fields": [
+        {"name": "address", "type": ["string", "null"], "default": ""},
+        {"name": "operator", "type": ["string", "null"], "default": ""},
+        {"name": "value", "type": ["string", "null"], "default": ""}
+ ]
+}

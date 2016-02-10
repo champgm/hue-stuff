@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 
 import com.cgm.java.hue.models.Group;
 import com.cgm.java.hue.models.Light;
+import com.cgm.java.hue.models.Rule;
 import com.cgm.java.hue.models.Scene;
 import com.cgm.java.hue.models.Sensor;
 import com.google.common.base.Preconditions;
@@ -244,5 +245,47 @@ public class HueBridgeGetter extends HttpInteractor {
         final String getSensorUri = buildUri(bridgeIp, token, HueBridgeCommands.SENSORS, ImmutableList.of(sensorId));
         final String sceneJson = getURI(getSensorUri);
         return HueJsonParser.parseSensorFromJson(sensorId, sceneJson);
+    }
+
+    /**
+     * Calls the bridge to get a list of currently configured sensors and returns a collection of them parsed out into
+     * {@link com.cgm.java.hue.models.Rule} objects
+     *
+     * @param bridgeIp
+     *            the IP address of the bridge
+     * @param token
+     *            the user ID that should already be registered with the bridge
+     * @return a {@link java.util.List} of {@link com.cgm.java.hue.models.Rule}s
+     */
+    public List<Rule> getRules(final String bridgeIp, final String token) {
+        Preconditions.checkArgument(StringUtils.isNotBlank(bridgeIp), "bridgeIp may not be null or empty.");
+        Preconditions.checkArgument(StringUtils.isNotBlank(token), "token may not be null or empty.");
+
+        LOGGER.debug("Attempting to get all groups");
+        final String rawJsonResults = rawGet(bridgeIp, token, HueBridgeCommands.RULES);
+        return new ArrayList<>(HueJsonParser.parseRulesFromJson(rawJsonResults));
+    }
+
+    /**
+     * Calls the bridge to get a specific {@link com.cgm.java.hue.models.Rule}
+     *
+     * @param bridgeIp
+     *            the IP address of the bridge
+     * @param token
+     *            the user ID that should already be registered with the bridge
+     * @param ruleId
+     *            the ID of the {@link com.cgm.java.hue.models.Rule} to retrieve
+     * @return a {@link com.cgm.java.hue.models.Rule}
+     */
+    public Rule getRule(final String bridgeIp, final String token, final String ruleId) {
+        Preconditions.checkArgument(StringUtils.isNotBlank(bridgeIp), "bridgeIp may not be null or empty.");
+        Preconditions.checkArgument(StringUtils.isNotBlank(token), "token may not be null or empty.");
+        Preconditions.checkArgument(StringUtils.isNotBlank(ruleId), "ruleId may not be null or empty.");
+
+        LOGGER.debug("Attempting to get rule: " + ruleId);
+        // Getting groups requires the format /api/<username>/rules/<id>
+        final String getSensorUri = buildUri(bridgeIp, token, HueBridgeCommands.RULES, ImmutableList.of(ruleId));
+        final String sceneJson = getURI(getSensorUri);
+        return HueJsonParser.parseRuleFromJson(ruleId, sceneJson);
     }
 }

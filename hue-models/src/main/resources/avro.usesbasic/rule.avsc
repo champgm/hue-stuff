@@ -1,0 +1,15 @@
+{"namespace": "com.cgm.java.hue.models",
+ "type": "record",
+ "name": "Rule",
+ "fields": [
+     {"name": "id", "type": ["string", "null"], "default": ""},
+     {"name": "name", "type": ["string", "null"], "default": ""},
+     {"name": "owner", "type": ["string", "null"], "default": ""},
+     {"name": "created", "type": ["string", "null"], "default": ""},
+     {"name": "lasttriggered", "type": ["string", "null"], "default": "none"},
+     {"name": "timestriggered", "type": ["long", "null"], "default": 0},
+     {"name": "status", "type": ["string", "null"], "default": ""},
+     {"name": "actions", "type": ["null", {"type": "array", "items": "Action"}], "default": null},
+     {"name": "conditions", "type": ["null", {"type": "array", "items": "Condition"}], "default": null}
+ ]
+}
