@@ -12,6 +12,7 @@ import com.cgm.java.hue.models.Group;
 import com.cgm.java.hue.models.Light;
 import com.cgm.java.hue.models.Rule;
 import com.cgm.java.hue.models.Scene;
+import com.cgm.java.hue.models.Schedule;
 import com.cgm.java.hue.models.Sensor;
 import com.cgm.java.hue.models.State;
 import com.google.common.collect.ImmutableList;
@@ -261,21 +262,65 @@ public class HueJsonParserTest {
                                  "\"12\":{\"name\":\"Dimmer 3.4 \",\"owner\":\"1234\",\"created\":\"2015-12-31T04:16:01\",\"lasttriggered\":\"2016-02-04T13:17:49\",\"timestriggered\": 73,\"status\": \"enabled\",\"conditions\":[{\"address\":\"/sensors/3/state/buttonevent\",\"operator\":\"eq\",\"value\":\"4000\"},{\"address\":\"/sensors/3/state/lastupdated\",\"operator\":\"dx\"}],\"actions\":[{\"address\":\"/groups/1/action\",\"method\":\"PUT\",\"body\":{\"on\":false}}]}" +
                                  "}";
 
+        final ImmutableList<String> expectedIds = ImmutableList.of("1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12");
+
         final Collection<Rule> rules = HueJsonParser.parseRulesFromJson(rulesJson);
         Assert.assertEquals(12, rules.size());
+        rules.forEach(rule -> Assert.assertTrue(expectedIds.contains(rule.getId().toString())));
+    }
+
+    @Test
+    public void testConversionOfJsonToSchedule() throws Exception {
+        final String scheduleJson = "{" +
+                                "\"name\":\"wakeup - bedroom\"," +
+                                "\"description\":\"BR - on\"," +
+                                "\"command\":{" +
+                                "\"address\":\"/api/0000000077f6ae5e16f8583016f85830/groups/0/action\"," +
+                                "\"body\":{\"scene\":\"808140eef-on-30\"}," +
+                                "\"method\":\"PUT\"}," +
+                                "\"localtime\":\"W124/T05:30:00\"," +
+                                "\"time\":\"W124/T11:30:00\"," +
+                                "\"created\":\"2015-12-04T12:01:11\"," +
+                                "\"status\":\"disabled\"" +
+                                "}";
+
+        final Schedule scheduleAvro = HueJsonParser.parseScheduleFromJson("1482820976701523", scheduleJson);
+        Assert.assertEquals("1482820976701523", scheduleAvro.getId());
+        Assert.assertEquals("wakeup - bedroom", scheduleAvro.getName());
+        Assert.assertEquals("{\"scene\":\"808140eef-on-30\"}", scheduleAvro.getCommand().getBody());
+    }
+
+    @Test
+    public void testConversionOfFullScheduleDump() throws Exception {
+        final String schedulesJson = "{" +
+                                 "\"1482820976701523\":{\"name\":\"wakeup - bedroom\",\"description\":\"BR - on\",\"command\":{\"address\":\"/api/0000000077f6ae5e16f8583016f85830/groups/0/action\",\"body\":{\"scene\":\"808140eef-on-30\"},\"method\":\"PUT\"},\"localtime\":\"W124/T05:30:00\",\"time\":\"W124/T11:30:00\",\"created\":\"2015-12-04T12:01:11\",\"status\":\"disabled\"}," +
+                                 "\"7303628988606452\":{\"name\":\"wakeup - den pair\",\"description\":\"Den - full\",\"command\":{\"address\":\"/api/0000000077f6ae5e16f8583016f85830/groups/0/action\",\"body\":{\"scene\":\"b79ee5717-on-0\"},\"method\":\"PUT\"},\"localtime\":\"W124/T05:30:00\",\"time\":\"W124/T11:30:00\",\"created\":\"2015-12-17T19:12:03\",\"status\":\"enabled\"}," +
+                                 "\"9608249029237889\":{\"name\":\"Alarm\",\"description\":\"Energize\",\"command\":{\"address\":\"/api/0000000077f6ae5e16f8583016f85830/groups/0/action\",\"body\":{\"scene\":\"acac20a4d-on-0\"},\"method\":\"PUT\"},\"localtime\":\"W124/T05:30:00\",\"time\":\"W124/T11:30:00\",\"created\":\"2015-12-23T12:38:28\",\"status\":\"enabled\"}" +
+                                 "}";
+
+        final ImmutableList<String> expectedIds = ImmutableList.of(
+                "1482820976701523",
+                "7303628988606452",
+                "9608249029237889");
+
+        final Collection<Schedule> schedules = HueJsonParser.parseSchedulesFromJson(schedulesJson);
+        schedules.forEach(schedule -> Assert.assertTrue(expectedIds.contains(schedule.getId().toString())));
+        Assert.assertEquals(3, schedules.size());
     }
 
     @Test
     public void testConversionFailures() throws Exception {
         final Scene badScene = HueJsonParser.JSON_TO_SCENE.apply("junk", "data");
         Assert.assertNull(badScene);
-        final Light badLight = HueJsonParser.JSON_TO_LIGHT.apply(1, "data");
+        final Light badLight = HueJsonParser.JSON_TO_LIGHT.apply(1L, "data");
         Assert.assertNull(badLight);
         final State badState = HueJsonParser.JSON_TO_STATE.apply("bad data");
         Assert.assertNull(badState);
-        final Group badGroup = HueJsonParser.JSON_TO_GROUP.apply(1, "bad data");
+        final Group badGroup = HueJsonParser.JSON_TO_GROUP.apply(1L, "bad data");
         Assert.assertNull(badGroup);
-        final Rule badRule = HueJsonParser.JSON_TO_RULE.apply(1, "bad data");
+        final Rule badRule = HueJsonParser.JSON_TO_RULE.apply(1L, "bad data");
         Assert.assertNull(badRule);
+        final Schedule badSchedule = HueJsonParser.JSON_TO_SCHEDULE.apply(1L, "bad data");
+        Assert.assertNull(badSchedule);
     }
 }

@@ -33,6 +33,15 @@
   </servlet-mapping>
 
   <servlet>
+    <servlet-name>GetSchedulesServlet</servlet-name>
+    <servlet-class>com.cgm.java.hue.web.GetSchedulesServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>GetSchedulesServlet</servlet-name>
+    <url-pattern>/getschedules/*</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
     <servlet-name>GetGroupsServlet</servlet-name>
     <servlet-class>com.cgm.java.hue.web.GetGroupsServlet</servlet-class>
   </servlet>
