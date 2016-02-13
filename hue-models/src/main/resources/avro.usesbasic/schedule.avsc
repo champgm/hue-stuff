@@ -1,0 +1,15 @@
+{"namespace": "com.cgm.java.hue.models",
+ "type": "record",
+ "name": "Schedule",
+ "fields": [
+     {"name": "id", "type": ["string", "null"], "default": ""},
+     {"name": "name", "type": ["string", "null"], "default": ""},
+     {"name": "description", "type": ["string", "null"], "default": ""},
+     {"name": "command", "type": ["null", "Action"], "default": null},
+     {"name": "time", "type": ["string", "null"], "default": ""},
+     {"name": "created", "type": ["string", "null"], "default": ""},
+     {"name": "status", "type": ["string", "null"], "default": ""},
+     {"name": "autodelete", "type": ["boolean", "null"], "default": false},
+     {"name": "starttime", "type": ["string", "null"], "default": ""}
+ ]
+}

@@ -11,6 +11,7 @@ import com.cgm.java.hue.models.Group;
 import com.cgm.java.hue.models.Light;
 import com.cgm.java.hue.models.Rule;
 import com.cgm.java.hue.models.Scene;
+import com.cgm.java.hue.models.Schedule;
 import com.cgm.java.hue.models.Sensor;
 import com.google.common.collect.ImmutableList;
 
@@ -45,39 +46,39 @@ public class HueBridgeGetterTest {
     @Test
     public void testProcessOfFullScenesDump() {
         final String fullSceneDump = "{" +
-                                     "\"738e3c2af-off-0\":{\"name\":\"BR - on off 1448596157000\",\"lights\":[\"4\",\"5\"],\"owner\":\"0000000077f6ae5e16f8583016f85830\",\"recycle\":true,\"locked\":false,\"appdata\":{},\"picture\":\"\",\"lastupdated\":\"2016-01-12T04:36:52\",\"version\":1}," +
-                                     "\"808140eef-on-0\":{\"name\":\"BR - on on 1448596157000\",\"lights\":[\"4\",\"5\"],\"owner\":\"0000000077f6ae5e16f8583016f85830\",\"recycle\":true,\"locked\":false,\"appdata\":{},\"picture\":\"\",\"lastupdated\":\"2016-01-12T04:36:53\",\"version\":1}," +
+                                     "\"738e3c2af-off-0\":{\"name\":\"BR - on off 1448596157000\",\"lights\":[\"4\",\"5\"],\"owner\":\"1235235\",\"recycle\":true,\"locked\":false,\"appdata\":{},\"picture\":\"\",\"lastupdated\":\"2016-01-12T04:36:52\",\"version\":1}," +
+                                     "\"808140eef-on-0\":{\"name\":\"BR - on on 1448596157000\",\"lights\":[\"4\",\"5\"],\"owner\":\"1235235\",\"recycle\":true,\"locked\":false,\"appdata\":{},\"picture\":\"\",\"lastupdated\":\"2016-01-12T04:36:53\",\"version\":1}," +
                                      "\"087f88f52-on-0\":{\"name\":\"Sunset on 1448660085758\",\"lights\":[\"1\",\"2\",\"3\"],\"owner\":\"none\",\"recycle\":true,\"locked\":false,\"appdata\":{},\"picture\":\"\",\"lastupdated\":null,\"version\":1}," +
-                                     "\"045fa99ae-on-0\":{\"name\":\"BR - off on 1448596158000\",\"lights\":[\"4\",\"5\"],\"owner\":\"0000000077f6ae5e16f8583016f85830\",\"recycle\":true,\"locked\":false,\"appdata\":{},\"picture\":\"\",\"lastupdated\":\"2016-01-12T17:53:22\",\"version\":1}," +
+                                     "\"045fa99ae-on-0\":{\"name\":\"BR - off on 1448596158000\",\"lights\":[\"4\",\"5\"],\"owner\":\"1235235\",\"recycle\":true,\"locked\":false,\"appdata\":{},\"picture\":\"\",\"lastupdated\":\"2016-01-12T17:53:22\",\"version\":1}," +
                                      "\"ac637e2f0-on-0\":{\"name\":\"Relax on 1448660096855\",\"lights\":[\"1\",\"2\",\"3\"],\"owner\":\"none\",\"recycle\":true,\"locked\":false,\"appdata\":{},\"picture\":\"\",\"lastupdated\":null,\"version\":1}," +
-                                     "\"4b964fde2-on-0\":{\"name\":\"White and Blue on 1452599617000\",\"lights\":[\"1\",\"2\",\"3\",\"6\",\"7\"],\"owner\":\"0000000077f6ae5e16f8583016f85830\",\"recycle\":true,\"locked\":false,\"appdata\":{},\"picture\":\"\",\"lastupdated\":\"2016-01-12T17:53:55\",\"version\":1}," +
-                                     "\"0a854c238-on-0\":{\"name\":\"White and Blue on 1452599617000\",\"lights\":[\"1\",\"2\",\"3\",\"6\",\"7\"],\"owner\":\"0000000077f6ae5e16f8583016f85830\",\"recycle\":true,\"locked\":true,\"appdata\":{},\"picture\":\"\",\"lastupdated\":\"2016-01-12T17:55:14\",\"version\":1}," +
+                                     "\"4b964fde2-on-0\":{\"name\":\"White and Blue on 1452599617000\",\"lights\":[\"1\",\"2\",\"3\",\"6\",\"7\"],\"owner\":\"1235235\",\"recycle\":true,\"locked\":false,\"appdata\":{},\"picture\":\"\",\"lastupdated\":\"2016-01-12T17:53:55\",\"version\":1}," +
+                                     "\"0a854c238-on-0\":{\"name\":\"White and Blue on 1452599617000\",\"lights\":[\"1\",\"2\",\"3\",\"6\",\"7\"],\"owner\":\"1235235\",\"recycle\":true,\"locked\":true,\"appdata\":{},\"picture\":\"\",\"lastupdated\":\"2016-01-12T17:55:14\",\"version\":1}," +
                                      "\"84fa88aa5-on-0\":{\"name\":\"Energize on 1448660214580\",\"lights\":[\"1\",\"2\",\"3\"],\"owner\":\"none\",\"recycle\":true,\"locked\":false,\"appdata\":{},\"picture\":\"\",\"lastupdated\":null,\"version\":1}," +
                                      "\"f5d73dbdd-on-0\":{\"name\":\"Concentrate on 1448595772000\",\"lights\":[\"1\",\"2\",\"3\"],\"owner\":\"none\",\"recycle\":true,\"locked\":false,\"appdata\":{},\"picture\":\"\",\"lastupdated\":null,\"version\":1}," +
                                      "\"ab00a355f-on-0\":{\"name\":\"Concentrate on 1448595772000\",\"lights\":[\"1\",\"2\",\"3\"],\"owner\":\"none\",\"recycle\":true,\"locked\":false,\"appdata\":{},\"picture\":\"\",\"lastupdated\":null,\"version\":1}," +
                                      "\"a1167aa91-on-0\":{\"name\":\"Concentrate on 1448596220000\",\"lights\":[\"1\",\"2\",\"3\"],\"owner\":\"none\",\"recycle\":true,\"locked\":false,\"appdata\":{},\"picture\":\"\",\"lastupdated\":null,\"version\":1}," +
                                      "\"00a658fd5-on-0\":{\"name\":\"Sunset on 1448596285000\",\"lights\":[\"1\",\"2\",\"3\"],\"owner\":\"none\",\"recycle\":true,\"locked\":false,\"appdata\":{},\"picture\":\"\",\"lastupdated\":null,\"version\":1}," +
                                      "\"085ed3167-off-0\":{\"name\":\"Sunset off 1448596285000\",\"lights\":[\"1\",\"2\",\"3\",\"6\",\"7\"],\"owner\":\"none\",\"recycle\":true,\"locked\":false,\"appdata\":{},\"picture\":\"\",\"lastupdated\":null,\"version\":1}," +
-                                     "\"869e0d87c-on-0\":{\"name\":\"Sunset on 1448596285000\",\"lights\":[\"1\",\"2\",\"3\",\"6\",\"7\"],\"owner\":\"0000000077f6ae5e16f8583016f85830\",\"recycle\":true,\"locked\":false,\"appdata\":{},\"picture\":\"\",\"lastupdated\":\"2015-12-17T19:09:48\",\"version\":1}," +
+                                     "\"869e0d87c-on-0\":{\"name\":\"Sunset on 1448596285000\",\"lights\":[\"1\",\"2\",\"3\",\"6\",\"7\"],\"owner\":\"1235235\",\"recycle\":true,\"locked\":false,\"appdata\":{},\"picture\":\"\",\"lastupdated\":\"2015-12-17T19:09:48\",\"version\":1}," +
                                      "\"ef24cbac2-off-0\":{\"name\":\"Den - med off 1448661422110\",\"lights\":[\"6\",\"7\"],\"owner\":\"none\",\"recycle\":true,\"locked\":false,\"appdata\":{},\"picture\":\"\",\"lastupdated\":null,\"version\":1}," +
                                      "\"5e5e86da3-on-0\":{\"name\":\"Den - med on 1448661422110\",\"lights\":[\"6\",\"7\"],\"owner\":\"none\",\"recycle\":true,\"locked\":false,\"appdata\":{},\"picture\":\"\",\"lastupdated\":null,\"version\":1}," +
-                                     "\"1cd5ac5ce-on-0\":{\"name\":\"Den - off on 1448661502040\",\"lights\":[\"6\",\"7\"],\"owner\":\"0000000077f6ae5e16f8583016f85830\",\"recycle\":true,\"locked\":false,\"appdata\":{},\"picture\":\"\",\"lastupdated\":\"2015-12-23T12:37:13\",\"version\":1}," +
-                                     "\"b79ee5717-on-0\":{\"name\":\"Den - full on 1448661564038\",\"lights\":[\"6\",\"7\"],\"owner\":\"0000000077f6ae5e16f8583016f85830\",\"recycle\":true,\"locked\":true,\"appdata\":{},\"picture\":\"\",\"lastupdated\":\"2015-12-30T23:59:20\",\"version\":1}," +
+                                     "\"1cd5ac5ce-on-0\":{\"name\":\"Den - off on 1448661502040\",\"lights\":[\"6\",\"7\"],\"owner\":\"1235235\",\"recycle\":true,\"locked\":false,\"appdata\":{},\"picture\":\"\",\"lastupdated\":\"2015-12-23T12:37:13\",\"version\":1}," +
+                                     "\"b79ee5717-on-0\":{\"name\":\"Den - full on 1448661564038\",\"lights\":[\"6\",\"7\"],\"owner\":\"1235235\",\"recycle\":true,\"locked\":true,\"appdata\":{},\"picture\":\"\",\"lastupdated\":\"2015-12-30T23:59:20\",\"version\":1}," +
                                      "\"0b10111d9-on-0\":{\"name\":\"Den - med on 1448596746000\",\"lights\":[\"6\",\"7\"],\"owner\":\"none\",\"recycle\":true,\"locked\":false,\"appdata\":{},\"picture\":\"\",\"lastupdated\":null,\"version\":1}," +
                                      "\"497b50d84-on-0\":{\"name\":\"Sunset on 0\",\"lights\":[\"1\",\"2\",\"3\"],\"owner\":\"none\",\"recycle\":true,\"locked\":false,\"appdata\":{},\"picture\":\"\",\"lastupdated\":null,\"version\":1}," +
-                                     "\"acac20a4d-on-0\":{\"name\":\"Energize on 0\",\"lights\":[\"1\",\"2\",\"3\"],\"owner\":\"0000000077f6ae5e16f8583016f85830\",\"recycle\":true,\"locked\":true,\"appdata\":{},\"picture\":\"\",\"lastupdated\":\"2015-12-30T23:59:21\",\"version\":1}," +
+                                     "\"acac20a4d-on-0\":{\"name\":\"Energize on 0\",\"lights\":[\"1\",\"2\",\"3\"],\"owner\":\"1235235\",\"recycle\":true,\"locked\":true,\"appdata\":{},\"picture\":\"\",\"lastupdated\":\"2015-12-30T23:59:21\",\"version\":1}," +
                                      "\"cd4f6fab3-on-0\":{\"name\":\"Sunset on 0\",\"lights\":[\"1\",\"2\",\"3\",\"6\",\"7\"],\"owner\":\"none\",\"recycle\":true,\"locked\":false,\"appdata\":{},\"picture\":\"\",\"lastupdated\":null,\"version\":1}," +
                                      "\"HuePro87358dbf\":{\"name\":\"Bedroom On from Hue Pro\",\"lights\":[\"4\",\"5\"],\"owner\":\"none\",\"recycle\":true,\"locked\":false,\"appdata\":{},\"picture\":\"\",\"lastupdated\":null,\"version\":1}," +
                                      "\"0b730f207-on-0\":{\"name\":\"Den - full on 0\",\"lights\":[\"6\",\"7\"],\"owner\":\"none\",\"recycle\":true,\"locked\":false,\"appdata\":{},\"picture\":\"\",\"lastupdated\":null,\"version\":1}," +
                                      "\"d350db76f-on-0\":{\"name\":\"BR - on on 0\",\"lights\":[\"4\",\"5\"],\"owner\":\"none\",\"recycle\":true,\"locked\":false,\"appdata\":{},\"picture\":\"\",\"lastupdated\":null,\"version\":1}," +
-                                     "\"85385533d-on-0\":{\"name\":\"Full den off on 1448672842733\",\"lights\":[\"1\",\"2\",\"3\",\"6\",\"7\"],\"owner\":\"0000000077f6ae5e16f8583016f85830\",\"recycle\":true,\"locked\":true,\"appdata\":{},\"picture\":\"\",\"lastupdated\":\"2015-12-30T23:59:22\",\"version\":1}," +
+                                     "\"85385533d-on-0\":{\"name\":\"Full den off on 1448672842733\",\"lights\":[\"1\",\"2\",\"3\",\"6\",\"7\"],\"owner\":\"1235235\",\"recycle\":true,\"locked\":true,\"appdata\":{},\"picture\":\"\",\"lastupdated\":\"2015-12-30T23:59:22\",\"version\":1}," +
                                      "\"ffd8d7226-on-0\":{\"name\":\"Relax on 1448596286000\",\"lights\":[\"1\",\"2\",\"3\"],\"owner\":\"none\",\"recycle\":true,\"locked\":false,\"appdata\":{},\"picture\":\"\",\"lastupdated\":null,\"version\":1}," +
                                      "\"322142860-on-0\":{\"name\":\"Den - med on 0\",\"lights\":[\"6\",\"7\"],\"owner\":\"none\",\"recycle\":true,\"locked\":false,\"appdata\":{},\"picture\":\"\",\"lastupdated\":null,\"version\":1}," +
                                      "\"808140eef-on-30\":{\"name\":\"BR - on fon 1448596157000\",\"lights\":[\"4\",\"5\"],\"owner\":\"none\",\"recycle\":true,\"locked\":true,\"appdata\":{},\"picture\":\"\",\"lastupdated\":null,\"version\":1}," +
                                      "\"869e0d87c-on-30\":{\"name\":\"Sunset fon 1448596523000\",\"lights\":[\"1\",\"2\",\"3\",\"6\",\"7\"],\"owner\":\"none\",\"recycle\":true,\"locked\":false,\"appdata\":{},\"picture\":\"\",\"lastupdated\":null,\"version\":1}," +
-                                     "\"28d83d8d1-on-0\":{\"name\":\"Sunset on 1448596523000\",\"lights\":[\"1\",\"2\",\"3\",\"6\",\"7\"],\"owner\":\"0000000077f6ae5e16f8583016f85830\",\"recycle\":true,\"locked\":false,\"appdata\":{},\"picture\":\"\",\"lastupdated\":\"2015-12-17T19:10:21\",\"version\":1}," +
-                                     "\"28098c28a-on-0\":{\"name\":\"Sunset on 1450520040000\",\"lights\":[\"1\",\"2\",\"3\",\"6\",\"7\"],\"owner\":\"0000000077f6ae5e16f8583016f85830\",\"recycle\":true,\"locked\":true,\"appdata\":{},\"picture\":\"\",\"lastupdated\":\"2015-12-30T23:59:21\",\"version\":1}," +
-                                     "\"434973f9f-on-0\":{\"name\":\"DenPair - MED on 1450874192099\",\"lights\":[\"6\",\"7\"],\"owner\":\"0000000077f6ae5e16f8583016f85830\",\"recycle\":true,\"locked\":false,\"appdata\":{},\"picture\":\"\",\"lastupdated\":\"2015-12-23T12:36:32\",\"version\":1}}\n";
+                                     "\"28d83d8d1-on-0\":{\"name\":\"Sunset on 1448596523000\",\"lights\":[\"1\",\"2\",\"3\",\"6\",\"7\"],\"owner\":\"1235235\",\"recycle\":true,\"locked\":false,\"appdata\":{},\"picture\":\"\",\"lastupdated\":\"2015-12-17T19:10:21\",\"version\":1}," +
+                                     "\"28098c28a-on-0\":{\"name\":\"Sunset on 1450520040000\",\"lights\":[\"1\",\"2\",\"3\",\"6\",\"7\"],\"owner\":\"1235235\",\"recycle\":true,\"locked\":true,\"appdata\":{},\"picture\":\"\",\"lastupdated\":\"2015-12-30T23:59:21\",\"version\":1}," +
+                                     "\"434973f9f-on-0\":{\"name\":\"DenPair - MED on 1450874192099\",\"lights\":[\"6\",\"7\"],\"owner\":\"1235235\",\"recycle\":true,\"locked\":false,\"appdata\":{},\"picture\":\"\",\"lastupdated\":\"2015-12-23T12:36:32\",\"version\":1}}\n";
 
         final HueBridgeGetter spiedBridgeGetter = Mockito.spy(new HueBridgeGetter());
         final String expectedUri = spiedBridgeGetter.buildUri(HUE_CONFIGURATION.getIP(), HUE_CONFIGURATION.getToken(), "scenes");
@@ -233,14 +234,14 @@ public class HueBridgeGetterTest {
     @Test
     public void testProcessOfSingleRule() {
         final String singleRule = "{\"name\":\"Tap 2.4 DenPair -ON\"," +
-                                    "\"owner\":\"1234\"," +
-                                    "\"created\":\"2015-12-30T23:59:20\"," +
-                                    "\"lasttriggered\":\"2016-02-04T23:16:38\"," +
-                                    "\"timestriggered\": 32," +
-                                    "\"status\": \"enabled\"," +
-                                    "\"conditions\":[{\"address\":\"/sensors/2/state/buttonevent\",\"operator\":\"eq\",\"value\":\"18\"},{\"address\":\"/sensors/2/state/lastupdated\",\"operator\":\"dx\"}]," +
-                                    "\"actions\":[{\"address\":\"/groups/0/action\",\"method\":\"PUT\",\"body\":{\"scene\":\"b79ee5717-on-0\"}}]" +
-                                    "}";
+                                  "\"owner\":\"1234\"," +
+                                  "\"created\":\"2015-12-30T23:59:20\"," +
+                                  "\"lasttriggered\":\"2016-02-04T23:16:38\"," +
+                                  "\"timestriggered\": 32," +
+                                  "\"status\": \"enabled\"," +
+                                  "\"conditions\":[{\"address\":\"/sensors/2/state/buttonevent\",\"operator\":\"eq\",\"value\":\"18\"},{\"address\":\"/sensors/2/state/lastupdated\",\"operator\":\"dx\"}]," +
+                                  "\"actions\":[{\"address\":\"/groups/0/action\",\"method\":\"PUT\",\"body\":{\"scene\":\"b79ee5717-on-0\"}}]" +
+                                  "}";
 
         final HueBridgeGetter spiedBridgeGetter = Mockito.spy(new HueBridgeGetter());
         final String expectedUri = spiedBridgeGetter.buildUri(HUE_CONFIGURATION.getIP(), HUE_CONFIGURATION.getToken(), "rules", ImmutableList.of("2"));
@@ -249,5 +250,37 @@ public class HueBridgeGetterTest {
         final Rule rule = spiedBridgeGetter.getRule(HUE_CONFIGURATION.getIP(), HUE_CONFIGURATION.getToken(), "2");
         Assert.assertEquals("2", rule.getId());
         Assert.assertEquals("Tap 2.4 DenPair -ON", rule.getName());
+    }
+
+    @Test
+    public void testProcessOfFullScheduleDump() {
+        final String fullScheduleDump = "{" +
+                                        "\"1482820976701523\":{\"name\":\"wakeup - bedroom\",\"description\":\"BR - on\",\"command\":{\"address\":\"/api/1235235/groups/0/action\",\"body\":{\"scene\":\"808140eef-on-30\"},\"method\":\"PUT\"},\"localtime\":\"W124/T05:30:00\",\"time\":\"W124/T11:30:00\",\"created\":\"2015-12-04T12:01:11\",\"status\":\"disabled\"}," +
+                                        "\"7303628988606452\":{\"name\":\"wakeup - den pair\",\"description\":\"Den - full\",\"command\":{\"address\":\"/api/1235235/groups/0/action\",\"body\":{\"scene\":\"b79ee5717-on-0\"},\"method\":\"PUT\"},\"localtime\":\"W124/T05:30:00\",\"time\":\"W124/T11:30:00\",\"created\":\"2015-12-17T19:12:03\",\"status\":\"enabled\"}," +
+                                        "\"9608249029237889\":{\"name\":\"Alarm\",\"description\":\"Energize\",\"command\":{\"address\":\"/api/1235235/groups/0/action\",\"body\":{\"scene\":\"acac20a4d-on-0\"},\"method\":\"PUT\"},\"localtime\":\"W124/T05:30:00\",\"time\":\"W124/T11:30:00\",\"created\":\"2015-12-23T12:38:28\",\"status\":\"enabled\"}" +
+                                        "}";
+
+        final HueBridgeGetter spiedBridgeGetter = Mockito.spy(new HueBridgeGetter());
+        final String expectedUri = spiedBridgeGetter.buildUri(HUE_CONFIGURATION.getIP(), HUE_CONFIGURATION.getToken(), "schedules");
+        Mockito.doReturn(fullScheduleDump).when(spiedBridgeGetter).getURI(expectedUri);
+
+        final List<Schedule> schedules = spiedBridgeGetter.getSchedules(HUE_CONFIGURATION.getIP(), HUE_CONFIGURATION.getToken());
+        Assert.assertEquals(3, schedules.size());
+        final List<CharSequence> scheduleIds = schedules.stream().map(Schedule::getId).map(String::valueOf).collect(Collectors.toList());
+        scheduleIds.forEach(sceneId -> Assert.assertTrue(fullScheduleDump.contains(sceneId)));
+    }
+
+    @Test
+    public void testProcessOfSingleSchedule() {
+        final String singleSchedule = "{\"name\":\"wakeup - bedroom\",\"description\":\"BR - on\",\"command\":{\"address\":\"/api/1235235/groups/0/action\",\"body\":{\"scene\":\"808140eef-on-30\"},\"method\":\"PUT\"},\"localtime\":\"W124/T05:30:00\",\"time\":\"W124/T11:30:00\",\"created\":\"2015-12-04T12:01:11\",\"status\":\"disabled\"}";
+
+
+        final HueBridgeGetter spiedBridgeGetter = Mockito.spy(new HueBridgeGetter());
+        final String expectedUri = spiedBridgeGetter.buildUri(HUE_CONFIGURATION.getIP(), HUE_CONFIGURATION.getToken(), "schedules", ImmutableList.of("1482820976701523"));
+        Mockito.doReturn(singleSchedule).when(spiedBridgeGetter).getURI(expectedUri);
+
+        final Schedule schedule = spiedBridgeGetter.getSchedule(HUE_CONFIGURATION.getIP(), HUE_CONFIGURATION.getToken(), "1482820976701523");
+        Assert.assertEquals("1482820976701523", schedule.getId());
+        Assert.assertEquals("wakeup - bedroom", schedule.getName());
     }
 }

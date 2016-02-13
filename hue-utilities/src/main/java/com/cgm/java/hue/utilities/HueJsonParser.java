@@ -17,6 +17,7 @@ import com.cgm.java.hue.models.Group;
 import com.cgm.java.hue.models.Light;
 import com.cgm.java.hue.models.Rule;
 import com.cgm.java.hue.models.Scene;
+import com.cgm.java.hue.models.Schedule;
 import com.cgm.java.hue.models.Sensor;
 import com.cgm.java.hue.models.State;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -56,7 +57,7 @@ public class HueJsonParser {
     /**
      * Converts one JSON Light into a {@link com.cgm.java.hue.models.Light}
      */
-    public static final BiFunction<Integer, String, Light> JSON_TO_LIGHT = (id, jsonString) -> {
+    public static final BiFunction<Long, String, Light> JSON_TO_LIGHT = (id, jsonString) -> {
         try {
             LOGGER.debug("Attempting to parse one scene from raw JSON: " + jsonString);
 
@@ -78,7 +79,7 @@ public class HueJsonParser {
     /**
      * Converts one JSON Sensor into a {@link com.cgm.java.hue.models.Sensor}
      */
-    public static final BiFunction<Integer, String, Sensor> JSON_TO_SENSOR = (id, jsonString) -> {
+    public static final BiFunction<Long, String, Sensor> JSON_TO_SENSOR = (id, jsonString) -> {
         try {
             LOGGER.debug("Attempting to parse one sensor from raw JSON: " + jsonString);
 
@@ -115,7 +116,7 @@ public class HueJsonParser {
     /**
      * Converts one JSON Group into a {@link com.cgm.java.hue.models.Group}
      */
-    public static final BiFunction<Integer, String, Group> JSON_TO_GROUP = (id, jsonString) -> {
+    public static final BiFunction<Long, String, Group> JSON_TO_GROUP = (id, jsonString) -> {
         try {
             LOGGER.debug("Attempting to parse one group from raw JSON: " + jsonString);
             ObjectMapper objectMapper = new ObjectMapper();
@@ -133,7 +134,7 @@ public class HueJsonParser {
     /**
      * Converts one JSON Group into a {@link com.cgm.java.hue.models.Rule}
      */
-    public static final BiFunction<Integer, String, Rule> JSON_TO_RULE = (id, jsonString) -> {
+    public static final BiFunction<Long, String, Rule> JSON_TO_RULE = (id, jsonString) -> {
         String jsonStringWithQuoteWrappedBody = null;
         try {
             LOGGER.debug("Attempting to parse one rule from raw JSON: " + jsonString);
@@ -148,21 +149,58 @@ public class HueJsonParser {
             final int bodyEnd = jsonString.length() - 3;
             final String body = jsonString.substring(bodyStart, bodyEnd);
             final String bodyWithEscapedQuotes = body.replace("\"", "\\\"");
-//            final String bodyWithEscapedQuotesAndBraces = bodyWithEscapedQuotes.replace("{", "\\{");
 
             jsonStringWithQuoteWrappedBody = jsonString.substring(0, bodyStart) +
                                              "\"" +
                                              bodyWithEscapedQuotes +
                                              "\"" +
                                              jsonString.substring(bodyEnd, jsonString.length());
-            LOGGER.info("Quote wrapped body: " + jsonStringWithQuoteWrappedBody);
 
             final Rule rule = objectMapper.readValue(jsonStringWithQuoteWrappedBody.getBytes(), Rule.class);
             final Rule ruleWithId = Rule.newBuilder(rule).setId(String.valueOf(id)).build();
             LOGGER.debug("Successfully parsed a Rule: " + ruleWithId);
             return ruleWithId;
         } catch (Exception e) {
-            LOGGER.error("Error reading JSON as Rule: " + jsonStringWithQuoteWrappedBody);
+            LOGGER.error("Error reading JSON as Rule.");
+            LOGGER.error("Original String: " + jsonString);
+            LOGGER.error("Quote wrapped body: " + jsonStringWithQuoteWrappedBody);
+            e.printStackTrace();
+        }
+        return null;
+    };
+    /**
+     * Converts one JSON Group into a {@link com.cgm.java.hue.models.Schedule}
+     */
+    public static final BiFunction<Long, String, Schedule> JSON_TO_SCHEDULE = (id, jsonString) -> {
+        String jsonStringWithQuoteWrappedBody = null;
+        try {
+            LOGGER.info("Attempting to parse one schedule from raw JSON: " + jsonString);
+            ObjectMapper objectMapper = new ObjectMapper();
+            objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+
+            // The "body" attribute is written by the Hue bridge as its own object. However, this object seems to be
+            // able to contain anything at all. Some examples are "on", "bri_inc", "transformationtime", etc. If I
+            // try to make a model for this, it will be absolutely ridiculous. Instead, I will attempt to wrap the
+            // body in quotes so that the JSON parser treats it as a string.
+            final int bodyStart = jsonString.indexOf("\"body\":") + 7;
+            final int bodyEnd = findEndOfBody(bodyStart, jsonString);
+            final String body = jsonString.substring(bodyStart, bodyEnd);
+            final String bodyWithEscapedQuotes = body.replace("\"", "\\\"");
+
+            jsonStringWithQuoteWrappedBody = jsonString.substring(0, bodyStart) +
+                                             "\"" +
+                                             bodyWithEscapedQuotes +
+                                             "\"" +
+                                             jsonString.substring(bodyEnd, jsonString.length());
+
+            final Schedule schedule = objectMapper.readValue(jsonStringWithQuoteWrappedBody.getBytes(), Schedule.class);
+            final Schedule scheduleWithId = Schedule.newBuilder(schedule).setId(String.valueOf(id)).build();
+            LOGGER.info("Successfully parsed a Schedule: " + scheduleWithId);
+            return scheduleWithId;
+        } catch (Exception e) {
+            LOGGER.error("Error reading JSON as Schedule.");
+            LOGGER.error("Original String: " + jsonString);
+            LOGGER.error("Quote wrapped body: " + jsonStringWithQuoteWrappedBody);
             e.printStackTrace();
         }
         return null;
@@ -170,7 +208,7 @@ public class HueJsonParser {
     private static final String NUMERICAL_ID_SPLIT_REGEX = ",\"\\d*\":";
     private static final String NUMERICAL_ID_REPLACE_REGEX = "\"\\d*\":";
     private static final String LIGHT_STATES_HEADER = ",\"lightstates\":";
-    private static final String SCENE_ID_REGEX = "(\")[^\":,]*(\":\\{\"name)";
+    private static final String ID_REGEX = "(\")[^\":,]*(\":\\{\"name)";
 
     /**
      * Attempts to parse Hue JSON into a {@link com.cgm.java.hue.models.State}
@@ -195,7 +233,7 @@ public class HueJsonParser {
      */
     public static Light parseLightFromJson(final String lightId, final String rawJsonLight) {
         final String jsonLight = HueJsonParser.replaceEmptyArray(rawJsonLight);
-        return JSON_TO_LIGHT.apply(Integer.valueOf(lightId), jsonLight);
+        return JSON_TO_LIGHT.apply(Long.valueOf(lightId), jsonLight);
     }
 
     /**
@@ -209,22 +247,24 @@ public class HueJsonParser {
         final String jsonScenes = HueJsonParser.replaceEmptyArray(rawJsonScenes);
 
         // Items are separated by ,"the-scene-ID":
-        final ArrayList<String> sceneJsonArrayList = new ArrayList<>(Arrays.asList(jsonScenes.split(SCENE_ID_REGEX)));
+        final ArrayList<String> sceneJsonArrayList = new ArrayList<>(Arrays.asList(jsonScenes.split(ID_REGEX)));
         // this seems hacky, but since the raw json will start with a scene ID, the first item in this array will be
         // blank, so...
         sceneJsonArrayList.remove(0);
 
-        final Pattern lightIdPattern = Pattern.compile(SCENE_ID_REGEX);
-        final Matcher patternMatcher = lightIdPattern.matcher(jsonScenes);
+        final Pattern scheduleIdPattern = Pattern.compile(ID_REGEX);
+        final Matcher patternMatcher = scheduleIdPattern.matcher(jsonScenes);
         final ArrayList<String> sceneIds = new ArrayList<>(sceneJsonArrayList.size());
         while (patternMatcher.find()) {
             final String untrimmedSceneId = patternMatcher.group();
+            //We removed {"name" from the json when we were aggressively hunting for IDs. Remove it.
             sceneIds.add(untrimmedSceneId.substring(1, untrimmedSceneId.length() - 8));
         }
 
         final ImmutableList.Builder<Scene> resultBuilder = ImmutableList.builder();
         for (int i = 0; i < sceneIds.size(); i++) {
             final String sceneId = sceneIds.get(i);
+            //We removed {"name" from the json when we were aggressively hunting for IDs. Restore it.
             final String sceneJson = "{\"name" + sceneJsonArrayList.get(i);
             LOGGER.debug("Attempting to convert: " + sceneJson);
             final Scene parsedScene = JSON_TO_SCENE.apply(sceneId, sceneJson);
@@ -290,8 +330,10 @@ public class HueJsonParser {
         final ArrayList<String> jsonGroupsArrayList = new ArrayList<>(Arrays.asList(jsonGroupsArray));
 
         // Use a BiFunction and .indexOf to gather each light's json and its id (its index in the array + 1)
-        return jsonGroupsArrayList.stream().map(jsonString -> JSON_TO_GROUP.apply(jsonGroupsArrayList.indexOf
-                (jsonString) + 1, jsonString)).collect(Collectors.toList());
+        return jsonGroupsArrayList.stream()
+                .map(jsonString -> JSON_TO_GROUP.apply((long) (jsonGroupsArrayList.indexOf(jsonString) +
+                                                               1), jsonString))
+                .collect(Collectors.toList());
     }
 
     /**
@@ -305,7 +347,7 @@ public class HueJsonParser {
      */
     public static Group parseGroupFromJson(final String groupId, final String rawJsonGroup) {
         final String jsonGroup = HueJsonParser.replaceEmptyArray(rawJsonGroup);
-        return JSON_TO_GROUP.apply(Integer.valueOf(groupId), jsonGroup);
+        return JSON_TO_GROUP.apply(Long.valueOf(groupId), jsonGroup);
     }
 
     /**
@@ -327,8 +369,10 @@ public class HueJsonParser {
         final ArrayList<String> jsonLightsArrayList = new ArrayList<>(Arrays.asList(jsonLightsArray));
 
         // Use a BiFunction and .indexOf to gather each light's json and its id (its index in the array + 1)
-        return jsonLightsArrayList.stream().map(jsonString -> JSON_TO_LIGHT.apply(jsonLightsArrayList.indexOf
-                (jsonString) + 1, jsonString)).collect(Collectors.toList());
+        return jsonLightsArrayList.stream()
+                .map(jsonString -> JSON_TO_LIGHT.apply((long) (jsonLightsArrayList.indexOf(jsonString) +
+                                                               1), jsonString))
+                .collect(Collectors.toList());
     }
 
     /**
@@ -350,8 +394,10 @@ public class HueJsonParser {
         final ArrayList<String> jsonSensorsArrayList = new ArrayList<>(Arrays.asList(jsonSensorArray));
 
         // Use a BiFunction and .indexOf to gather each light's json and its id (its index in the array + 1)
-        return jsonSensorsArrayList.stream().map(jsonString -> JSON_TO_SENSOR.apply(jsonSensorsArrayList.indexOf
-                (jsonString) + 1, jsonString)).collect(Collectors.toList());
+        return jsonSensorsArrayList.stream()
+                .map(jsonString -> JSON_TO_SENSOR.apply((long) (jsonSensorsArrayList.indexOf(jsonString) +
+                                                                1), jsonString))
+                .collect(Collectors.toList());
     }
 
     /**
@@ -365,7 +411,7 @@ public class HueJsonParser {
      */
     public static Sensor parseSensorFromJson(final String sensorId, final String rawJsonSensor) {
         final String jsonSensor = HueJsonParser.replaceEmptyArray(rawJsonSensor);
-        return JSON_TO_SENSOR.apply(Integer.valueOf(sensorId), jsonSensor);
+        return JSON_TO_SENSOR.apply(Long.valueOf(sensorId), jsonSensor);
     }
 
     /**
@@ -378,7 +424,7 @@ public class HueJsonParser {
     public static Collection<Rule> parseRulesFromJson(final String rawJsonRules) {
         final String jsonRules = replaceEmptyArray(rawJsonRules);
         // Strip this off: '{"1":'
-        final String jsonRuleString = jsonRules.substring(5, rawJsonRules.length()-1);
+        final String jsonRuleString = jsonRules.substring(5, rawJsonRules.length() - 1);
 
         // Items are separated by ,"#":
         final String[] jsonRuleArray = jsonRuleString.split(NUMERICAL_ID_SPLIT_REGEX);
@@ -387,8 +433,60 @@ public class HueJsonParser {
         final ArrayList<String> jsonRulesArrayList = new ArrayList<>(Arrays.asList(jsonRuleArray));
 
         // Use a BiFunction and .indexOf to gather each light's json and its id (its index in the array + 1)
-        return jsonRulesArrayList.stream().map(jsonString -> JSON_TO_RULE.apply(jsonRulesArrayList.indexOf
-                (jsonString) + 1, jsonString)).collect(Collectors.toList());
+        return jsonRulesArrayList.stream()
+                .map(jsonString -> JSON_TO_RULE.apply((long) (jsonRulesArrayList.indexOf(jsonString) + 1), jsonString))
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * Parses the JSON response from the bridge for a single {@link com.cgm.java.hue.models.Schedule}
+     *
+     * @param scheduleId
+     *         the id the group should have
+     * @param rawJsonSchedule
+     *         the raw JSON for the sensor
+     * @return a {@link com.cgm.java.hue.models.Schedule}
+     */
+    public static Schedule parseScheduleFromJson(final String scheduleId, final String rawJsonSchedule) {
+        final String jsonSensor = HueJsonParser.replaceEmptyArray(rawJsonSchedule);
+        return JSON_TO_SCHEDULE.apply(Long.valueOf(scheduleId), jsonSensor);
+    }
+
+    /**
+     * Parses the JSON response from the bridge for all {@link com.cgm.java.hue.models.Schedule}s
+     *
+     * @param rawJsonSchedules
+     *         the raw JSON for the rule
+     * @return a collection of {@link com.cgm.java.hue.models.Schedule}s
+     */
+    public static Collection<Schedule> parseSchedulesFromJson(final String rawJsonSchedules) {
+        final String jsonSchedules = HueJsonParser.replaceEmptyArray(rawJsonSchedules);
+
+        // Schedules have crazy IDs, just long strings of numbers.
+        // The pattern we created for scenes matches here too though, so reuse that.
+        final ArrayList<String> sceneJsonArrayList = new ArrayList<>(Arrays.asList(jsonSchedules.split(ID_REGEX)));
+        // this seems hacky, but since the raw json will start with an ID, so the first item in this array will be blank
+        sceneJsonArrayList.remove(0);
+
+        final Pattern scheduleIdPattern = Pattern.compile(ID_REGEX);
+        final Matcher patternMatcher = scheduleIdPattern.matcher(jsonSchedules);
+        final ArrayList<String> scheduleIds = new ArrayList<>(sceneJsonArrayList.size());
+        while (patternMatcher.find()) {
+            final String untrimmedSceneId = patternMatcher.group();
+            //We removed {"name" from the json when we were aggressively hunting for IDs. Remove it.
+            scheduleIds.add(untrimmedSceneId.substring(1, untrimmedSceneId.length() - 8));
+        }
+
+        final ImmutableList.Builder<Schedule> resultBuilder = ImmutableList.builder();
+        for (int i = 0; i < scheduleIds.size(); i++) {
+            final String scheduleId = scheduleIds.get(i);
+            //We removed {"name" from the json when we were aggressively hunting for IDs. Restore it.
+            final String scheduleJson = "{\"name" + sceneJsonArrayList.get(i);
+            LOGGER.debug("Attempting to convert: " + scheduleJson);
+            final Schedule parsedScene = JSON_TO_SCHEDULE.apply(Long.valueOf(scheduleId), scheduleJson);
+            resultBuilder.add(parsedScene);
+        }
+        return resultBuilder.build();
     }
 
     /**
@@ -402,12 +500,29 @@ public class HueJsonParser {
      */
     public static Rule parseRuleFromJson(final String ruleId, final String rawJsonRule) {
         final String jsonSensor = HueJsonParser.replaceEmptyArray(rawJsonRule);
-        return JSON_TO_RULE.apply(Integer.valueOf(ruleId), jsonSensor);
+        return JSON_TO_RULE.apply(Long.valueOf(ruleId), jsonSensor);
     }
 
     private static String replaceEmptyArray(final String inputJson) {
         // The hue folks like to change the normal array format of "thing" : ["1","2","3"] into just "thing": {}
         // when it is empty, instead of []. The avro JSON converter hates this, so replace those {}'s with [].
         return inputJson.replace("{}", "[]");
+    }
+
+    private static int findEndOfBody(final int bodyStart, final String jsonString) {
+        boolean haveOpen = false;
+        for (int index = bodyStart + 1; index < jsonString.length(); index++) {
+            final char currentCharacter = jsonString.charAt(index);
+            if ('{' == currentCharacter) {
+                haveOpen = true;
+            } else if ('}' == currentCharacter) {
+                if (haveOpen) {
+                    haveOpen = false;
+                } else {
+                    return index + 1;
+                }
+            }
+        }
+        return -1;
     }
 }

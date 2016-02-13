@@ -11,6 +11,7 @@ import com.cgm.java.hue.models.Group;
 import com.cgm.java.hue.models.Light;
 import com.cgm.java.hue.models.Rule;
 import com.cgm.java.hue.models.Scene;
+import com.cgm.java.hue.models.Schedule;
 import com.cgm.java.hue.models.Sensor;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
@@ -25,13 +26,13 @@ public class HueBridgeGetter extends HttpInteractor {
      * This method just does a get with hard coded commands. Good luck!
      *
      * @param bridgeIP
-     *            the IP address of the bridge
+     *         the IP address of the bridge
      * @param token
-     *            the user ID that should already be registered with the bridge
+     *         the user ID that should already be registered with the bridge
      * @param apiCall
-     *            the api command to call
+     *         the api command to call
      * @return whatever the hue bridge returns. Ideally this will be a bunch of JSON, but it could be some HTML that
-     *         says your URL is invalid
+     * says your URL is invalid
      */
     public String rawGet(final String bridgeIP, final String token, final String apiCall) {
         Preconditions.checkArgument(StringUtils.isNotBlank(bridgeIP), "bridgeIP may not be null or empty.");
@@ -50,17 +51,17 @@ public class HueBridgeGetter extends HttpInteractor {
      * add extra stuff to the URL
      *
      * @param bridgeIP
-     *            the IP address of the bridge
+     *         the IP address of the bridge
      * @param token
-     *            the user ID that should already be registered with the bridge
+     *         the user ID that should already be registered with the bridge
      * @param apiCall
-     *            the api command to call
+     *         the api command to call
      * @param additional
-     *            a list of stuff to add to the URI. For example, a normal call to LIGHTS will build a URI like
-     *            "/api/1234/lights" but if you want a SPECIFIC light, you should add its ID into this list. Adding "1"
-     *            to
-     *            the list would make the requested URI "/api/77584ee540184794d3af91523c34302/lights/1". Adding
-     *            "1","2","3","4" would make it "/api/77584ee540184794d3af91523c34302/lights/1/2/3/4"
+     *         a list of stuff to add to the URI. For example, a normal call to LIGHTS will build a URI like
+     *         "/api/1234/lights" but if you want a SPECIFIC light, you should add its ID into this list. Adding "1"
+     *         to
+     *         the list would make the requested URI "/api/77584ee540184794d3af91523c34302/lights/1". Adding
+     *         "1","2","3","4" would make it "/api/77584ee540184794d3af91523c34302/lights/1/2/3/4"
      * @return the raw results of the get
      */
     public String rawGet(final String bridgeIP, final String token, final String apiCall, final List<String> additional) {
@@ -85,9 +86,9 @@ public class HueBridgeGetter extends HttpInteractor {
      * {@link com.cgm.java.hue.models.Light} objects
      *
      * @param bridgeIp
-     *            the IP address of the bridge
+     *         the IP address of the bridge
      * @param token
-     *            the user ID that should already be registered with the bridge
+     *         the user ID that should already be registered with the bridge
      * @return an {@link java.util.ArrayList} of {@link com.cgm.java.hue.models.Light}s.
      */
     public List<Light> getLights(final String bridgeIp, final String token) {
@@ -103,11 +104,11 @@ public class HueBridgeGetter extends HttpInteractor {
      * Retrieves one light from the bridge
      *
      * @param bridgeIp
-     *            the IP address of the bridge
+     *         the IP address of the bridge
      * @param token
-     *            the user ID that should already be registered with the bridge
+     *         the user ID that should already be registered with the bridge
      * @param lightId
-     *            the ID of the light to retrieve
+     *         the ID of the light to retrieve
      * @return one {@link com.cgm.java.hue.models.Light} from the bridge
      */
     public Light getLight(final String bridgeIp, final String token, final String lightId) {
@@ -125,11 +126,11 @@ public class HueBridgeGetter extends HttpInteractor {
      * Calls the bridge to get a specific {@link com.cgm.java.hue.models.Scene}
      *
      * @param bridgeIp
-     *            the IP address of the bridge
+     *         the IP address of the bridge
      * @param token
-     *            the user ID that should already be registered with the bridge
+     *         the user ID that should already be registered with the bridge
      * @param sceneId
-     *            the ID of the {@link com.cgm.java.hue.models.Scene} to retrieve
+     *         the ID of the {@link com.cgm.java.hue.models.Scene} to retrieve
      * @return a {@link com.cgm.java.hue.models.Scene}
      */
     public Scene getScene(final String bridgeIp, final String token, final String sceneId) {
@@ -149,9 +150,9 @@ public class HueBridgeGetter extends HttpInteractor {
      * {@link com.cgm.java.hue.models.Scene} objects
      *
      * @param bridgeIp
-     *            the IP address of the bridge
+     *         the IP address of the bridge
      * @param token
-     *            the user ID that should already be registered with the bridge
+     *         the user ID that should already be registered with the bridge
      * @return a {@link java.util.List} of {@link com.cgm.java.hue.models.Scene}s
      */
     public List<Scene> getScenes(final String bridgeIp, final String token) {
@@ -168,9 +169,9 @@ public class HueBridgeGetter extends HttpInteractor {
      * {@link com.cgm.java.hue.models.Group} objects
      *
      * @param bridgeIp
-     *            the IP address of the bridge
+     *         the IP address of the bridge
      * @param token
-     *            the user ID that should already be registered with the bridge
+     *         the user ID that should already be registered with the bridge
      * @return a {@link java.util.List} of {@link com.cgm.java.hue.models.Group}s
      */
     public List<Group> getGroups(final String bridgeIp, final String token) {
@@ -186,11 +187,11 @@ public class HueBridgeGetter extends HttpInteractor {
      * Calls the bridge to get a specific {@link com.cgm.java.hue.models.Group}
      *
      * @param bridgeIp
-     *            the IP address of the bridge
+     *         the IP address of the bridge
      * @param token
-     *            the user ID that should already be registered with the bridge
+     *         the user ID that should already be registered with the bridge
      * @param groupId
-     *            the ID of the {@link com.cgm.java.hue.models.Group} to retrieve
+     *         the ID of the {@link com.cgm.java.hue.models.Group} to retrieve
      * @return a {@link com.cgm.java.hue.models.Group}
      */
     public Group getGroup(final String bridgeIp, final String token, final String groupId) {
@@ -210,9 +211,9 @@ public class HueBridgeGetter extends HttpInteractor {
      * {@link com.cgm.java.hue.models.Sensor} objects
      *
      * @param bridgeIp
-     *            the IP address of the bridge
+     *         the IP address of the bridge
      * @param token
-     *            the user ID that should already be registered with the bridge
+     *         the user ID that should already be registered with the bridge
      * @return a {@link java.util.List} of {@link com.cgm.java.hue.models.Sensor}s
      */
     public List<Sensor> getSensors(final String bridgeIp, final String token) {
@@ -228,11 +229,11 @@ public class HueBridgeGetter extends HttpInteractor {
      * Calls the bridge to get a specific {@link com.cgm.java.hue.models.Sensor}
      *
      * @param bridgeIp
-     *            the IP address of the bridge
+     *         the IP address of the bridge
      * @param token
-     *            the user ID that should already be registered with the bridge
+     *         the user ID that should already be registered with the bridge
      * @param sensorId
-     *            the ID of the {@link com.cgm.java.hue.models.Sensor} to retrieve
+     *         the ID of the {@link com.cgm.java.hue.models.Sensor} to retrieve
      * @return a {@link com.cgm.java.hue.models.Sensor}
      */
     public Sensor getSensor(final String bridgeIp, final String token, final String sensorId) {
@@ -252,9 +253,9 @@ public class HueBridgeGetter extends HttpInteractor {
      * {@link com.cgm.java.hue.models.Rule} objects
      *
      * @param bridgeIp
-     *            the IP address of the bridge
+     *         the IP address of the bridge
      * @param token
-     *            the user ID that should already be registered with the bridge
+     *         the user ID that should already be registered with the bridge
      * @return a {@link java.util.List} of {@link com.cgm.java.hue.models.Rule}s
      */
     public List<Rule> getRules(final String bridgeIp, final String token) {
@@ -270,11 +271,11 @@ public class HueBridgeGetter extends HttpInteractor {
      * Calls the bridge to get a specific {@link com.cgm.java.hue.models.Rule}
      *
      * @param bridgeIp
-     *            the IP address of the bridge
+     *         the IP address of the bridge
      * @param token
-     *            the user ID that should already be registered with the bridge
+     *         the user ID that should already be registered with the bridge
      * @param ruleId
-     *            the ID of the {@link com.cgm.java.hue.models.Rule} to retrieve
+     *         the ID of the {@link com.cgm.java.hue.models.Rule} to retrieve
      * @return a {@link com.cgm.java.hue.models.Rule}
      */
     public Rule getRule(final String bridgeIp, final String token, final String ruleId) {
@@ -287,5 +288,47 @@ public class HueBridgeGetter extends HttpInteractor {
         final String getSensorUri = buildUri(bridgeIp, token, HueBridgeCommands.RULES, ImmutableList.of(ruleId));
         final String sceneJson = getURI(getSensorUri);
         return HueJsonParser.parseRuleFromJson(ruleId, sceneJson);
+    }
+
+    /**
+     * Calls the bridge to get a specific {@link com.cgm.java.hue.models.Schedule}
+     *
+     * @param bridgeIp
+     *         the IP address of the bridge
+     * @param token
+     *         the user ID that should already be registered with the bridge
+     * @param scheduleId
+     *         the ID of the {@link com.cgm.java.hue.models.Schedule} to retrieve
+     * @return a {@link com.cgm.java.hue.models.Schedule}
+     */
+    public Schedule getSchedule(final String bridgeIp, final String token, final String scheduleId) {
+        Preconditions.checkArgument(StringUtils.isNotBlank(bridgeIp), "bridgeIp may not be null or empty.");
+        Preconditions.checkArgument(StringUtils.isNotBlank(token), "token may not be null or empty.");
+        Preconditions.checkArgument(StringUtils.isNotBlank(scheduleId), "scheduleId may not be null or empty.");
+
+        LOGGER.debug("Attempting to get schedule: " + scheduleId);
+        // Getting scenes requires the format /api/<username>/schedules/<id>
+        final String getSceneUri = buildUri(bridgeIp, token, HueBridgeCommands.SCHEDULES, ImmutableList.of(scheduleId));
+        final String sceneJson = getURI(getSceneUri);
+        return HueJsonParser.parseScheduleFromJson(scheduleId, sceneJson);
+    }
+
+    /**
+     * Calls the bridge to get a list of currently configured schedules and returns a collection of them parsed out into
+     * {@link com.cgm.java.hue.models.Schedule} objects
+     *
+     * @param bridgeIp
+     *         the IP address of the bridge
+     * @param token
+     *         the user ID that should already be registered with the bridge
+     * @return a {@link java.util.List} of {@link com.cgm.java.hue.models.Schedule}s
+     */
+    public List<Schedule> getSchedules(final String bridgeIp, final String token) {
+        Preconditions.checkArgument(StringUtils.isNotBlank(bridgeIp), "bridgeIp may not be null or empty.");
+        Preconditions.checkArgument(StringUtils.isNotBlank(token), "token may not be null or empty.");
+
+        LOGGER.debug("Attempting to get all schedules");
+        final String rawJsonResults = rawGet(bridgeIp, token, HueBridgeCommands.SCHEDULES);
+        return new ArrayList<>(HueJsonParser.parseSchedulesFromJson(rawJsonResults));
     }
 }
