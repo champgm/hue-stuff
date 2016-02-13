@@ -58,9 +58,9 @@ public class ActivateSceneServlet extends HttpServlet {
 
         // Return the scene
         LOGGER.info("Successfully activated scene: " + scene);
-        request.setAttribute(KnownParameterNames.SCENE.getName(), scene);
-        final RequestDispatcher view = request.getRequestDispatcher("index.jsp");
-        view.forward(request, response);
+//        request.setAttribute(KnownParameterNames.SCENE.getName(), scene);
+//        final RequestDispatcher view = request.getRequestDispatcher("index.jsp");
+//        view.forward(request, response);
     }
 
     protected void doPost(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {

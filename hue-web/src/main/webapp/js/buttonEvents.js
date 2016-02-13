@@ -18,5 +18,18 @@ $(document).ready(function() {
             .fail(function() { // on failure
                 alert("Request failed.");
             });
-    });  
+    });
+	 
+	 $(document).on('click', "button.scene", function(event) {
+		 var sceneID = this.id;
+	//	 alert('activate scenes: ' + sceneID);
+		 $.get('activatescene', {'sceneid': sceneID},
+				function(resp) {
+		 
+		 })
+		 .fail(function() {
+			 alert('Request failed.');
+		 });
+		 
+	 });
 });

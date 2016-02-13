@@ -9,6 +9,7 @@
 	<head>
 		<script type="text/javascript" src="http://code.jquery.com/jquery-2.2.0.min.js"></script>
 		<script type="text/javascript" src="js/buttonEvents.js"></script>
+		<script type="text/javascript" src="js/anchorEvents.js"></script>
 				
 		<meta charset="utf-8">
 
@@ -30,15 +31,17 @@
 	</head>
 
 	<body>
-		<c:import url="/getlights"></c:import> 
-		<div>
+		<div id="container">
+			<c:import url="/getlights"></c:import> 
+			<c:import url="/getscenes?v2=true"></c:import>
+			<c:import url="/getgroups"></c:import>
 			<header>
 				<h1>Hue Light Control</h1>
 			</header>
 			
 			<div id="tabs">
 					<section id="tab1">
-						<h2><a href="#tab1">Lights</a></h2>
+						<h2><a href="#tab1" id="tab1">Lights</a></h2>
 						<p></p>
 				
 						<p>										
@@ -64,17 +67,38 @@
 					</section>
 	
 					<section id="tab2">
-						<h2><a href="#tab2">Scenes</a></h2>
-						<p>This content appears on tab 2.</p>
+						<h2><a href="#tab2" id="tab2">Scenes</a></h2>
+						<p></p>
+						
+						<p>										
+						<c:forEach items="${scenelist}" var="scene" varStatus="status">	
+						
+							<button class="scene" id="${scene.getId()}"><c:out value="${scene.getName()}"/></button>
+								
+							<c:if test="${status.count % 3 == 0}"> 
+								<br />
+							</c:if>
+							
+						</c:forEach> 
 						
 						
 					</section>
 	
 					<section id="tab3">
-						<h2><a href="#tab3">Tab 3</a></h2>
+						<h2><a href="#tab3" id="tab3">Groups</a></h2>
 						<p>This content appears on tab 3.</p>
 						
+						<p>										
+						<c:forEach items="${grouplist}" var="group" varStatus="status">	
 						
+							<button id="${group.getId()}"><c:out value="${group.getName()}"/></button>
+								
+							<c:if test="${status.count % 3 == 0}"> 
+								<br />
+							</c:if>
+							
+						</c:forEach> 
+												
 					</section>			
 			</div>
 
