@@ -13,10 +13,13 @@ import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.cgm.java.hue.models.Light;
 import com.cgm.java.hue.models.Scene;
 import com.cgm.java.hue.utilities.HueBridgeGetter;
 import com.cgm.java.hue.utilities.HueConfiguration;
+import com.cgm.java.hue.utilities.SceneUtil;
 import com.cgm.java.hue.web.util.KnownParameterNames;
+import com.google.common.collect.ImmutableList;
 
 /**
  * This servlet will attempt to retrieve and return all {@link com.cgm.java.hue.models.Scene}s currently available on
@@ -40,12 +43,22 @@ public class GetScenesServlet extends HttpServlet {
         final List<Scene> allScenes = HUE_BRIDGE_GETTER.getScenes(HUE_CONFIGURATION.getIP(), HUE_CONFIGURATION.getToken());
         LOGGER.info("Retrieved scenes: " + allScenes);
 
+        LOGGER.info("Attempting to retrieve all lights.");
+        final List<Light> allLights = HUE_BRIDGE_GETTER.getLights(HUE_CONFIGURATION.getIP(), HUE_CONFIGURATION.getToken());
+        LOGGER.info("Retrieved lights: " + allLights);
+
         if (onlyV2) {
             final List<Scene> v2Scenes = allScenes.stream()
                     .filter(scene -> scene.getVersion().equals("2"))
                     .collect(Collectors.toList());
+
+            final ImmutableList<String> activeSceneIds = SceneUtil.determineActiveScenes(v2Scenes, allLights);
+            request.setAttribute(KnownParameterNames.ACTIVE_SCENE.getName(), activeSceneIds);
             request.setAttribute(KnownParameterNames.SCENE_LIST.getName(), v2Scenes);
+
         } else {
+            final ImmutableList<String> activeSceneIds = SceneUtil.determineActiveScenes(allScenes, allLights);
+            request.setAttribute(KnownParameterNames.ACTIVE_SCENE.getName(), activeSceneIds);
             request.setAttribute(KnownParameterNames.SCENE_LIST.getName(), allScenes);
         }
     }
