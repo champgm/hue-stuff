@@ -1,0 +1,6 @@
+.toggle.ios, .toggle-on.ios, .toggle-off.ios { 
+	border-radius: 40px; 
+}
+.toggle.ios .toggle-handle { 
+	border-radius: 40px; 
+}
