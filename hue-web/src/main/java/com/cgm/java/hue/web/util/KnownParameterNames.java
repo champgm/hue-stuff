@@ -22,6 +22,7 @@ public enum KnownParameterNames {
     GROUP_LIST("grouplist"),
     SCENE_LIST("scenelist"),
     SCHEDULE_LIST("schedulelist"),
+    ACTIVE_SCENE("activescene"),
     SENSOR_LIST("sensorlist"),
     RULE_LIST("rulelist");
 
