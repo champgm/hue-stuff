@@ -5,8 +5,8 @@ body {
 /*style tabs layer*/
 #tabs {
 	position: relative;
-    width: 890px;
-    height: 850px;
+	width: 890px;
+	height: 850px;
 }
 
 /*style section; this is the whole section area (including negative h2)*/
@@ -21,7 +21,7 @@ body {
 	bottom: 5px;
 	padding: 10px 20px;
 	border-radius: 10px;
-	border: 1px solid  #e6e6e6;
+	border: 1px solid #e6e6e6;
 	z-index: 0;
 }
 
@@ -41,16 +41,16 @@ body {
 	border-radius: 10px 10px 0 0;
 }
 
-#tabs > section:first-child h2  {
-	z-index: 1; 
+#tabs>section:first-child h2 {
+	z-index: 1;
 }
 
 /*style section which is the first child of the parent*/
 #tabs section:first-child {
-/*The z-index property specifies the stack order of an element.
+	/*The z-index property specifies the stack order of an element.
 An element with greater stack order is always in front of an element with a lower stack order.
 Note: z-index only works on positioned elements (position:absolute, position:relative, or position:fixed).*/
-	z-index: 1; 
+	z-index: 1;
 	background-color: #66CCFF;
 }
 
@@ -75,15 +75,13 @@ Note: z-index only works on positioned elements (position:absolute, position:rel
 }
 
 /*target is the element being linked to*/
-#tabs section:target,
-#tabs section:target h2 {
+#tabs section:target, #tabs section:target h2 {
 	color: #333;
 	background-color: #66CCFF;
 	z-index: 2;
 }
 
-#tabs section,
-#tabs section h2 {
+#tabs section, #tabs section h2 {
 	-webkit-transition: all 500ms ease;
 	-moz-transition: all 500ms ease;
 	-ms-transition: all 500ms ease;
@@ -115,41 +113,36 @@ button.light-btn.on {
   background: red;
 }
  */
- 
 button.light-toggler {
-  -webkit-border-radius: 28;
-  -moz-border-radius: 28;
-  border-radius: 28px;
-  font-family: Arial;
-  color: #ffffff;
-  font-size: 20px;
-  background: #dbdbdb;
-  padding: 20px 100px 20px 50px;
-  text-decoration: none;
-  width: 220px;
-  height: 220px;
-  margin: 20px
+	-webkit-border-radius: 28;
+	-moz-border-radius: 28;
+	border-radius: 28px;
+	font-family: Arial;
+	color: #ffffff;
+	font-size: 20px;
+	background: #dbdbdb;
+	padding: 20px 100px 20px 50px;
+	text-decoration: none;
+	width: 220px;
+	height: 220px;
+	margin: 20px
 }
 
 button.light-toggler.on {
-    background: red;
+	background: red;
 }
 
 button.scene {
-  -webkit-border-radius: 28;
-  -moz-border-radius: 28;
-  border-radius: 28px;
-  font-family: Arial;
-  color: #ffffff;
-  font-size: 12px;
-  background: #dbdbdb;
-  padding: 20px 100px 20px 50px;
-  text-decoration: none;
-  width: 220px;
-  height: 150px;
-  margin: 20px
+	-webkit-border-radius: 28;
+	-moz-border-radius: 28;
+	border-radius: 28px;
+	font-family: Arial;
+	color: #ffffff;
+	font-size: 12px;
+	background: #dbdbdb;
+	padding: 20px 100px 20px 50px;
+	text-decoration: none;
+	width: 220px;
+	height: 150px;
+	margin: 20px
 }
-
-
-
-
