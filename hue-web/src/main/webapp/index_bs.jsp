@@ -25,6 +25,8 @@
 
 	<div class="container-fluid">
 		<c:import url="/getlights"></c:import>
+		<c:import url="/getschedules"></c:import>
+		<c:import url="/getsensors"></c:import>
 		<h2>Hue Light Control</h2>
 		<br />
 		<ul class="nav nav-tabs">
@@ -32,6 +34,8 @@
 			<li><a data-toggle="tab" href="#lights">Lights</a></li>
 			<li><a data-toggle="tab" href="#scenes">Scenes</a></li>
 			<li><a data-toggle="tab" href="#groups">Groups</a></li>
+			<li><a data-toggle="tab" href="#schedules">Schedules</a></li>
+			<li><a data-toggle="tab" href="#sensors">Sensors</a></li>
 		</ul>
 
 		<div class="tab-content">
@@ -43,7 +47,6 @@
 				<br />
 				<p></p>
 				<div class="row">
-
 					<c:forEach items="${lightlist}" var="light" varStatus="status">
 						<div class="col-sm-6 col-md-4">
 							<c:choose>
@@ -75,8 +78,66 @@
 				<h3>group</h3>
 				<p>show groups here</p>
 			</div>
+			<div id="schedules" class="tab-pane fade">
+				<br />
+				<p></p>
+				<div class="list-group">
+					<c:forEach items="${schedulelist}" var="schedule"
+						varStatus="status">
+						<a href="#" class="list-group-item">
+							<h4 class="list-group-item-heading">${schedule.getName()}</h4>
+							<p class="list-group-item-text">
+							<pre>
+Id: ${schedule.getId()}
+Description: ${schedule.getDescription()}
+Autodelete: ${schedule.getAutodelete()}
+Created: ${schedule.getCreated()}
+Starttime: ${schedule.getStarttime()}
+Status: ${schedule.getStatus()}
+Time: ${schedule.getTime()}
+Command:
+      Address: ${schedule.getCommand().getAddress()}
+      Method: ${schedule.getCommand().getMethod()}
+      Body: ${schedule.getCommand().getBody()}
+                        </pre>
+						</a>
+					</c:forEach>
+				</div>
+			</div>
+			<div id="sensors" class="tab-pane fade">
+				<br />
+				<p></p>
+				<div class="list-group">
+					<c:forEach items="${sensorlist}" var="sensor" varStatus="status">
+						<a href="#" class="list-group-item">
+							<h4 class="list-group-item-heading">${sensor.getName()}</h4>
+							<p class="list-group-item-text">
+							<pre>
+ID: ${sensor.getId()}
+State:
+      Daylight: ${sensor.getState().getDaylight()}
+      Lastupdated: ${sensor.getState().getLastupdated()}
+      Buttonevent: ${sensor.getState().getButtonevent()}
+      Status: ${sensor.getState().getStatus()}
+Config:
+      On: ${sensor.getConfig().getOn()}
+      Battery: ${sensor.getConfig().getBattery()}
+      Reachable: ${sensor.getConfig().getReachable()}
+      Lat: ${sensor.getConfig().getLat()}
+      Long: ${sensor.getConfig().getLong$()}
+      Sunriseoffset: ${sensor.getConfig().getSunriseoffset()}
+      Sunsetoffset: ${sensor.getConfig().getSunsetoffset()}
+Type: ${sensor.getType()}
+Modelid: ${sensor.getModelid()}
+Manufacturername: ${sensor.getManufacturername()}
+Uniqueid: ${sensor.getUniqueid()}
+Swversion: ${sensor.getSwversion()}
+							</pre>
+						</a>
+					</c:forEach>
+				</div>
+			</div>
 		</div>
 	</div>
-
 </body>
 </html>
