@@ -94,7 +94,7 @@ public class HttpInteractor {
             LOGGER.debug("Raw response: " + rawResponse);
             return rawResponse;
         } catch (IOException e) {
-            throw new RuntimeException("Error while executing an HTTP call.", e);
+            throw new RuntimeException("Error while executing an HTTP call to: " + request.getURI(), e);
         } finally {
             try {
                 if (httpClient != null) {

@@ -30,7 +30,7 @@ public class DeleteSceneCommand extends BridgeCommand {
 
         System.out.println();
         System.out.println("Remaining scenes: ");
-        HUE_BRIDGE_GETTER.getScenes(bridgeIp, token).forEach(System.out::println);
+        HUE_BRIDGE_GETTER.getScenes(bridgeIp, token, false).forEach(System.out::println);
 
         return 0;
     }

@@ -43,14 +43,14 @@ public class SceneUtil {
         // Iterate through the scenes
         final ImmutableList.Builder<String> activeSceneIdsBuilder = ImmutableList.builder();
         for (final Scene scene : scenes) {
-            final List<State> sceneStates = scene.getLightstates();
+            final List<State> lightStates = scene.getLightstates();
             final List<CharSequence> sceneLightIds = scene.getLights();
             boolean allLightStatesMatch = true;
 
             //Iterate through all states for the current scene and see if they match the current light states
-            if (sceneStates.size() == sceneLightIds.size()) {
-                for (int j = 0; j < sceneStates.size(); j++) {
-                    final State sceneState = sceneStates.get(j);
+            if (lightStates!=null && lightStates.size() == sceneLightIds.size()) {
+                for (int j = 0; j < lightStates.size(); j++) {
+                    final State sceneState = lightStates.get(j);
                     final String sceneLightId = sceneLightIds.get(j).toString();
                     final State lightState = idToLightStateMap.get(sceneLightId);
 

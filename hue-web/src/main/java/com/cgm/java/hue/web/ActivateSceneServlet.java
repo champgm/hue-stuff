@@ -3,7 +3,6 @@ package com.cgm.java.hue.web;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -58,9 +57,6 @@ public class ActivateSceneServlet extends HttpServlet {
 
         // Return the scene
         LOGGER.info("Successfully activated scene: " + scene);
-//        request.setAttribute(KnownParameterNames.SCENE.getName(), scene);
-//        final RequestDispatcher view = request.getRequestDispatcher("index.jsp");
-//        view.forward(request, response);
     }
 
     protected void doPost(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
