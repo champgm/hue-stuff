@@ -2,6 +2,7 @@ package com.cgm.java.hue.utilities;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
@@ -58,8 +59,7 @@ public class HueBridgeGetter extends HttpInteractor {
      *         the api command to call
      * @param additional
      *         a list of stuff to add to the URI. For example, a normal call to LIGHTS will build a URI like
-     *         "/api/1234/lights" but if you want a SPECIFIC light, you should add its ID into this list. Adding "1"
-     *         to
+     *         "/api/1234/lights" but if you want a SPECIFIC light, you should add its ID into this list. Adding "1" to
      *         the list would make the requested URI "/api/77584ee540184794d3af91523c34302/lights/1". Adding
      *         "1","2","3","4" would make it "/api/77584ee540184794d3af91523c34302/lights/1/2/3/4"
      * @return the raw results of the get
@@ -155,13 +155,26 @@ public class HueBridgeGetter extends HttpInteractor {
      *         the user ID that should already be registered with the bridge
      * @return a {@link java.util.List} of {@link com.cgm.java.hue.models.Scene}s
      */
-    public List<Scene> getScenes(final String bridgeIp, final String token) {
+    public List<Scene> getScenes(final String bridgeIp, final String token, final boolean onlyV2) {
         Preconditions.checkArgument(StringUtils.isNotBlank(bridgeIp), "bridgeIp may not be null or empty.");
         Preconditions.checkArgument(StringUtils.isNotBlank(token), "token may not be null or empty.");
 
         LOGGER.debug("Attempting to get all scenes");
         final String rawJsonResults = rawGet(bridgeIp, token, HueBridgeCommands.SCENES);
-        return new ArrayList<>(HueJsonParser.parseScenesFromJson(rawJsonResults));
+        final ArrayList<Scene> allScenes = new ArrayList<>(HueJsonParser.parseScenesFromJson(rawJsonResults));
+
+        final ImmutableList.Builder<Scene> sceneSetBuilder = ImmutableList.builder();
+        for (final Scene allScene : allScenes) {
+            sceneSetBuilder.add(getScene(bridgeIp, token, allScene.getId().toString()));
+        }
+
+        if (!onlyV2) {
+            return sceneSetBuilder.build();
+        }
+
+        return sceneSetBuilder.build().stream()
+                .filter(scene -> scene.getVersion().equals("2"))
+                .collect(Collectors.toList());
     }
 
     /**

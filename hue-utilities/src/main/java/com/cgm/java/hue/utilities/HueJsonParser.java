@@ -125,6 +125,7 @@ public class HueJsonParser {
             final Group groupWithId = Group.newBuilder(group).setId(String.valueOf(id)).build();
             LOGGER.debug("Successfully parsed a group: " + groupWithId);
             return groupWithId;
+
         } catch (Exception e) {
             LOGGER.error("Error reading JSON as Group: " + jsonString);
             e.printStackTrace();
@@ -174,7 +175,7 @@ public class HueJsonParser {
     public static final BiFunction<Long, String, Schedule> JSON_TO_SCHEDULE = (id, jsonString) -> {
         String jsonStringWithQuoteWrappedBody = null;
         try {
-            LOGGER.info("Attempting to parse one schedule from raw JSON: " + jsonString);
+            LOGGER.debug("Attempting to parse one schedule from raw JSON: " + jsonString);
             ObjectMapper objectMapper = new ObjectMapper();
             objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
@@ -195,7 +196,7 @@ public class HueJsonParser {
 
             final Schedule schedule = objectMapper.readValue(jsonStringWithQuoteWrappedBody.getBytes(), Schedule.class);
             final Schedule scheduleWithId = Schedule.newBuilder(schedule).setId(String.valueOf(id)).build();
-            LOGGER.info("Successfully parsed a Schedule: " + scheduleWithId);
+            LOGGER.debug("Successfully parsed a Schedule: " + scheduleWithId);
             return scheduleWithId;
         } catch (Exception e) {
             LOGGER.error("Error reading JSON as Schedule.");
@@ -283,6 +284,7 @@ public class HueJsonParser {
      * @return a parsed {@link com.cgm.java.hue.models.Scene}
      */
     public static Scene parseSceneFromJson(final String sceneId, final String rawJsonScene) {
+        LOGGER.debug("Full raw scene: " + rawJsonScene);
         final String jsonScene = replaceEmptyArray(rawJsonScene);
 
         // Grab the first part before the light states
@@ -308,6 +310,7 @@ public class HueJsonParser {
 
         // Add the last bracket and brace
         resultBuilder.append("]}");
+        LOGGER.debug("After manipulation: " + resultBuilder.toString());
         return JSON_TO_SCENE.apply(sceneId, resultBuilder.toString());
     }
 
@@ -319,15 +322,7 @@ public class HueJsonParser {
      * @return a collection of {@link com.cgm.java.hue.models.Group}s
      */
     public static Collection<Group> parseGroupsFromJson(final String rawJsonGroups) {
-        final String jsonGroups = replaceEmptyArray(rawJsonGroups);
-        // Strip this off: '{"1":'
-        final String jsonLightsString = jsonGroups.substring(5);
-
-        // Items are separated by ,"#":
-        final String[] jsonGroupsArray = jsonLightsString.split(NUMERICAL_ID_SPLIT_REGEX);
-
-        // Convert the array to an ArrayList
-        final ArrayList<String> jsonGroupsArrayList = new ArrayList<>(Arrays.asList(jsonGroupsArray));
+        final ArrayList<String> jsonGroupsArrayList = parseNumericalItems(rawJsonGroups);
 
         // Use a BiFunction and .indexOf to gather each light's json and its id (its index in the array + 1)
         return jsonGroupsArrayList.stream()
@@ -358,15 +353,7 @@ public class HueJsonParser {
      * @return a collection of {@link com.cgm.java.hue.models.Light}s
      */
     public static Collection<Light> parseLightsFromJson(final String rawJsonLights) {
-        final String jsonLights = replaceEmptyArray(rawJsonLights);
-        // Strip this off: '{"1":'
-        final String jsonLightsString = jsonLights.substring(5);
-
-        // Items are separated by ,"#":
-        final String[] jsonLightsArray = jsonLightsString.split(NUMERICAL_ID_SPLIT_REGEX);
-
-        // Convert the array to an ArrayList
-        final ArrayList<String> jsonLightsArrayList = new ArrayList<>(Arrays.asList(jsonLightsArray));
+        final ArrayList<String> jsonLightsArrayList = parseNumericalItems(rawJsonLights);
 
         // Use a BiFunction and .indexOf to gather each light's json and its id (its index in the array + 1)
         return jsonLightsArrayList.stream()
@@ -383,15 +370,7 @@ public class HueJsonParser {
      * @return a collection of {@link com.cgm.java.hue.models.Sensor}s
      */
     public static Collection<Sensor> parseSensorsFromJson(final String rawJsonSensors) {
-        final String jsonSensors = replaceEmptyArray(rawJsonSensors);
-        // Strip this off: '{"1":'
-        final String jsonSensorString = jsonSensors.substring(5);
-
-        // Items are separated by ,"#":
-        final String[] jsonSensorArray = jsonSensorString.split(NUMERICAL_ID_SPLIT_REGEX);
-
-        // Convert the array to an ArrayList
-        final ArrayList<String> jsonSensorsArrayList = new ArrayList<>(Arrays.asList(jsonSensorArray));
+        final ArrayList<String> jsonSensorsArrayList = parseNumericalItems(rawJsonSensors);
 
         // Use a BiFunction and .indexOf to gather each light's json and its id (its index in the array + 1)
         return jsonSensorsArrayList.stream()
@@ -422,15 +401,7 @@ public class HueJsonParser {
      * @return a collection of {@link com.cgm.java.hue.models.Rule}s
      */
     public static Collection<Rule> parseRulesFromJson(final String rawJsonRules) {
-        final String jsonRules = replaceEmptyArray(rawJsonRules);
-        // Strip this off: '{"1":'
-        final String jsonRuleString = jsonRules.substring(5, rawJsonRules.length() - 1);
-
-        // Items are separated by ,"#":
-        final String[] jsonRuleArray = jsonRuleString.split(NUMERICAL_ID_SPLIT_REGEX);
-
-        // Convert the array to an ArrayList
-        final ArrayList<String> jsonRulesArrayList = new ArrayList<>(Arrays.asList(jsonRuleArray));
+        final ArrayList<String> jsonRulesArrayList = parseNumericalItems(rawJsonRules);
 
         // Use a BiFunction and .indexOf to gather each light's json and its id (its index in the array + 1)
         return jsonRulesArrayList.stream()
@@ -524,5 +495,17 @@ public class HueJsonParser {
             }
         }
         return -1;
+    }
+
+    private static ArrayList<String> parseNumericalItems(final String rawJson) {
+        final String nonEmptyJson = replaceEmptyArray(rawJson);
+        // Strip this off: '{"1":'
+        final String strippedJson = nonEmptyJson.substring(5, nonEmptyJson.length() - 1);
+
+        // Items are separated by ,"#":
+        final String[] jsonArray = strippedJson.split(NUMERICAL_ID_SPLIT_REGEX);
+
+        // Convert the array to an ArrayList
+        return new ArrayList<>(Arrays.asList(jsonArray));
     }
 }

@@ -77,6 +77,15 @@
 	</servlet-mapping>
 
 	<servlet>
+		<servlet-name>ToggleGroupServlet</servlet-name>
+		<servlet-class>com.cgm.java.hue.web.ToggleGroupServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>ToggleGroupServlet</servlet-name>
+		<url-pattern>/togglegroup/*</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
 		<servlet-name>SetLightStateServlet</servlet-name>
 		<servlet-class>com.cgm.java.hue.web.SetLightStateServlet</servlet-class>
 	</servlet>

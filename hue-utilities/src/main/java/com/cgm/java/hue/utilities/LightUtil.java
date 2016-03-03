@@ -23,6 +23,8 @@ public class LightUtil {
      * @return the light state, retrieved from the bridge after being toggled
      */
     public Light toggleLight(final String bridgeIp, final String token, final String lightId) {
+        Preconditions.checkArgument(StringUtils.isNotBlank(bridgeIp), "bridgeIp may not be null or empty.");
+        Preconditions.checkArgument(StringUtils.isNotBlank(token), "token may not be null or empty.");
         Preconditions.checkArgument(StringUtils.isNotBlank(lightId), "lightId may not be null or empty.");
         LOGGER.debug("Attempting to toggle one light with ID: " + lightId);
 

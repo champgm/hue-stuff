@@ -2,7 +2,6 @@ package com.cgm.java.hue.web;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -40,27 +39,16 @@ public class GetScenesServlet extends HttpServlet {
         final Boolean onlyV2 = Boolean.valueOf(request.getParameter(KnownParameterNames.SCENE_V2.getName()));
 
         LOGGER.info("Attempting to retrieve all scenes.");
-        final List<Scene> allScenes = HUE_BRIDGE_GETTER.getScenes(HUE_CONFIGURATION.getIP(), HUE_CONFIGURATION.getToken());
+        final List<Scene> allScenes = HUE_BRIDGE_GETTER.getScenes(HUE_CONFIGURATION.getIP(), HUE_CONFIGURATION.getToken(), onlyV2);
         LOGGER.info("Retrieved scenes: " + allScenes);
 
         LOGGER.info("Attempting to retrieve all lights.");
         final List<Light> allLights = HUE_BRIDGE_GETTER.getLights(HUE_CONFIGURATION.getIP(), HUE_CONFIGURATION.getToken());
         LOGGER.info("Retrieved lights: " + allLights);
 
-        if (onlyV2) {
-            final List<Scene> v2Scenes = allScenes.stream()
-                    .filter(scene -> scene.getVersion().equals("2"))
-                    .collect(Collectors.toList());
-
-            final ImmutableList<String> activeSceneIds = SceneUtil.determineActiveScenes(v2Scenes, allLights);
-            request.setAttribute(KnownParameterNames.ACTIVE_SCENE.getName(), activeSceneIds);
-            request.setAttribute(KnownParameterNames.SCENE_LIST.getName(), v2Scenes);
-
-        } else {
-            final ImmutableList<String> activeSceneIds = SceneUtil.determineActiveScenes(allScenes, allLights);
-            request.setAttribute(KnownParameterNames.ACTIVE_SCENE.getName(), activeSceneIds);
-            request.setAttribute(KnownParameterNames.SCENE_LIST.getName(), allScenes);
-        }
+        final ImmutableList<String> activeSceneIds = SceneUtil.determineActiveScenes(allScenes, allLights);
+        request.setAttribute(KnownParameterNames.ACTIVE_SCENE.getName(), activeSceneIds);
+        request.setAttribute(KnownParameterNames.SCENE_LIST.getName(), allScenes);
     }
 
     protected void doPost(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
