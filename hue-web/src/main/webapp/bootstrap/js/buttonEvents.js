@@ -9,7 +9,7 @@ $(document).ready(function() {
 		}, function(resp) {
 
 		}).fail(function() {
-			alert('request failed!');
+			alert('light toggle request failed!');
 		})
 		// }
 		// else {
@@ -33,4 +33,17 @@ $(document).ready(function() {
 		// do what needed here
 		// }
 	});
+
+	$('.btn-default').on('click', function() {
+		$(this).css('color','red');
+		var sceneId = this.id;
+		$.get('activatescene', {
+			'sceneid' : sceneId
+		}, function(resp) {
+
+		}).fail(function() {
+			alert('scene activation request failed');
+		})
+	})	
+	
 });
