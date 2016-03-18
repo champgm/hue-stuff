@@ -1,8 +1,7 @@
 $(document).ready(function() {
 
-	$('.light').on('change', function() {
-		// if ($(this).prop('checked')) {
-		// do what needed here
+	$('#lights').on('click', '.btn.light.btn-off.btn-lg', function() {
+		toggle(this);
 		var lightId = this.id;
 		$.get('togglelight', {
 			'lightid' : lightId
@@ -11,31 +10,22 @@ $(document).ready(function() {
 		}).fail(function() {
 			alert('light toggle request failed!');
 		})
-		// }
-		// else {
-		// do what needed here
-		// }
-	});
-	
-	$('.group').on('change', function() {
-		// if ($(this).prop('checked')) {
-		// do what needed here
-		var groupId = this.id;
-		$.get('togglegroup', {
-			'groupid' : groupId
+	})
+
+	$('#lights').on('click', '.btn.light.btn-on.btn-lg', function() {
+		toggle(this);
+		var lightId = this.id;
+		$.get('togglelight', {
+			'lightid' : lightId
 		}, function(resp) {
 
 		}).fail(function() {
-			alert('request failed!');
+			alert('light toggle request failed!');
 		})
-		// }
-		// else {
-		// do what needed here
-		// }
-	});
+	})
 
-	$('.btn-default').on('click', function() {
-		$(this).css('color','red');
+	$('#scenes').on('click', '.btn.scene.btn-lg', function() {
+		$(this).css('color', 'red');
 		var sceneId = this.id;
 		$.get('activatescene', {
 			'sceneid' : sceneId
@@ -44,6 +34,42 @@ $(document).ready(function() {
 		}).fail(function() {
 			alert('scene activation request failed');
 		})
-	})	
-	
+	})
+
+	 $('#groups').on('click', '.btn.group.btn-off.btn-lg', function() {
+		toggle(this);
+		var groupId = this.id;
+		$.get('togglegroup', {
+			'groupid' : groupId
+		}, function(resp) {
+
+		}).fail(function() {
+			alert('group toggle request failed!');
+		})
+	})
+
+	$('#groups').on('click', '.btn.group.btn-on.btn-lg', function() {
+		toggle(this);
+		var groupId = this.id;
+		$.get('togglegroup', {
+			'groupid' : groupId
+		}, function(resp) {
+
+		}).fail(function() {
+			alert('group toggle request failed!');
+		})
+	})
 });
+
+function toggle(obj) {
+	var offColor = 'rgb(224, 224, 224)'; // light grey
+	var onColor = 'rgb(255, 153, 51)'; // orange
+
+	var currentColor = $(obj).css("background-color");
+
+	if (currentColor == onColor) {
+		$(obj).css('background-color', offColor);
+	} else if (currentColor == offColor) {
+		$(obj).css('background-color', onColor);
+	}
+}

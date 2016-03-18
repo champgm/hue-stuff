@@ -15,7 +15,7 @@ import org.slf4j.LoggerFactory;
 import com.cgm.java.hue.models.Light;
 import com.cgm.java.hue.utilities.HueBridgeGetter;
 import com.cgm.java.hue.utilities.HueConfiguration;
-import com.cgm.java.hue.web.util.KnownParameterNames;
+import com.google.gson.Gson;
 
 /**
  * This servlet will attempt to retrieve and return all {@link com.cgm.java.hue.models.Light}s currently available on
@@ -36,7 +36,12 @@ public class GetLightsServlet extends HttpServlet {
         LOGGER.info("Attempting to retrieve all lights.");
         final List<Light> list = HUE_BRIDGE_GETTER.getLights(HUE_CONFIGURATION.getIP(), HUE_CONFIGURATION.getToken());
         LOGGER.info("Retrieved lights: " + list);
-        request.setAttribute(KnownParameterNames.LIGHT_LIST.getName(), list);
+		final String lightListJson = new Gson().toJson(list);
+        
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        
+        response.getWriter().write(lightListJson);
     }
 
     protected void doPost(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {

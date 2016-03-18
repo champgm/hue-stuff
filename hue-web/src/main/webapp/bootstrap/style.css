@@ -1,12 +1,32 @@
-.toggle.ios, .toggle-on.ios, .toggle-off.ios {
-	border-radius: 40px;
-}
-
-.toggle.ios .toggle-handle {
-	border-radius: 40px;
-}
-
 [class*="col-"] {
 	background-clip: padding-box;
 	border: 10px solid transparent;
+}
+
+.btn.light.btn-off.btn-lg {
+	background-color: #E0E0E0;
+    text-decoration: none;
+    background-position: 0;
+    transition: none;
+}
+
+.btn.light.btn-on.btn-lg {
+	background-color: #FF9933;
+	text-decoration: none;
+    background-position: 0;
+    transition: none;
+}
+
+.btn.group.btn-off.btn-lg {
+	background-color: #E0E0E0;
+    text-decoration: none;
+    background-position: 0;
+    transition: none;
+}
+
+.btn.group.btn-on.btn-lg {
+	background-color: #FF9933;
+	text-decoration: none;
+    background-position: 0;
+    transition: none;
 }
