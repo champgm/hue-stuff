@@ -47,14 +47,6 @@ public class ToggleGroupServlet extends HttpServlet {
         // Toggle the state, then push the state to the bridge
         final State toggledState = State.newBuilder(currentState).setOn(!currentState.getOn()).build();
         HUE_BRIDGE_SETTER.setGroupState(HUE_CONFIGURATION.getIP(), HUE_CONFIGURATION.getToken(), groupId, toggledState);
-
-        // Retrieve the group, then return it.
-        final Group toggledGroup = HUE_BRIDGE_GETTER.getGroup(HUE_CONFIGURATION.getIP(), HUE_CONFIGURATION.getToken(), groupId);
-        LOGGER.info("State successfully toggled to: " + toggledGroup.getAction());
-
-        request.setAttribute(KnownParameterNames.TOGGLE_GROUP_RESULT.getName(), toggledGroup);
-        final RequestDispatcher view = request.getRequestDispatcher("index.jsp");
-        view.forward(request, response);
     }
 
     protected void doPost(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
