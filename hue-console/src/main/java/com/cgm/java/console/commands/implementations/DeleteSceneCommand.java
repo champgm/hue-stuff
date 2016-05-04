@@ -18,7 +18,7 @@ public class DeleteSceneCommand extends BridgeCommand {
     protected int run(final CommandLine line) throws UnknownHostException {
         setIpAndId(line);
         final String[] sceneIds = line.getOptionValues(ID_OPTION);
-        if (sceneIds == null || sceneIds.length > 0) {
+        if (sceneIds == null || sceneIds.length < 1) {
             usage();
             throw new IllegalArgumentException("You must enter a Scene ID.");
         }
