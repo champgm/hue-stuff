@@ -8,7 +8,7 @@
      {"name": "owner", "type": ["string", "null"], "default": ""},
      {"name": "recycle", "type": ["string", "null"], "default": ""},
      {"name": "locked", "type": ["string", "null"], "default": ""},
-     {"name": "appdata", "type": ["null", {"type": "array", "items": "string"}], "default": null},
+     {"name": "appdata", "type": ["null", "AppData"], "default": null},
      {"name": "picture", "type": ["string", "null"], "default": ""},
      {"name": "lastupdated", "type": ["string", "null"], "default": ""},
      {"name": "version", "type": ["string", "null"], "default": ""},

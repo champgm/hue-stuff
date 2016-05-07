@@ -25,7 +25,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.ImmutableList;
 
 /**
- * A class which attempts to deal with Hue's JSON formatting quirks
+ * A class which attempts to deal with Hue's JSON formatting quirks.
+ * <p/>
+ * The hue folks like to change the normal array format of "thing" : ["1","2","3"] into just "thing": {} when it is
+ * empty, instead of "[]". They ALSO replace any instance of optional values (appdata, for instance) with this same
+ * "{}", creating some ambiguity. To handle this, I've made all fields on the models optional and replace all instances
+ * of "{}" with "null".
  */
 public class HueJsonParser {
     private static final Logger LOGGER = LoggerFactory.getLogger(HueJsonParser.class);
@@ -36,7 +41,7 @@ public class HueJsonParser {
         try {
             LOGGER.debug("Attempting to parse one scene from raw JSON: " + jsonString);
             // The hue folks like to change the normal array format of "thing" : ["1","2","3"] into just "thing": {}
-            // when it is empty, instead of []. The avro JSON converter hates this, so replace those {}'s with [].
+            // when it is empty, instead of []. To fit in the models, I think we're just going to try to set {} to null
             // TODO: this may or may not cause a bunch of issues in the future.
             final String nullifiedJson = HueJsonParser.replaceEmptyArray(jsonString);
 
@@ -152,9 +157,7 @@ public class HueJsonParser {
             final String bodyWithEscapedQuotes = body.replace("\"", "\\\"");
 
             jsonStringWithQuoteWrappedBody = jsonString.substring(0, bodyStart) +
-                                             "\"" +
-                                             bodyWithEscapedQuotes +
-                                             "\"" +
+                                             "\"" + bodyWithEscapedQuotes + "\"" +
                                              jsonString.substring(bodyEnd, jsonString.length());
 
             final Rule rule = objectMapper.readValue(jsonStringWithQuoteWrappedBody.getBytes(), Rule.class);
@@ -189,9 +192,7 @@ public class HueJsonParser {
             final String bodyWithEscapedQuotes = body.replace("\"", "\\\"");
 
             jsonStringWithQuoteWrappedBody = jsonString.substring(0, bodyStart) +
-                                             "\"" +
-                                             bodyWithEscapedQuotes +
-                                             "\"" +
+                                             "\"" + bodyWithEscapedQuotes + "\"" +
                                              jsonString.substring(bodyEnd, jsonString.length());
 
             final Schedule schedule = objectMapper.readValue(jsonStringWithQuoteWrappedBody.getBytes(), Schedule.class);
@@ -285,33 +286,50 @@ public class HueJsonParser {
      */
     public static Scene parseSceneFromJson(final String sceneId, final String rawJsonScene) {
         LOGGER.debug("Full raw scene: " + rawJsonScene);
-        final String jsonScene = replaceEmptyArray(rawJsonScene);
+        final String sceneWithEmptyDataNulled = replaceEmptyArray(rawJsonScene);
+        LOGGER.debug("after nulled: " + sceneWithEmptyDataNulled);
 
-        // Grab the first part before the light states
-        final int beginPositionOfLightStatesHeader = jsonScene.indexOf(LIGHT_STATES_HEADER);
-        final int beginHeader = beginPositionOfLightStatesHeader + LIGHT_STATES_HEADER.length();
-        final String beforeLightStatesHeader = jsonScene.substring(0, beginHeader);
-        // Append a bracket
-        final StringBuilder resultBuilder = new StringBuilder(beforeLightStatesHeader).append("[");
+        // If the lightstates array has already been blanked out by the null-replacement method, just return it.
+        if (sceneWithEmptyDataNulled.contains("lightstates\":null")) {
+            return JSON_TO_SCENE.apply(sceneId, sceneWithEmptyDataNulled);
+        } else {
+            // Otherwise, we will have to replace the curly braces surrounding the lightstates array with square brackets
+            // so that it can be parsed into an AVRO later.
 
-        // Grab the light states collection, removing the curly braces
-        final String afterLightStatesHeader = jsonScene.substring(beginHeader);
-        final String bracedStateCollection = afterLightStatesHeader.substring(0, afterLightStatesHeader.length() - 1);
-        final String bracesRemoved = bracedStateCollection.substring(1, bracedStateCollection.length() - 1);
+            // Grab the first part before the light states
+            final int beginPositionOfLightStatesHeader = sceneWithEmptyDataNulled.indexOf(LIGHT_STATES_HEADER);
+            final int beginHeader = beginPositionOfLightStatesHeader + LIGHT_STATES_HEADER.length();
+            final String beforeLightStatesHeader = sceneWithEmptyDataNulled.substring(0, beginHeader);
+            LOGGER.debug("beforeLightStatesHeader: " + beforeLightStatesHeader);
 
-        // Split, remove IDs, and join
-        final String[] split = bracesRemoved.split(NUMERICAL_ID_SPLIT_REGEX);
-        for (int i = 0; i < split.length; i++) {
-            final String idStripped = split[i].replaceAll(NUMERICAL_ID_REPLACE_REGEX, "");
-            split[i] = idStripped;
+            // Append a bracket
+            final StringBuilder resultBuilder = new StringBuilder(beforeLightStatesHeader).append("[");
+
+            LOGGER.debug("With bracket: " + resultBuilder);
+
+            // Grab the light states collection, removing the curly braces
+            final String afterLightStatesHeader = sceneWithEmptyDataNulled.substring(beginHeader);
+            final String bracedStateCollection = afterLightStatesHeader.substring(0,
+                    afterLightStatesHeader.length() - 1);
+            final String bracesRemoved = bracedStateCollection.substring(1, bracedStateCollection.length() - 1);
+
+            // Split, remove IDs, and join
+            final String[] split = bracesRemoved.split(NUMERICAL_ID_SPLIT_REGEX);
+            for (int i = 0; i < split.length; i++) {
+                final String idStripped = split[i].replaceAll(NUMERICAL_ID_REPLACE_REGEX, "");
+                split[i] = idStripped;
+            }
+
+            final String joined = StringUtils.join(split, ",");
+            resultBuilder.append(joined);
+            LOGGER.debug("After lightstates: " + resultBuilder);
+
+            // Add the last bracket and brace
+            resultBuilder.append("]}");
+            LOGGER.debug("After manipulation: " + resultBuilder.toString());
+            return JSON_TO_SCENE.apply(sceneId, resultBuilder.toString());
         }
-        final String joined = StringUtils.join(split, ",");
-        resultBuilder.append(joined);
 
-        // Add the last bracket and brace
-        resultBuilder.append("]}");
-        LOGGER.debug("After manipulation: " + resultBuilder.toString());
-        return JSON_TO_SCENE.apply(sceneId, resultBuilder.toString());
     }
 
     /**
@@ -475,9 +493,8 @@ public class HueJsonParser {
     }
 
     private static String replaceEmptyArray(final String inputJson) {
-        // The hue folks like to change the normal array format of "thing" : ["1","2","3"] into just "thing": {}
-        // when it is empty, instead of []. The avro JSON converter hates this, so replace those {}'s with [].
-        return inputJson.replace("{}", "[]");
+        // SEE JAVADOC
+        return inputJson.replaceAll("\\{\\}", "null");
     }
 
     private static int findEndOfBody(final int bodyStart, final String jsonString) {
