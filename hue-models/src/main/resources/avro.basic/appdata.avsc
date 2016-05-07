@@ -1,0 +1,8 @@
+{"namespace": "com.cgm.java.hue.models",
+ "type": "record",
+ "name": "AppData",
+ "fields": [
+        {"name": "version", "type": ["string", "null"], "default": ""},
+        {"name": "data", "type": ["string", "null"], "default": ""}
+ ]
+}
