@@ -3,11 +3,13 @@ package com.cgm.java.hue.utilities;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
@@ -39,7 +41,7 @@ public class HueJsonParser {
      */
     public static final BiFunction<String, String, Scene> JSON_TO_SCENE = (id, jsonString) -> {
         try {
-            LOGGER.debug("Attempting to parse one scene from raw JSON: " + jsonString);
+            LOGGER.debug("Attempting to parse one scene from raw JSON: {}", jsonString);
             // The hue folks like to change the normal array format of "thing" : ["1","2","3"] into just "thing": {}
             // when it is empty, instead of []. To fit in the models, I think we're just going to try to set {} to null
             // TODO: this may or may not cause a bunch of issues in the future.
@@ -51,10 +53,10 @@ public class HueJsonParser {
             final Scene scene = objectMapper.readValue(nullifiedJson.getBytes(), Scene.class);
             final Scene sceneWithId = Scene.newBuilder(scene).setId(String.valueOf(id)).build();
 
-            LOGGER.debug("Successfully parsed a scene: " + sceneWithId);
+            LOGGER.debug("Successfully parsed a scene: {}", sceneWithId);
             return sceneWithId;
         } catch (Exception e) {
-            LOGGER.error("Error reading JSON as Scene: " + jsonString);
+            LOGGER.error("Error reading JSON as Scene: {}", jsonString);
             e.printStackTrace();
         }
         return null;
@@ -64,7 +66,7 @@ public class HueJsonParser {
      */
     public static final BiFunction<Long, String, Light> JSON_TO_LIGHT = (id, jsonString) -> {
         try {
-            LOGGER.debug("Attempting to parse one scene from raw JSON: " + jsonString);
+            LOGGER.debug("Attempting to parse one scene from raw JSON: {}", jsonString);
 
             ObjectMapper objectMapper = new ObjectMapper();
             // The pointsymbol field has numerical field names. That's annoying, but it's also deprecated.
@@ -73,10 +75,10 @@ public class HueJsonParser {
             final Light light = objectMapper.readValue(jsonString.getBytes(), Light.class);
 
             final Light lightWithId = Light.newBuilder(light).setId(String.valueOf(id)).build();
-            LOGGER.debug("Successfully parsed a light: " + lightWithId);
+            LOGGER.debug("Successfully parsed a light: {}", lightWithId);
             return lightWithId;
         } catch (Exception e) {
-            LOGGER.error("Error reading JSON as Light: " + jsonString);
+            LOGGER.error("Error reading JSON as Light: {}", jsonString);
             e.printStackTrace();
         }
         return null;
@@ -86,17 +88,17 @@ public class HueJsonParser {
      */
     public static final BiFunction<Long, String, Sensor> JSON_TO_SENSOR = (id, jsonString) -> {
         try {
-            LOGGER.debug("Attempting to parse one sensor from raw JSON: " + jsonString);
+            LOGGER.debug("Attempting to parse one sensor from raw JSON: {}", jsonString);
 
             ObjectMapper objectMapper = new ObjectMapper();
             objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
             final Sensor sensor = objectMapper.readValue(jsonString.getBytes(), Sensor.class);
 
             final Sensor sensorWithId = Sensor.newBuilder(sensor).setId(String.valueOf(id)).build();
-            LOGGER.debug("Successfully parsed a sensor: " + sensorWithId);
+            LOGGER.debug("Successfully parsed a sensor: {}", sensorWithId);
             return sensorWithId;
         } catch (Exception e) {
-            LOGGER.error("Error reading JSON as Light: " + jsonString);
+            LOGGER.error("Error reading JSON as Light: {}", jsonString);
             e.printStackTrace();
         }
         return null;
@@ -106,13 +108,13 @@ public class HueJsonParser {
      */
     public static final Function<String, State> JSON_TO_STATE = (jsonString) -> {
         try {
-            LOGGER.debug("Attempting to parse one state from raw JSON: " + jsonString);
+            LOGGER.debug("Attempting to parse one state from raw JSON: {}", jsonString);
             ObjectMapper objectMapper = new ObjectMapper();
             final State state = objectMapper.readValue(jsonString.getBytes(), State.class);
-            LOGGER.debug("Successfully parsed a state: " + state);
+            LOGGER.debug("Successfully parsed a state: {}", state);
             return state;
         } catch (Exception e) {
-            LOGGER.error("Error reading JSON as State: " + jsonString);
+            LOGGER.error("Error reading JSON as State: {}", jsonString);
             e.printStackTrace();
         }
 
@@ -123,16 +125,16 @@ public class HueJsonParser {
      */
     public static final BiFunction<Long, String, Group> JSON_TO_GROUP = (id, jsonString) -> {
         try {
-            LOGGER.debug("Attempting to parse one group from raw JSON: " + jsonString);
+            LOGGER.debug("Attempting to parse one group from raw JSON: {}", jsonString);
             ObjectMapper objectMapper = new ObjectMapper();
             objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
             final Group group = objectMapper.readValue(jsonString.getBytes(), Group.class);
             final Group groupWithId = Group.newBuilder(group).setId(String.valueOf(id)).build();
-            LOGGER.debug("Successfully parsed a group: " + groupWithId);
+            LOGGER.debug("Successfully parsed a group: {}", groupWithId);
             return groupWithId;
 
         } catch (Exception e) {
-            LOGGER.error("Error reading JSON as Group: " + jsonString);
+            LOGGER.error("Error reading JSON as Group: {}", jsonString);
             e.printStackTrace();
         }
         return null;
@@ -143,7 +145,7 @@ public class HueJsonParser {
     public static final BiFunction<Long, String, Rule> JSON_TO_RULE = (id, jsonString) -> {
         String jsonStringWithQuoteWrappedBody = null;
         try {
-            LOGGER.debug("Attempting to parse one rule from raw JSON: " + jsonString);
+            LOGGER.debug("Attempting to parse one rule from raw JSON: {}", jsonString);
             ObjectMapper objectMapper = new ObjectMapper();
             objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
@@ -162,12 +164,12 @@ public class HueJsonParser {
 
             final Rule rule = objectMapper.readValue(jsonStringWithQuoteWrappedBody.getBytes(), Rule.class);
             final Rule ruleWithId = Rule.newBuilder(rule).setId(String.valueOf(id)).build();
-            LOGGER.debug("Successfully parsed a Rule: " + ruleWithId);
+            LOGGER.debug("Successfully parsed a Rule: {}", ruleWithId);
             return ruleWithId;
         } catch (Exception e) {
             LOGGER.error("Error reading JSON as Rule.");
-            LOGGER.error("Original String: " + jsonString);
-            LOGGER.error("Quote wrapped body: " + jsonStringWithQuoteWrappedBody);
+            LOGGER.error("Original String: {}", jsonString);
+            LOGGER.error("Quote wrapped body: {}", jsonStringWithQuoteWrappedBody);
             e.printStackTrace();
         }
         return null;
@@ -178,7 +180,7 @@ public class HueJsonParser {
     public static final BiFunction<Long, String, Schedule> JSON_TO_SCHEDULE = (id, jsonString) -> {
         String jsonStringWithQuoteWrappedBody = null;
         try {
-            LOGGER.debug("Attempting to parse one schedule from raw JSON: " + jsonString);
+            LOGGER.debug("Attempting to parse one schedule from raw JSON: {}", jsonString);
             ObjectMapper objectMapper = new ObjectMapper();
             objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
@@ -197,12 +199,12 @@ public class HueJsonParser {
 
             final Schedule schedule = objectMapper.readValue(jsonStringWithQuoteWrappedBody.getBytes(), Schedule.class);
             final Schedule scheduleWithId = Schedule.newBuilder(schedule).setId(String.valueOf(id)).build();
-            LOGGER.debug("Successfully parsed a Schedule: " + scheduleWithId);
+            LOGGER.debug("Successfully parsed a Schedule: {}", scheduleWithId);
             return scheduleWithId;
         } catch (Exception e) {
             LOGGER.error("Error reading JSON as Schedule.");
-            LOGGER.error("Original String: " + jsonString);
-            LOGGER.error("Quote wrapped body: " + jsonStringWithQuoteWrappedBody);
+            LOGGER.error("Original String: {}", jsonString);
+            LOGGER.error("Quote wrapped body: {}", jsonStringWithQuoteWrappedBody);
             e.printStackTrace();
         }
         return null;
@@ -263,16 +265,16 @@ public class HueJsonParser {
             sceneIds.add(untrimmedSceneId.substring(1, untrimmedSceneId.length() - 8));
         }
 
-        final ImmutableList.Builder<Scene> resultBuilder = ImmutableList.builder();
-        for (int i = 0; i < sceneIds.size(); i++) {
-            final String sceneId = sceneIds.get(i);
-            //We removed {"name" from the json when we were aggressively hunting for IDs. Restore it.
-            final String sceneJson = "{\"name" + sceneJsonArrayList.get(i);
-            LOGGER.debug("Attempting to convert: " + sceneJson);
-            final Scene parsedScene = JSON_TO_SCENE.apply(sceneId, sceneJson);
-            resultBuilder.add(parsedScene);
-        }
-        return resultBuilder.build();
+        final List<Scene> collectedScenes = IntStream.range(0, sceneIds.size()).parallel()
+                .mapToObj(index -> {
+                    final String sceneId = sceneIds.get(index);
+                    //We removed {"name" from the json when we were aggressively hunting for IDs. Restore it.
+                    final String sceneJson = "{\"name" + sceneJsonArrayList.get(index);
+                    LOGGER.debug("Attempting to convert: {}", sceneJson);
+                    return JSON_TO_SCENE.apply(sceneId, sceneJson);
+                }).collect(Collectors.toList());
+
+        return ImmutableList.copyOf(collectedScenes);
     }
 
     /**
@@ -285,9 +287,9 @@ public class HueJsonParser {
      * @return a parsed {@link com.cgm.java.hue.models.Scene}
      */
     public static Scene parseSceneFromJson(final String sceneId, final String rawJsonScene) {
-        LOGGER.debug("Full raw scene: " + rawJsonScene);
+        LOGGER.debug("Full raw scene: {}", rawJsonScene);
         final String sceneWithEmptyDataNulled = replaceEmptyArray(rawJsonScene);
-        LOGGER.debug("after nulled: " + sceneWithEmptyDataNulled);
+        LOGGER.debug("after nulled: {}", sceneWithEmptyDataNulled);
 
         // If the lightstates array has already been blanked out by the null-replacement method, just return it.
         if (sceneWithEmptyDataNulled.contains("lightstates\":null")) {
@@ -300,12 +302,12 @@ public class HueJsonParser {
             final int beginPositionOfLightStatesHeader = sceneWithEmptyDataNulled.indexOf(LIGHT_STATES_HEADER);
             final int beginHeader = beginPositionOfLightStatesHeader + LIGHT_STATES_HEADER.length();
             final String beforeLightStatesHeader = sceneWithEmptyDataNulled.substring(0, beginHeader);
-            LOGGER.debug("beforeLightStatesHeader: " + beforeLightStatesHeader);
+            LOGGER.debug("beforeLightStatesHeader: {}", beforeLightStatesHeader);
 
             // Append a bracket
             final StringBuilder resultBuilder = new StringBuilder(beforeLightStatesHeader).append("[");
 
-            LOGGER.debug("With bracket: " + resultBuilder);
+            LOGGER.debug("With bracket: {}", resultBuilder);
 
             // Grab the light states collection, removing the curly braces
             final String afterLightStatesHeader = sceneWithEmptyDataNulled.substring(beginHeader);
@@ -322,14 +324,13 @@ public class HueJsonParser {
 
             final String joined = StringUtils.join(split, ",");
             resultBuilder.append(joined);
-            LOGGER.debug("After lightstates: " + resultBuilder);
+            LOGGER.debug("After lightstates: {}", resultBuilder);
 
             // Add the last bracket and brace
             resultBuilder.append("]}");
-            LOGGER.debug("After manipulation: " + resultBuilder.toString());
+            LOGGER.debug("After manipulation: {}", resultBuilder.toString());
             return JSON_TO_SCENE.apply(sceneId, resultBuilder.toString());
         }
-
     }
 
     /**
@@ -343,9 +344,8 @@ public class HueJsonParser {
         final ArrayList<String> jsonGroupsArrayList = parseNumericalItems(rawJsonGroups);
 
         // Use a BiFunction and .indexOf to gather each light's json and its id (its index in the array + 1)
-        return jsonGroupsArrayList.stream()
-                .map(jsonString -> JSON_TO_GROUP.apply((long) (jsonGroupsArrayList.indexOf(jsonString) +
-                                                               1), jsonString))
+        return jsonGroupsArrayList.parallelStream()
+                .map(jsonString -> JSON_TO_GROUP.apply((long) (jsonGroupsArrayList.indexOf(jsonString) + 1), jsonString))
                 .collect(Collectors.toList());
     }
 
@@ -374,9 +374,8 @@ public class HueJsonParser {
         final ArrayList<String> jsonLightsArrayList = parseNumericalItems(rawJsonLights);
 
         // Use a BiFunction and .indexOf to gather each light's json and its id (its index in the array + 1)
-        return jsonLightsArrayList.stream()
-                .map(jsonString -> JSON_TO_LIGHT.apply((long) (jsonLightsArrayList.indexOf(jsonString) +
-                                                               1), jsonString))
+        return jsonLightsArrayList.parallelStream()
+                .map(jsonString -> JSON_TO_LIGHT.apply((long) (jsonLightsArrayList.indexOf(jsonString) + 1), jsonString))
                 .collect(Collectors.toList());
     }
 
@@ -391,9 +390,8 @@ public class HueJsonParser {
         final ArrayList<String> jsonSensorsArrayList = parseNumericalItems(rawJsonSensors);
 
         // Use a BiFunction and .indexOf to gather each light's json and its id (its index in the array + 1)
-        return jsonSensorsArrayList.stream()
-                .map(jsonString -> JSON_TO_SENSOR.apply((long) (jsonSensorsArrayList.indexOf(jsonString) +
-                                                                1), jsonString))
+        return jsonSensorsArrayList.parallelStream()
+                .map(jsonString -> JSON_TO_SENSOR.apply((long) (jsonSensorsArrayList.indexOf(jsonString) + 1), jsonString))
                 .collect(Collectors.toList());
     }
 
@@ -422,7 +420,7 @@ public class HueJsonParser {
         final ArrayList<String> jsonRulesArrayList = parseNumericalItems(rawJsonRules);
 
         // Use a BiFunction and .indexOf to gather each light's json and its id (its index in the array + 1)
-        return jsonRulesArrayList.stream()
+        return jsonRulesArrayList.parallelStream()
                 .map(jsonString -> JSON_TO_RULE.apply((long) (jsonRulesArrayList.indexOf(jsonString) + 1), jsonString))
                 .collect(Collectors.toList());
     }
@@ -466,16 +464,16 @@ public class HueJsonParser {
             scheduleIds.add(untrimmedSceneId.substring(1, untrimmedSceneId.length() - 8));
         }
 
-        final ImmutableList.Builder<Schedule> resultBuilder = ImmutableList.builder();
-        for (int i = 0; i < scheduleIds.size(); i++) {
-            final String scheduleId = scheduleIds.get(i);
-            //We removed {"name" from the json when we were aggressively hunting for IDs. Restore it.
-            final String scheduleJson = "{\"name" + sceneJsonArrayList.get(i);
-            LOGGER.debug("Attempting to convert: " + scheduleJson);
-            final Schedule parsedScene = JSON_TO_SCHEDULE.apply(Long.valueOf(scheduleId), scheduleJson);
-            resultBuilder.add(parsedScene);
-        }
-        return resultBuilder.build();
+        final List<Schedule> collectedScenes = IntStream.range(0, scheduleIds.size()).parallel()
+                .mapToObj(index -> {
+                    final String scheduleId = scheduleIds.get(index);
+                    //We removed {"name" from the json when we were aggressively hunting for IDs. Restore it.
+                    final String scheduleJson = "{\"name" + sceneJsonArrayList.get(index);
+                    LOGGER.debug("Attempting to convert: {}", scheduleJson);
+                    return JSON_TO_SCHEDULE.apply(Long.valueOf(scheduleId), scheduleJson);
+                }).collect(Collectors.toList());
+
+        return ImmutableList.copyOf(collectedScenes);
     }
 
     /**

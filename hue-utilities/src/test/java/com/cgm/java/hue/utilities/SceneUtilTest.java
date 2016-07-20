@@ -79,6 +79,5 @@ public class SceneUtilTest {
         Assert.assertTrue(!activeScenes.contains(someId));
         Assert.assertTrue(!activeScenes.contains(subsetSomeId));
         Assert.assertTrue(!activeScenes.contains(subsetWrongId));
-
     }
 }

@@ -53,7 +53,7 @@ public class HueBridgeGetterTest {
         final String scene1 = "{\"name\":\"BR - on off 1448596157000\",\"lights\":[\"4\",\"5\"],\"owner\":\"12345\",\"recycle\":true,\"locked\":false,\"appdata\":{},\"picture\":\"\",\"lastupdated\":\"2016-01-12T04:36:52\",\"version\":1},";
         final String scene2 = "{\"name\":\"BR - on on 1448596157000\",\"lights\":[\"4\",\"5\"],\"owner\":\"12345\",\"recycle\":true,\"locked\":false,\"appdata\":{},\"picture\":\"\",\"lastupdated\":\"2016-01-16T01:50:17\",\"version\":1},";
         final String scene3 = "{\"name\":\"BR Med v2\",\"lights\":[\"4\",\"5\"],\"owner\":\"12345\",\"recycle\":true,\"locked\":false,\"appdata\":{},\"picture\":\"\",\"lastupdated\":\"2016-01-23T17:48:40\",\"version\":2},";
-        final String scene4 = "{\"name\":\"BR Off v2\",\"lights\":[\"4\",\"5\"],\"owner\":\"12345\",\"recycle\":true,\"locked\":false,\"appdata\":{},\"picture\":\"\",\"lastupdated\":\"2016-01-23T17:48:53\",\"version\":2},";
+        final String scene4 = "{\"name\":\"BR Off v2\",\"lights\":[\"4\",\"5\"],\"owner\":\"12345\",\"recycle\":true,\"locked\":false,\"appdata\":{},\"picture\":\"\",\"lastupdated\":\"2016-01-23T17:48:53\",\"version\":2}";
 
         final String fullSceneDump = "{" + sceneId1 + scene1 + sceneId2 + scene2 + sceneId3 + scene3 + sceneId4 + scene4 + "}";
 
@@ -72,6 +72,7 @@ public class HueBridgeGetterTest {
         Mockito.doReturn(scene4b).when(spiedBridgeGetter).getURI("http://" + HUE_CONFIGURATION.getIP() + "/api/" + HUE_CONFIGURATION.getToken() + "/scenes/OTc0yWvqbnf-EtC");
 
         final List<Scene> scenes = spiedBridgeGetter.getScenes(HUE_CONFIGURATION.getIP(), HUE_CONFIGURATION.getToken(), false);
+
         Assert.assertEquals(4, scenes.size());
         final List<CharSequence> sceneIds = scenes.stream().map(Scene::getId).map(String::valueOf).collect(Collectors.toList());
         sceneIds.forEach(sceneId -> Assert.assertTrue(fullSceneDump.contains(sceneId)));
