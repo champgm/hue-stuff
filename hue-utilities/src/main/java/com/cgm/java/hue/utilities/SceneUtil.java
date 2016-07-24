@@ -1,6 +1,9 @@
 package com.cgm.java.hue.utilities;
 
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,7 +13,6 @@ import com.cgm.java.hue.models.Scene;
 import com.cgm.java.hue.models.State;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableMap;
 
 /**
  * Utility for interacting with {@link com.cgm.java.hue.models.Scene}s
@@ -36,38 +38,32 @@ public class SceneUtil {
         }
 
         // Map each light state to its light ID.
-        final ImmutableMap.Builder<String, State> idToLightStateMapBuilder = ImmutableMap.builder();
-        lights.forEach(light -> idToLightStateMapBuilder.put(light.getId().toString(), light.getState()));
-        final ImmutableMap<String, State> idToLightStateMap = idToLightStateMapBuilder.build();
+        final Map<String, State> currentLightStates = lights.parallelStream()
+                .collect(Collectors.toMap(light -> light.getId().toString(), Light::getState));
 
         // Iterate through the scenes
-        final ImmutableList.Builder<String> activeSceneIdsBuilder = ImmutableList.builder();
-        for (final Scene scene : scenes) {
-            final List<State> lightStates = scene.getLightstates();
+        final List<String> activeScenes = scenes.parallelStream().filter(scene -> {
+            final List<State> possibleLightStates = scene.getLightstates();
             final List<CharSequence> sceneLightIds = scene.getLights();
             boolean allLightStatesMatch = true;
 
             //Iterate through all states for the current scene and see if they match the current light states
-            if (lightStates!=null && lightStates.size() == sceneLightIds.size()) {
-                for (int j = 0; j < lightStates.size(); j++) {
-                    final State sceneState = lightStates.get(j);
-                    final String sceneLightId = sceneLightIds.get(j).toString();
-                    final State lightState = idToLightStateMap.get(sceneLightId);
-
-                    //Abort if any do not match
-                    if (lightState != null && lightState != sceneState) {
-                        allLightStatesMatch = false;
-                        break;
-                    }
-                }
+            if (possibleLightStates != null && possibleLightStates.size() == sceneLightIds.size()) {
+                final boolean foundMismatchedSceneStates = IntStream.range(0, possibleLightStates.size()).parallel()
+                        .anyMatch(index -> {
+                            final State sceneState = possibleLightStates.get(index);
+                            final String sceneLightId = sceneLightIds.get(index).toString();
+                            final State currentLightState = currentLightStates.get(sceneLightId);
+                            return currentLightState != null && currentLightState != sceneState;
+                        });
+                allLightStatesMatch = !foundMismatchedSceneStates;
             } else {
                 LOGGER.error("Found a scene with unequal number of lights and light states: "
-                             + scene.getId() + " : " + scene.getName());
+                        + scene.getId() + " : " + scene.getName());
             }
-            if (allLightStatesMatch) {
-                activeSceneIdsBuilder.add(scene.getId().toString());
-            }
-        }
-        return activeSceneIdsBuilder.build();
+            return allLightStatesMatch;
+        }).map(scene -> scene.getId().toString()).collect(Collectors.toList());
+
+        return ImmutableList.copyOf(activeScenes);
     }
 }

@@ -106,8 +106,7 @@ public class HueBridgeSetter extends HttpInteractor {
             throw new RuntimeException("Error while parsing response to a POST of a new scene.\n" +
                                        "Attempted URI was: " + uri + "\n" +
                                        "Attempted body was: " + requestBody + "\n" +
-                                       "Raw response was: " + rawResponse,
-                    e);
+                                       "Raw response was: " + rawResponse, e);
         }
     }
 

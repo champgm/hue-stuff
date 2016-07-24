@@ -26,7 +26,7 @@ public class LightUtil {
         Preconditions.checkArgument(StringUtils.isNotBlank(bridgeIp), "bridgeIp may not be null or empty.");
         Preconditions.checkArgument(StringUtils.isNotBlank(token), "token may not be null or empty.");
         Preconditions.checkArgument(StringUtils.isNotBlank(lightId), "lightId may not be null or empty.");
-        LOGGER.debug("Attempting to toggle one light with ID: " + lightId);
+        LOGGER.debug("Attempting to toggle one light with ID: {}", lightId);
 
         // Get the light
         final Light light = getHueBridgeGetter().getLight(bridgeIp, token, lightId);
@@ -40,7 +40,7 @@ public class LightUtil {
 
         // Get the resulting light and return it
         final Light newLight = getHueBridgeGetter().getLight(bridgeIp, token, lightId);
-        LOGGER.debug("New light state after toggling: " + newLight.getState());
+        LOGGER.debug("New light state after toggling: {}", newLight.getState());
         return newLight;
     }
 
