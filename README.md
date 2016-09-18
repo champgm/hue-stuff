@@ -19,6 +19,10 @@ Hue-Stuff uses a number of open source projects to work properly:
 * [Jackson] - To (sometimes with some fudging) directly parse the Hue Bridge's output into the Avro models
 * [Apache Maven] - For dependency and plugin management
 
+### Network Diagram
+Here's a diagram explaining how the Hue Bridge connects to the lights, your network, and how the server running hue-stuff fits in.
+
+![Network Graph](/network-graph.png?raw=true)
 
 ### Installation
 
