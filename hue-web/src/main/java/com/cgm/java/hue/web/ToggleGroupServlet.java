@@ -2,7 +2,6 @@ package com.cgm.java.hue.web;
 
 import java.io.IOException;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -29,7 +28,7 @@ public class ToggleGroupServlet extends HttpServlet {
     private static final Logger LOGGER = LoggerFactory.getLogger(ToggleGroupServlet.class);
     private static final long serialVersionUID = 2L;
     private static final HueBridgeGetter HUE_BRIDGE_GETTER = new HueBridgeGetter();
-    private static final HueBridgeSetter HUE_BRIDGE_SETTER = new HueBridgeSetter();
+    private static final HueBridgeSetter HUE_BRIDGE_SETTER = new HueBridgeSetter(HUE_BRIDGE_GETTER);
     private static final HueConfiguration HUE_CONFIGURATION = new HueConfiguration();
 
     public ToggleGroupServlet() {

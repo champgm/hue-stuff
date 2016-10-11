@@ -1,10 +1,10 @@
 package com.cgm.java.hue.utilities;
 
 import org.junit.Assert;
-
 import org.junit.Test;
 import org.mockito.Mockito;
 
+import com.cgm.java.hue.models.Light;
 import com.cgm.java.hue.models.Scene;
 import com.cgm.java.hue.models.State;
 import com.google.common.collect.ImmutableList;
@@ -14,9 +14,13 @@ public class HueBridgeSetterTest {
 
     @Test
     public void testSetLightStateSuccess() {
-        final HueBridgeSetter hueBridgeSetter = Mockito.spy(new HueBridgeSetter());
         final String lightId = "lightId";
         final State lightState = State.newBuilder().setOn(false).build();
+        final HueBridgeGetter mockedGetter = Mockito.mock(HueBridgeGetter.class);
+        final Light mockedLight = Mockito.mock(Light.class);
+        Mockito.doReturn(lightState).when(mockedLight).getState();
+        Mockito.doReturn(mockedLight).when(mockedGetter).getLight(HUE_CONFIGURATION.getIP(), HUE_CONFIGURATION.getToken(), lightId);
+        final HueBridgeSetter hueBridgeSetter = Mockito.spy(new HueBridgeSetter(mockedGetter));
         final String expectedUri = "http://" + HUE_CONFIGURATION.getIP() + "/api/" + HUE_CONFIGURATION.getToken() + "/lights/lightId/state";
         final String expectedResult = "expected result";
 
@@ -28,7 +32,7 @@ public class HueBridgeSetterTest {
 
     @Test
     public void testSetGroupStateSuccess() {
-        final HueBridgeSetter hueBridgeSetter = Mockito.spy(new HueBridgeSetter());
+        final HueBridgeSetter hueBridgeSetter = Mockito.spy(new HueBridgeSetter(Mockito.mock(HueBridgeGetter.class)));
         final String groupId = "groupId";
         final State groupAction = State.newBuilder().setOn(false).build();
         final String expectedUri = "http://" + HUE_CONFIGURATION.getIP() + "/api/" + HUE_CONFIGURATION.getToken() + "/groups/groupId/action";
@@ -42,7 +46,7 @@ public class HueBridgeSetterTest {
 
     @Test
     public void testPostNewSceneSuccess() {
-        final HueBridgeSetter hueBridgeSetter = Mockito.spy(new HueBridgeSetter());
+        final HueBridgeSetter hueBridgeSetter = Mockito.spy(new HueBridgeSetter(Mockito.mock(HueBridgeGetter.class)));
         final String expectedSceneId = "sceneId";
         final String sceneName = "sceneName";
         final Scene scene = Scene.newBuilder().setName(sceneName).setLights(ImmutableList.of("4", "9", "1")).build();
@@ -58,7 +62,7 @@ public class HueBridgeSetterTest {
 
     @Test
     public void testPostNewSceneBadResponse() {
-        final HueBridgeSetter hueBridgeSetter = Mockito.spy(new HueBridgeSetter());
+        final HueBridgeSetter hueBridgeSetter = Mockito.spy(new HueBridgeSetter(Mockito.mock(HueBridgeGetter.class)));
         final String sceneName = "sceneName";
         final Scene scene = Scene.newBuilder().setName(sceneName).setLights(ImmutableList.of("4", "9", "1")).build();
         final String expectedUri = "http://" + HUE_CONFIGURATION.getIP() + "/api/" + HUE_CONFIGURATION.getToken() + "/scenes";
@@ -77,7 +81,7 @@ public class HueBridgeSetterTest {
 
     @Test
     public void testPostNewSceneParseResponseFail() {
-        final HueBridgeSetter hueBridgeSetter = Mockito.spy(new HueBridgeSetter());
+        final HueBridgeSetter hueBridgeSetter = Mockito.spy(new HueBridgeSetter(Mockito.mock(HueBridgeGetter.class)));
         final String sceneName = "sceneName";
         final Scene scene = Scene.newBuilder().setName(sceneName).setLights(ImmutableList.of("4", "9", "1")).build();
         final String expectedUri = "http://" + HUE_CONFIGURATION.getIP() + "/api/" + HUE_CONFIGURATION.getToken() + "/scenes";
@@ -96,7 +100,7 @@ public class HueBridgeSetterTest {
 
     @Test
     public void testDeleteSceneSuccess() {
-        final HueBridgeSetter hueBridgeSetter = Mockito.spy(new HueBridgeSetter());
+        final HueBridgeSetter hueBridgeSetter = Mockito.spy(new HueBridgeSetter(Mockito.mock(HueBridgeGetter.class)));
         final String sceneId = "sceneId";
         final String expectedUri = "http://" + HUE_CONFIGURATION.getIP() + "/api/" + HUE_CONFIGURATION.getToken() + "/scenes/" + sceneId;
         final String expectedDeleteResult = "Delete Result";
@@ -109,7 +113,7 @@ public class HueBridgeSetterTest {
 
     @Test
     public void testDeleteGroupSuccess() {
-        final HueBridgeSetter hueBridgeSetter = Mockito.spy(new HueBridgeSetter());
+        final HueBridgeSetter hueBridgeSetter = Mockito.spy(new HueBridgeSetter(Mockito.mock(HueBridgeGetter.class)));
         final String groupId = "groupId";
         final String expectedUri = "http://" + HUE_CONFIGURATION.getIP() + "/api/" + HUE_CONFIGURATION.getToken() + "/groups/" + groupId;
         final String expectedDeleteResult = "Delete Result";
@@ -141,7 +145,7 @@ public class HueBridgeSetterTest {
     }
 
     private void breakHueBridgeSetterDeleteGroup(final String ip, final String token, final String groupId) {
-        final HueBridgeSetter hueBridgeSetter = new HueBridgeSetter();
+        final HueBridgeSetter hueBridgeSetter = new HueBridgeSetter(Mockito.mock(HueBridgeGetter.class));
         try {
             hueBridgeSetter.deleteGroup(ip, token, groupId);
             Assert.fail();
@@ -151,7 +155,7 @@ public class HueBridgeSetterTest {
     }
 
     private void breakHueBridgeSetterDeleteScene(final String ip, final String token, final String sceneId) {
-        final HueBridgeSetter hueBridgeSetter = new HueBridgeSetter();
+        final HueBridgeSetter hueBridgeSetter = new HueBridgeSetter(Mockito.mock(HueBridgeGetter.class));
         try {
             hueBridgeSetter.deleteScene(ip, token, sceneId);
             Assert.fail();
@@ -173,7 +177,7 @@ public class HueBridgeSetterTest {
     }
 
     private void breakHueBridgeSetterSetLightState(final String ip, final String token, final String lightId, final State state) {
-        final HueBridgeSetter hueBridgeSetter = new HueBridgeSetter();
+        final HueBridgeSetter hueBridgeSetter = new HueBridgeSetter(Mockito.mock(HueBridgeGetter.class));
         try {
             hueBridgeSetter.setLightState(ip, token, lightId, state);
             Assert.fail();
@@ -193,7 +197,7 @@ public class HueBridgeSetterTest {
     }
 
     private void breakHueBridgeSetterPost(final String ip, final String token, final Scene scene) {
-        final HueBridgeSetter hueBridgeSetter = new HueBridgeSetter();
+        final HueBridgeSetter hueBridgeSetter = new HueBridgeSetter(Mockito.mock(HueBridgeGetter.class));
         try {
             hueBridgeSetter.postNewScene(ip, token, scene);
             Assert.fail();

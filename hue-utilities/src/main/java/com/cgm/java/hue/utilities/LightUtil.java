@@ -51,6 +51,6 @@ public class LightUtil {
 
     @VisibleForTesting
     protected HueBridgeSetter getHueBridgeSetter() {
-        return new HueBridgeSetter();
+        return new HueBridgeSetter(new HueBridgeGetter());
     }
 }

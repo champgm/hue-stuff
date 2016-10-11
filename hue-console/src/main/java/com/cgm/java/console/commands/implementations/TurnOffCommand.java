@@ -14,6 +14,7 @@ import org.apache.commons.collections.ListUtils;
 import com.cgm.java.console.commands.BridgeCommand;
 import com.cgm.java.hue.models.Light;
 import com.cgm.java.hue.models.State;
+import com.cgm.java.hue.utilities.HueBridgeGetter;
 import com.cgm.java.hue.utilities.HueBridgeSetter;
 import com.cgm.java.utilities.lambdas.Conversion;
 
@@ -49,7 +50,7 @@ public class TurnOffCommand extends BridgeCommand {
         System.out.println();
 
         // Figure out which requested lights actually match the available lights, and turn them on
-        final HueBridgeSetter hueBridgeSetter = new HueBridgeSetter();
+        final HueBridgeSetter hueBridgeSetter = new HueBridgeSetter(new HueBridgeGetter());
         final List<String> lightNamesToTurnOn = Arrays.stream(lightNames).filter(idToLightMap::containsKey).collect(Collectors.toList());
         final List<String> lightIdsToTurnOn = Arrays.stream(lightIds).filter(idToLightMap::containsKey).collect(Collectors.toList());
         final List<String> union = ListUtils.union(lightNamesToTurnOn, lightIdsToTurnOn);
