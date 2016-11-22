@@ -21,7 +21,7 @@ public abstract class BridgeCommand extends Command {
     /**
      * The instance of {@link com.cgm.java.hue.utilities.HueBridgeSetter} used to send data to the Hue Bridge
      */
-    protected static final HueBridgeSetter HUE_BRIDGE_SETTER = new HueBridgeSetter();
+    protected static final HueBridgeSetter HUE_BRIDGE_SETTER = new HueBridgeSetter(new HueBridgeGetter());
     /**
      * The IP address for the bridge
      */

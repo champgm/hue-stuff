@@ -28,8 +28,8 @@ public class SetLightStateServlet extends HttpServlet {
     private static final Logger LOGGER = LoggerFactory.getLogger(SetLightStateServlet.class);
     private static final long serialVersionUID = 1L;
     private static final HueConfiguration HUE_CONFIGURATION = new HueConfiguration();
-    private static final HueBridgeSetter HUE_BRIDGE_SETTER = new HueBridgeSetter();
     private static final HueBridgeGetter HUE_BRIDGE_GETTER = new HueBridgeGetter();
+    private static final HueBridgeSetter HUE_BRIDGE_SETTER = new HueBridgeSetter(HUE_BRIDGE_GETTER);
 
     public SetLightStateServlet() {
         super();
