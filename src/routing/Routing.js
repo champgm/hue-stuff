@@ -1,22 +1,25 @@
 const KnownParameterNames = require('./util/KnownParameterNames');
 const RequestOptionsUtil = require('./util/RequestOptionsUtil');
+const UtilityScenes = require('./util/scene/UtilityScenes');
+const LightUtil = require('./util/light/LightUtil');
 const makeRequest = require('request-promise');
 const express = require('express');
 const path = require('path');
 const util = require('util');
 
-class HueServer {
+class Routing {
   constructor(expressPort, bridgeIp, bridgeToken, bridgePort) {
     this.expressPort = expressPort;
     this.bridgeIp = bridgeIp;
     this.bridgeToken = bridgeToken;
     this.bridgePort = bridgePort;
-    this.bridgeUrl = `http://${this.bridgeIp}:${this.bridgePort}/api/${this.bridgeToken}`;
+    this.bridgeUri = `http://${this.bridgeIp}:${this.bridgePort}/api/${this.bridgeToken}`;
   }
 
   async start() {
     const application = express();
-    const requestOptionsUtil = new RequestOptionsUtil(this.bridgeUrl);
+    const requestOptionsUtil = new RequestOptionsUtil(this.bridgeUri);
+    const lightUtil = new LightUtil(this.bridgeUri);
 
     // Add the webapp folder as static content. This contains the UI.
     const webAppFolder = path.join(__dirname, '../../webapp');
@@ -34,27 +37,25 @@ class HueServer {
       console.log(`Request: ${JSON.stringify(util.inspect(request))}`);
     }
 
+    application.get('/debug', async (request, response) => {
+      console.log('debug called');
+      // const options = requestOptionsUtil.simpleGet('scenes');
+      // console.log(`Will GET with options: ${JSON.stringify(options)}`);
+      // const result = await makeRequest(options);
+
+      const result = await lightUtil.getAllLights();
+      response.send(result);
+      console.log('Request handled.');
+    });
+
     /**
      * Begin GET-related functionality
      */
     application.get('/getlights', async (request, response) => {
       console.log('getlights called');
-      const options = requestOptionsUtil.simpleGet('lights');
-
-      console.log(`Will GET with options: ${JSON.stringify(options)}`);
-      const lights = await makeRequest(options);
-
-      // Now, we need to record each light's ID INSIDE of the light as well.
-      // The web UI depends on that.
-      for (const lightId in lights) {
-        if (Object.prototype.hasOwnProperty.call(lights, lightId)) {
-          const light = lights[lightId];
-          light.id = lightId;
-          lights[lightId] = light;
-        }
-      }
-
+      const lights = await lightUtil.getAllLights();
       response.send(lights);
+      console.log('Request handled.');
     });
 
     application.get('/getscenes', async (request, response) => {
@@ -76,9 +77,19 @@ class HueServer {
         console.log('V2 Scenes not requested, will return all.');
       }
 
+      // Start collecting all scenes.
+      const resultScenes = {};
+
+      // Add any Utility scenes first.
+      const utilityScenes = UtilityScenes.getAllUtilityScenes();
+      for (const sceneId in utilityScenes) {
+        if (Object.prototype.hasOwnProperty.call(utilityScenes, sceneId)) {
+          resultScenes[sceneId] = utilityScenes[sceneId];
+        }
+      }
+
       // Now, we need to record each light's ID INSIDE of the light.
       // While we do this, we might as well do the V2 filtering as well.
-      const resultScenes = {};
       // For each top-level attribute (which, if it's what we're looking for, will be a scene ID)
       for (const sceneId in scenes) {
         // Check to make sure it's a real attribute and not some weird superclass attribute
@@ -98,8 +109,8 @@ class HueServer {
           }
         }
       }
-
       response.send(resultScenes);
+      console.log('Request handled.');
     });
 
     application.get('/getschedules', async (request, response) => {
@@ -109,6 +120,7 @@ class HueServer {
       console.log(`Will GET with options: ${JSON.stringify(options)}`);
       const result = await makeRequest(options);
       response.send(result);
+      console.log('Request handled.');
     });
 
     application.get('/getgroups', async (request, response) => {
@@ -118,6 +130,7 @@ class HueServer {
       console.log(`Will GET with options: ${JSON.stringify(options)}`);
       const result = await makeRequest(options);
       response.send(result);
+      console.log('Request handled.');
     });
 
     application.get('/getsensors', async (request, response) => {
@@ -127,6 +140,7 @@ class HueServer {
       console.log(`Will GET with options: ${JSON.stringify(options)}`);
       const result = await makeRequest(options);
       response.send(result);
+      console.log('Request handled.');
     });
 
     application.get('/getrules', async (request, response) => {
@@ -136,6 +150,7 @@ class HueServer {
       console.log(`Will GET with options: ${JSON.stringify(options)}`);
       const result = await makeRequest(options);
       response.send(result);
+      console.log('Request handled.');
     });
 
     /**
@@ -165,18 +180,9 @@ class HueServer {
     application.get('/togglelight', async (request, response) => {
       console.log('togglelight called');
       const lightId = getRequiredId(request, response, KnownParameterNames.getLightId());
-
-      const getOptions = requestOptionsUtil.simpleGet(`lights/${lightId}`);
-      console.log(`Will GET with options: ${JSON.stringify(getOptions)}`);
-      const light = await makeRequest(getOptions);
-
-      const toggledState = { on: !(light.state.on) };
-      const putOptions = requestOptionsUtil.putWithBody(`lights/${lightId}/state`, toggledState);
-      console.log(`Will PUT with options: ${JSON.stringify(putOptions)}`);
-      await makeRequest(putOptions);
-
-      const currentLightState = await makeRequest(getOptions);
-      response.send(currentLightState);
+      const toggledLight = await lightUtil.toggleLight(lightId);
+      response.send(toggledLight);
+      console.log('Request handled.');
     });
 
     application.get('/togglegroup', async (request, response) => {
@@ -194,27 +200,47 @@ class HueServer {
 
       const currentGroupState = await makeRequest(getOptions);
       response.send(currentGroupState);
+      console.log('Request handled.');
     });
 
     application.get('/activatescene', async (request, response) => {
       console.log('activatescene called');
       const sceneId = getRequiredId(request, response, KnownParameterNames.getSceneId());
+      console.log(`Scene ID: ${sceneId}`);
 
-      const getOptions = requestOptionsUtil.simpleGet(`scenes/${sceneId}`);
-      console.log(`Will GET with options: ${JSON.stringify(getOptions)}`);
-      const scene = await makeRequest(getOptions);
-
-      for (const lightId in scene.lightstates) {
-        if (Object.prototype.hasOwnProperty.call(scene.lightstates, lightId)) {
-          const lightState = scene.lightstates[lightId];
-          const putOptions = requestOptionsUtil.putWithBody(`lights/${lightId}/state`, lightState);
-          console.log(`Putting light state: ${JSON.stringify(putOptions)}`);
-          await makeRequest(putOptions);
+      if (UtilityScenes.getAllUtilitySceneIds().includes(sceneId)) {
+        switch (sceneId) {
+          case UtilityScenes.getAllOffId(): {
+            const lights = await lightUtil.getAllLights();
+            for (const lightId in lights) {
+              if (Object.prototype.hasOwnProperty.call(lights, lightId)) {
+                await lightUtil.turnLightOff(lightId);
+              }
+            }
+            response.send({ sceneId });
+            break;
+          }
+          default: {
+            const unsupportedMessage = `Unsupported utility scene ID: ${sceneId}`;
+            console.log(unsupportedMessage);
+            response.send(unsupportedMessage);
+          }
         }
-      }
+      } else {
+        const getOptions = requestOptionsUtil.simpleGet(`scenes/${sceneId}`);
+        console.log(`Will GET with options: ${JSON.stringify(getOptions)}`);
+        const scene = await makeRequest(getOptions);
 
-      const currentSceneState = await makeRequest(getOptions);
-      response.send(currentSceneState);
+        for (const lightId in scene.lightstates) {
+          if (Object.prototype.hasOwnProperty.call(scene.lightstates, lightId)) {
+            const lightState = scene.lightstates[lightId];
+            await lightUtil.setLightState(lightId, lightState);
+          }
+        }
+        const currentSceneState = await makeRequest(getOptions);
+        response.send(currentSceneState);
+      }
+      console.log('Request handled.');
     });
 
     application.listen(this.expressPort, () => {
@@ -225,4 +251,4 @@ class HueServer {
   }
 }
 
-module.exports = HueServer;
+module.exports = Routing;

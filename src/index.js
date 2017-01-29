@@ -1,4 +1,4 @@
-const HueServer = require('./server/HueServer');
+const Routing = require('./routing/Routing');
 
 // This is the port on which express will start
 let expressPort;
@@ -38,7 +38,7 @@ if (!process.env.HUE_BRIDGE_TOKEN) {
   console.log('Bridge token set.');
 }
 
-const server = new HueServer(
+const server = new Routing(
   expressPort,
   process.env.HUE_BRIDGE_IP,
   process.env.HUE_BRIDGE_TOKEN,
