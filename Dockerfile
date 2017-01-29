@@ -1,8 +1,13 @@
-FROM tomcat:jre8
+FROM node
 MAINTAINER github.com/champgm
 
-ADD hue-web/target/hue-web-1.0-SNAPSHOT.war /usr/local/tomcat/webapps/
+RUN mkdir -p /usr/src/app
+WORKDIR /usr/src/app
 
-CMD ["catalina.sh", "run"]
+# COPY package.json /usr/src/app/
+COPY . /usr/src/app
+RUN npm install
+
+CMD [ "npm", "start" ]
 
 EXPOSE 1981:8888

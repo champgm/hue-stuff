@@ -5,7 +5,7 @@ const makeRequest = require('request-promise');
 const KnownParameterNames = require('./util/KnownParameterNames');
 
 class Server {
-  constructor(hueWebPort, bridgeIp, bridgeToken, bridgePort = 80) {
+  constructor(hueWebPort, bridgeIp, bridgeToken, bridgePort) {
     this.hueWebPort = hueWebPort;
     this.bridgeIp = bridgeIp;
     this.bridgeToken = bridgeToken;
