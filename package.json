@@ -4,7 +4,10 @@
   "description": "\"Hue Stuff\" is a project to interface directly with the Phillips Hue bridge. The bridge has a fairly open and well documented API that is accessed via a RESTful calls. Our main goals for this project are as follows:",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "nyc": "nyc",
+    "jasmine": "jasmine",
+    "lint": "eslint ./src ./spec --ext .js --fix",
+    "lint-and-jasmine": "npm run lint && npm run jasmine"
   },
   "repository": {
     "type": "git",
@@ -29,6 +32,8 @@
     "eslint-plugin-import": "^2.2.0",
     "eslint-plugin-jasmine": "^2.2.0",
     "eslint-plugin-jsx-a11y": "^3.0.2",
-    "eslint-plugin-react": "^6.9.0"
+    "eslint-plugin-react": "^6.9.0",
+    "jasmine": "^2.5.3",
+    "nyc": "^10.1.2"
   }
 }

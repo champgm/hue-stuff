@@ -1,4 +1,4 @@
-const Server = require('./Server/Server');
+const Server = require('./server/Server');
 
 const server = new Server(
   process.env.BRIDGE_IP,
