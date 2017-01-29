@@ -4,6 +4,7 @@ import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.cgm.java.hue.models.Light;
 import com.cgm.java.hue.models.Scene;
 import com.cgm.java.hue.models.SensorState;
 import com.cgm.java.hue.models.State;
@@ -14,19 +15,21 @@ import com.google.common.collect.ImmutableList;
  * A utility class for writing data to the hue bridge
  */
 public class HueBridgeSetter extends HttpInteractor {
+    private static final int MAX_FAILURE = 5;
     private static final Logger LOGGER = LoggerFactory.getLogger(HueBridgeSetter.class);
+    private final HueBridgeGetter hueBridgeGetter;
+
+    public HueBridgeSetter(final HueBridgeGetter hueBridgeGetter) {
+        this.hueBridgeGetter = Preconditions.checkNotNull(hueBridgeGetter, "hueBridgeGetter may not be null.");
+    }
 
     /**
      * Sets one light's state
      *
-     * @param bridgeIp
-     *         IP for the hue bridge
-     * @param token
-     *         API token for the bridge
-     * @param lightId
-     *         the ID of the light to modify
-     * @param state
-     *         the desired state for that light
+     * @param bridgeIp IP for the hue bridge
+     * @param token    API token for the bridge
+     * @param lightId  the ID of the light to modify
+     * @param state    the desired state for that light
      * @return whatever the response from the bridge is
      */
     public String setLightState(final String bridgeIp, final String token, final String lightId, final State state) {
@@ -38,7 +41,21 @@ public class HueBridgeSetter extends HttpInteractor {
         // State calls look like this:
         // http://<bridge ip address>/api/1234/lights/1/state
         final String uri = buildUri(bridgeIp, token, HueBridgeCommands.LIGHTS, ImmutableList.of(lightId, "state"));
-        return putURI(uri, state.toString());
+
+        LOGGER.info("Desired State: " + state);
+        String putResult = "";
+        boolean success = false;
+        int tryCount = 0;
+        while (!success && tryCount < MAX_FAILURE) {
+            putResult = putURI(uri, state.toString());
+            final Light light = hueBridgeGetter.getLight(bridgeIp, token, lightId);
+            final State newState = light.getState();
+            LOGGER.info("New     State: " + newState);
+            success = StateUtil.areNonNullAttributesEqual(state, newState);
+            LOGGER.info("Success: " + success);
+            tryCount++;
+        }
+        return putResult;
     }
 
     public String setLightOnState(final String bridgeIp, final String token, final String lightId, final boolean on) {
@@ -49,18 +66,29 @@ public class HueBridgeSetter extends HttpInteractor {
         // State calls look like this:
         // http://<bridge ip address>/api/1234/lights/1/state
         final String uri = buildUri(bridgeIp, token, HueBridgeCommands.LIGHTS, ImmutableList.of(lightId, "state"));
-        return putURI(uri, "{\"on\":" + on + "}");
+
+        boolean success = false;
+        String putResults = "";
+        int tryCount = 0;
+        while (!success && tryCount < MAX_FAILURE) {
+            LOGGER.info("Attempting to set light, '" + lightId + "' ON state to '" + on + "'");
+            putResults = putURI(uri, "{\"on\":" + on + "}");
+            final Light light = hueBridgeGetter.getLight(bridgeIp, token, lightId);
+            success = (on == light.getState()
+                    .getOn());
+            LOGGER.info("Success: " + success);
+            tryCount++;
+        }
+
+        return putResults;
     }
 
     /**
      * Attempts to use POST to add a new scene to the bridge.
      *
-     * @param bridgeIp
-     *         IP for the hue bridge
-     * @param token
-     *         API token for the bridge
-     * @param scene
-     *         the scene to POST
+     * @param bridgeIp IP for the hue bridge
+     * @param token    API token for the bridge
+     * @param scene    the scene to POST
      * @return the ID of the newly created scene
      */
     public String postNewScene(final String bridgeIp, final String token, final Scene scene) {
@@ -79,17 +107,17 @@ public class HueBridgeSetter extends HttpInteractor {
         // Expected format: {"name":"Romantic dinner", "lights":["1","2"]}
         final String requestBody =
                 "{\"name\":\"" +
-                scene.getName() +
-                "\", \"lights\":[\"" +
-                String.join("\",\"", scene.getLights()) +
-                "\"]}";
+                        scene.getName() +
+                        "\", \"lights\":[\"" +
+                        String.join("\",\"", scene.getLights()) +
+                        "\"]}";
 
         final String rawResponse = postURI(uri, requestBody);
         if (!rawResponse.contains("success")) {
             throw new RuntimeException("POSTing of new scene failed.\n" +
-                                       "Attempted URI was: " + uri + "\n" +
-                                       "Attempted body was: " + requestBody + "\n" +
-                                       "Raw response was: " + rawResponse);
+                    "Attempted URI was: " + uri + "\n" +
+                    "Attempted body was: " + requestBody + "\n" +
+                    "Raw response was: " + rawResponse);
         }
         try {
             // The response will look something like this:
@@ -104,21 +132,18 @@ public class HueBridgeSetter extends HttpInteractor {
             return newSceneId;
         } catch (Exception e) {
             throw new RuntimeException("Error while parsing response to a POST of a new scene.\n" +
-                                       "Attempted URI was: " + uri + "\n" +
-                                       "Attempted body was: " + requestBody + "\n" +
-                                       "Raw response was: " + rawResponse, e);
+                    "Attempted URI was: " + uri + "\n" +
+                    "Attempted body was: " + requestBody + "\n" +
+                    "Raw response was: " + rawResponse, e);
         }
     }
 
     /**
      * Deletes the specified {@link com.cgm.java.hue.models.Scene}
      *
-     * @param bridgeIp
-     *         IP for the hue bridge
-     * @param token
-     *         API token for the bridge
-     * @param sceneId
-     *         the id of the {@link com.cgm.java.hue.models.Scene} to delete
+     * @param bridgeIp IP for the hue bridge
+     * @param token    API token for the bridge
+     * @param sceneId  the id of the {@link com.cgm.java.hue.models.Scene} to delete
      * @return the response from the bridge
      */
     public String deleteScene(final String bridgeIp, final String token, final String sceneId) {
@@ -134,14 +159,10 @@ public class HueBridgeSetter extends HttpInteractor {
     /**
      * Sets one {@link com.cgm.java.hue.models.Group}'s state
      *
-     * @param bridgeIp
-     *         IP for the hue bridge
-     * @param token
-     *         API token for the bridge
-     * @param groupId
-     *         the ID of the {@link com.cgm.java.hue.models.Group} to modify
-     * @param state
-     *         the desired state for that {@link com.cgm.java.hue.models.Group}
+     * @param bridgeIp IP for the hue bridge
+     * @param token    API token for the bridge
+     * @param groupId  the ID of the {@link com.cgm.java.hue.models.Group} to modify
+     * @param state    the desired state for that {@link com.cgm.java.hue.models.Group}
      * @return whatever the response from the bridge is
      */
     public String setGroupState(final String bridgeIp, final String token, final String groupId, final State state) {
@@ -161,12 +182,9 @@ public class HueBridgeSetter extends HttpInteractor {
     /**
      * Deletes the specified {@link com.cgm.java.hue.models.Group}
      *
-     * @param bridgeIp
-     *         IP for the hue bridge
-     * @param token
-     *         API token for the bridge
-     * @param groupId
-     *         the id of the {@link com.cgm.java.hue.models.Group} to delete
+     * @param bridgeIp IP for the hue bridge
+     * @param token    API token for the bridge
+     * @param groupId  the id of the {@link com.cgm.java.hue.models.Group} to delete
      * @return the response from the bridge
      */
     public String deleteGroup(final String bridgeIp, final String token, final String groupId) {
@@ -182,14 +200,10 @@ public class HueBridgeSetter extends HttpInteractor {
     /**
      * Sets one {@link com.cgm.java.hue.models.Sensor}'s state
      *
-     * @param bridgeIp
-     *         IP for the hue bridge
-     * @param token
-     *         API token for the bridge
-     * @param sensorId
-     *         the ID of the {@link com.cgm.java.hue.models.Sensor} to modify
-     * @param state
-     *         the desired {@link com.cgm.java.hue.models.SensorState} for that {@link com.cgm.java.hue.models.Sensor}
+     * @param bridgeIp IP for the hue bridge
+     * @param token    API token for the bridge
+     * @param sensorId the ID of the {@link com.cgm.java.hue.models.Sensor} to modify
+     * @param state    the desired {@link com.cgm.java.hue.models.SensorState} for that {@link com.cgm.java.hue.models.Sensor}
      * @return whatever the response from the bridge is
      */
     public String setSensorState(final String bridgeIp, final String token, final String sensorId, final SensorState state) {
