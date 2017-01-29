@@ -16,9 +16,12 @@
     "url": "https://github.com/champgm/hue-stuff/issues"
   },
   "homepage": "https://github.com/champgm/hue-stuff#readme",
-    "dependencies": {
+  "dependencies": {
     "eslint": "^3.13.1",
-    "minimist": "^1.2.0"
+    "express": "^4.14.0",
+    "minimist": "^1.2.0",
+    "request": "^2.79.0",
+    "request-promise": "^4.1.1"
   },
   "devDependencies": {
     "babel-eslint": "^7.1.1",
