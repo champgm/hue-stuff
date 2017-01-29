@@ -1,9 +1,0 @@
-{"namespace": "com.cgm.java.hue.models",
- "type": "record",
- "name": "Action",
- "fields": [
-        {"name": "address", "type": ["string", "null"], "default": ""},
-        {"name": "method", "type": ["string", "null"], "default": ""},
-        {"name": "body", "type": ["string", "null"], "default": ""}
- ]
-}

@@ -1,10 +1,12 @@
+const path = require('path');
+const util = require('util');
 const express = require('express');
 const makeRequest = require('request-promise');
-const util = require('util');
 const KnownParameterNames = require('./util/KnownParameterNames');
 
 class Server {
-  constructor(bridgeIp, bridgeToken, bridgePort = 80) {
+  constructor(hueWebPort, bridgeIp, bridgeToken, bridgePort = 80) {
+    this.hueWebPort = hueWebPort;
     this.bridgeIp = bridgeIp;
     this.bridgeToken = bridgeToken;
     this.bridgePort = bridgePort;
@@ -13,10 +15,17 @@ class Server {
 
   async start() {
     const application = express();
-    // Lights
-    application.get('/', async (request, response) => {
-      response.send('GET request to the homepage');
-    });
+
+
+    const webAppFolder = path.join(__dirname, '../../webapp');
+    console.log(`Static content will be read from: ${webAppFolder}`);
+    application.use(express.static(webAppFolder));
+
+    // application.use('/', express.static('src/webapp'));
+    // application.get('/', async (request, response) => {
+    //   // response.send('GET request to the homepage');
+    //   response.redirect('/webapp');
+    // });
 
     /**
      * Begin get-related uris
@@ -29,12 +38,29 @@ class Server {
         json: true
       };
       console.log(`Will request with options: ${JSON.stringify(options)}`);
-      const result = await makeRequest(options);
-      response.send(result);
+      const lights = await makeRequest(options);
+
+      // Now, we need to record each light's ID INSIDE of the light as well.
+      for (const lightId in lights) {
+        if (Object.prototype.hasOwnProperty.call(lights, lightId)) {
+          const light = lights[lightId];
+          light.id = lightId;
+          lights[lightId] = light;
+        }
+      }
+
+      response.send(lights);
     });
 
     application.get('/getscenes', async (request, response) => {
       // console.log(`Request: ${JSON.stringify(util.inspect(request))}`);
+
+      const v2ScenesRequested =
+        (KnownParameterNames.getV2() in request.query) &&
+        (request.query[KnownParameterNames.getV2()] === 'true');
+      console.log(`V2 Scenes requested: ${v2ScenesRequested}`);
+
+
       const options = {
         method: 'GET',
         uri: `${this.bridgeUrl}/scenes`,
@@ -42,27 +68,30 @@ class Server {
       };
 
       console.log(`Will request with options: ${JSON.stringify(options)}`);
-      const result = await makeRequest(options);
+      const scenes = await makeRequest(options);
 
-      // V2 scenes support extra features, sometimes people only want to see those.
-      if (KnownParameterNames.getV2() in request.query) {
-        // Check each available scene to see if it's V2
-        const v2Results = {};
-        for (const sceneId in result) {
-          if (Object.prototype.hasOwnProperty.call(result, sceneId)) {
-            const scene = result[sceneId];
+      // Now, we need to record each light's ID INSIDE of the light as well.
+      // Also, just in case, if it's a V2 scene, store that in a special collection.
+      const resultScenes = {};
+      for (const sceneId in scenes) {
+        if (Object.prototype.hasOwnProperty.call(scenes, sceneId)) {
+          const scene = scenes[sceneId];
+          // Add scene ID inside
+          scene.id = sceneId;
+          scenes[sceneId] = scene;
+
+          // Filter out non-V2 scenes, if they're not wanted.
+          if (v2ScenesRequested) {
             if (scene.version === 2) {
-              // Record if V2
-              v2Results[sceneId] = result[sceneId];
+              resultScenes[sceneId] = scenes[sceneId];
             }
+          } else {
+            resultScenes[sceneId] = scenes[sceneId];
           }
         }
-        // Return only V2
-        response.send(v2Results);
-      } else {
-        // Just return all scenes
-        response.send(result);
       }
+
+      response.send(resultScenes);
     });
 
     application.get('/schedules', async (request, response) => {
@@ -114,11 +143,12 @@ class Server {
     });
 
     application.get('/togglelight', async (request, response) => {
+      // console.log(`Request: ${JSON.stringify(util.inspect(request))}`);
       let lightId;
       if (KnownParameterNames.getLightId() in request.query) {
         lightId = request.query[KnownParameterNames.getLightId()];
       } else {
-        response.send(`'lightid' not found in request: ${JSON.stringify(util.inspect(request))}`);
+        response.send(`'${KnownParameterNames.getLightId()}' not found in request: ${JSON.stringify(util.inspect(request))}`);
         return;
       }
 
@@ -149,7 +179,7 @@ class Server {
       if (KnownParameterNames.getGroupId() in request.query) {
         groupId = request.query[KnownParameterNames.getGroupId()];
       } else {
-        response.send(`'groupid' not found in request: ${JSON.stringify(util.inspect(request))}`);
+        response.send(`'${KnownParameterNames.getGroupId()}' not found in request: ${JSON.stringify(util.inspect(request))}`);
         return;
       }
 
@@ -176,15 +206,47 @@ class Server {
     });
 
     application.get('/setlightstate', async (request, response) => {
-      response.send('GET request to setlightstate');
+      response.send('This is not implemented yet');
     });
 
     application.get('/activatescene', async (request, response) => {
-      response.send('GET request to activatescene');
+      let sceneId;
+      if (KnownParameterNames.getSceneId() in request.query) {
+        sceneId = request.query[KnownParameterNames.getSceneId()];
+      } else {
+        response.send(`'${KnownParameterNames.getSceneId()}' not found in request: ${JSON.stringify(util.inspect(request))}`);
+        return;
+      }
+
+      const getOptions = {
+        method: 'GET',
+        uri: `${this.bridgeUrl}/scenes/${sceneId}`,
+        json: true
+      };
+
+      console.log(`Will request with options: ${JSON.stringify(getOptions)}`);
+      const scene = await makeRequest(getOptions);
+
+      for (const lightId in scene.lightstates) {
+        if (Object.prototype.hasOwnProperty.call(scene.lightstates, lightId)) {
+          const lightState = scene.lightstates[lightId];
+          const putOptions = {
+            method: 'PUT',
+            uri: `${this.bridgeUrl}/lights/${lightId}/state`,
+            body: lightState,
+            json: true
+          };
+          console.log(`Putting light state: ${JSON.stringify(putOptions)}`);
+          await makeRequest(putOptions);
+        }
+      }
+
+      const currentSceneState = await makeRequest(getOptions);
+      response.send(currentSceneState);
     });
 
-    application.listen(3000, () => {
-      console.log('Example app listening on port 3000!');
+    application.listen(this.hueWebPort, () => {
+      console.log(`hue-stuff listening on port ${this.hueWebPort}!`);
     });
 
     return false;
