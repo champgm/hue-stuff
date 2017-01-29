@@ -1,0 +1,17 @@
+#!/usr/bin/env node
+
+// This is a dummy entrypoint, specifically written so that it
+// adds "--harmony" when running the node script, because I
+// wanted to use weird ES6 stuff, but didnt want to transpile
+
+// Create a process spawner
+var spawn = require('child_process').spawn
+
+// Compile a list of args
+// Find the current path, append the real entrypoint name
+// Drop the first 2 args (these are current file path and... something else, I forget)
+var args = [ __dirname + '/hue.js' ].concat(process.argv.slice(2));
+
+// Spawn a new process, call node, add the harmony flag, add the arguments from above
+// And redirect output to the console.
+spawn(process.argv[0], ['--harmony'].concat(args), {stdio: [0,1,2]});

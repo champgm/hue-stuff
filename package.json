@@ -1,0 +1,31 @@
+{
+  "name": "hue-stuff",
+  "version": "1.0.0",
+  "description": "\"Hue Stuff\" is a project to interface directly with the Phillips Hue bridge. The bridge has a fairly open and well documented API that is accessed via a RESTful calls. Our main goals for this project are as follows:",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/champgm/hue-stuff.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/champgm/hue-stuff/issues"
+  },
+  "homepage": "https://github.com/champgm/hue-stuff#readme",
+    "dependencies": {
+    "eslint": "^3.13.1",
+    "minimist": "^1.2.0"
+  },
+  "devDependencies": {
+    "babel-eslint": "^7.1.1",
+    "eslint-config-airbnb": "^14.0.0",
+    "eslint-plugin-import": "^2.2.0",
+    "eslint-plugin-jasmine": "^2.2.0",
+    "eslint-plugin-jsx-a11y": "^3.0.2",
+    "eslint-plugin-react": "^6.9.0"
+  }
+}
