@@ -64,6 +64,10 @@ class KnownParameterNames {
     return 'rulelist';
   }
 
+  static getPlugId() {
+    return 'plugid';
+  }
+
 }
 
 module.exports = KnownParameterNames;
