@@ -38,11 +38,26 @@ if (!process.env.HUE_BRIDGE_TOKEN) {
   console.log('Bridge token set.');
 }
 
+if (!process.env.TP_LINK_PLUGS) {
+  console.error('No TP Link plugs configured, will not display them.');
+} else {
+  console.log('Found TP Link plugs.');
+}
+
+let plugIps = [];
+try {
+  plugIps = JSON.parse(process.env.TP_LINK_PLUGS).plugIps;
+} catch (error) {
+  console.error(`Unparseable Plug IPs: ${process.env.TP_LINK_PLUGS}`);
+}
+
+
 const server = new Routing(
   expressPort,
   process.env.HUE_BRIDGE_IP,
   process.env.HUE_BRIDGE_TOKEN,
-  bridgePort
+  bridgePort,
+  plugIps
 );
 
 server.start();

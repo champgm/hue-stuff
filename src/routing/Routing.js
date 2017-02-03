@@ -10,12 +10,13 @@ const path = require('path');
 const util = require('util');
 
 class Routing {
-  constructor(expressPort, bridgeIp, bridgeToken, bridgePort) {
+  constructor(expressPort, bridgeIp, bridgeToken, bridgePort, plugIps) {
     this.expressPort = expressPort;
     this.bridgeIp = bridgeIp;
     this.bridgeToken = bridgeToken;
     this.bridgePort = bridgePort;
     this.bridgeUri = `http://${this.bridgeIp}:${this.bridgePort}/api/${this.bridgeToken}`;
+    this.plugIps = plugIps;
   }
 
   async start() {
@@ -24,7 +25,7 @@ class Routing {
     const lightUtil = new LightUtil(this.bridgeUri);
     const sceneUtil = new SceneUtil(this.bridgeUri);
     const groupUtil = new GroupUtil(this.bridgeUri);
-    const plugUtil = new TPLinkPlugUtil();
+    const plugUtil = new TPLinkPlugUtil(this.plugIps);
 
 
     // Add the webapp folder as static content. This contains the UI.
@@ -129,15 +130,15 @@ class Routing {
      * @returns the ID, if an error isn't thrown
      */
     function getRequiredId(request, response, idKey) {
-      let lightId;
+      let id;
       if (idKey in request.query) {
-        lightId = request.query[idKey];
+        id = request.query[idKey];
       } else {
         const error = new Error(`'${idKey}' not found in request: ${JSON.stringify(util.inspect(request))}`);
         response.send(error);
         throw error;
       }
-      return lightId;
+      return id;
     }
 
     application.get('/togglelight', async (request, response) => {
@@ -168,6 +169,8 @@ class Routing {
     application.get('/toggleplug', async (request, response) => {
       console.log('toggleplug called');
       const plugId = getRequiredId(request, response, KnownParameterNames.getPlugId());
+      console.log(`Plugid from request: ${plugId}`);
+
       const toggleResult = await plugUtil.togglePlug(plugId);
       response.send(toggleResult);
       console.log('Request handled.');
