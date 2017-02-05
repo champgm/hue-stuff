@@ -1,15 +1,26 @@
 const Routing = require('./routing/Routing');
 
-// This is the port on which express will start
-let expressPort;
+// This is the port on which the normal hue-stuff will start
+let internalExpressPort;
 if (process.env.HUE_WEB_PORT) {
-  console.log('Express port set.');
-  expressPort = process.env.HUE_WEB_PORT;
+  console.log('Internal Express port set.');
+  internalExpressPort = process.env.HUE_WEB_PORT;
 } else {
-  console.log('Express port not set.');
-  expressPort = 8888;
+  console.log('Internal Express port not set.');
+  internalExpressPort = 8888;
 }
-console.log(`Express port: ${expressPort}`);
+console.log(`Internal Express port: ${internalExpressPort}`);
+
+// This is the port on which the echo endpoints will start
+let externalExpressPort;
+if (process.env.EXTERNAL_WEB_PORT) {
+  console.log('External Express port set.');
+  externalExpressPort = process.env.EXTERNAL_WEB_PORT;
+} else {
+  console.log('External Express port not set.');
+  externalExpressPort = 8889;
+}
+console.log(`External Express port: ${externalExpressPort}`);
 
 // This is the port on which the bridge listens
 let bridgePort;
@@ -51,13 +62,24 @@ try {
   console.error(`Unparseable Plug IPs: ${process.env.TP_LINK_PLUGS}`);
 }
 
+const bridgeDetails = {
+  bridgeIp: process.env.HUE_BRIDGE_IP,
+  bridgeToken: process.env.HUE_BRIDGE_TOKEN,
+  bridgePort
+};
+
+const secretEndpoints = {
+  red: process.env.SECRET_RED,
+  white: process.env.SECRET_WHITE,
+  off: process.env.SECRET_OFF
+};
 
 const server = new Routing(
-  expressPort,
-  process.env.HUE_BRIDGE_IP,
-  process.env.HUE_BRIDGE_TOKEN,
-  bridgePort,
-  plugIps
+  externalExpressPort,
+  internalExpressPort,
+  bridgeDetails,
+  plugIps,
+  secretEndpoints
 );
 
 server.start();

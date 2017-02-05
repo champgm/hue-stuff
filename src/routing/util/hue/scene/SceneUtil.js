@@ -2,11 +2,13 @@
 const makeRequest = require('request-promise');
 const RequestOptionsUtil = require('../../RequestOptionsUtil');
 const UtilityScenes = require('./UtilityScenes');
+const LightUtil = require('../light/LightUtil');
 
 class SceneUtil {
   constructor(bridgeUri) {
     this.bridgeUri = bridgeUri;
     this.requestOptionsUtil = new RequestOptionsUtil(bridgeUri);
+    this.lightUtil = new LightUtil(bridgeUri);
   }
 
   async getAllScenes(v2ScenesRequested) {
