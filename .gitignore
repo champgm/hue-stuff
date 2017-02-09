@@ -19,3 +19,18 @@ target/
 # Node
 node_modules/
 npm-debug.log
+
+
+quickstart/.idea
+quickstart/node_modules
+quickstart/jspm_packages
+quickstart/npm-debug.log
+quickstart/debug.log
+quickstart/src/**/*.js
+quickstart/!src/systemjs.config.extras.js
+quickstart/!src/systemjs.config.js
+quickstart/*.js.map
+quickstart/e2e/**/*.js
+quickstart/e2e/**/*.js.map
+quickstart/_test-output
+quickstart/_temp
