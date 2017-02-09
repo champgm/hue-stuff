@@ -1,202 +1,202 @@
 function printLights(json) {
-  $("#lights").empty().append("<strong>Lights</strong> </br>");
+  $('#lights').empty().append('<strong>Lights</strong> </br>');
 
-  var contentToInsert = '';
-  $.each(json, function (i, light) {
+  let contentToInsert = '';
+  $.each(json, (i, light) => {
 
-    var state = light.state;
-    var on = state.on;
-    var id = light.id;
-    var name = light.name;
+    const state = light.state;
+    const on = state.on;
+    const id = light.id;
+    const name = light.name;
 
-    var button_on = '<button type="button" id="' + id + '"'
-      + ' class="btn light btn-on btn-lg">' + name + ' </button>';
+    const button_on = `<button type="button" id="${id}"`
+      + ` class="btn light btn-on btn-lg">${name} </button>`;
 
-    var button_off = '<button type="button" id="' + id + '"'
-      + ' class="btn light btn-off btn-lg">' + name + ' </button>';
+    const button_off = `<button type="button" id="${id}"`
+      + ` class="btn light btn-off btn-lg">${name} </button>`;
 
     if (on) {
-      contentToInsert += '<div class="col-sm-6 col-md-4">' + button_on
-        + '</div>';
+      contentToInsert += `<div class="col-sm-6 col-md-4">${button_on
+         }</div>`;
     } else {
-      contentToInsert += '<div class="col-sm-6 col-md-4">' + button_off
-        + '</div>';
+      contentToInsert += `<div class="col-sm-6 col-md-4">${button_off
+         }</div>`;
     }
 
   });
 
-  $("#lights").append('<div class="row">').append(contentToInsert).append(
+  $('#lights').append('<div class="row">').append(contentToInsert).append(
     '</div>');
 }
 
 function printScenes(json) {
-  $("#scenes").empty().append("<strong>Scenes</strong> </br>");
+  $('#scenes').empty().append('<strong>Scenes</strong> </br>');
 
-  var contentToInsert = '';
-  $.each(json, function (i, scene) {
-    var id = scene.id;
-    var name = scene.name;
+  let contentToInsert = '';
+  $.each(json, (i, scene) => {
+    const id = scene.id;
+    const name = scene.name;
 
-    var scene_btn = '<button type="button" id="' + id + '"'
-      + ' class="btn scene btn-lg">' + name + ' </button>';
+    const scene_btn = `<button type="button" id="${id}"`
+      + ` class="btn scene btn-lg">${name} </button>`;
 
-    contentToInsert += '<div class="col-sm-6 col-md-4">' + scene_btn
-      + '</div>';
+    contentToInsert += `<div class="col-sm-6 col-md-4">${scene_btn
+       }</div>`;
   });
 
-  $("#scenes").append('<div class="row">').append(contentToInsert).append(
+  $('#scenes').append('<div class="row">').append(contentToInsert).append(
     '</div>');
 }
 
 function printGroups(json) {
-  $("#groups").empty().append("<strong>Groups</strong> </br>");
+  $('#groups').empty().append('<strong>Groups</strong> </br>');
 
-  var contentToInsert = '';
-  $.each(json, function (i, group) {
-    var id = group.id
-    var name = group.name
-    var action = group.action
-    var on = action.on
+  let contentToInsert = '';
+  $.each(json, (i, group) => {
+    const id = group.id;
+    const name = group.name;
+    const action = group.action;
+    const on = action.on;
 
-    var button_on = '<button type="button" id="' + id + '"'
-      + ' class="btn group btn-on btn-lg">' + name + ' </button>';
+    const button_on = `<button type="button" id="${id}"`
+      + ` class="btn group btn-on btn-lg">${name} </button>`;
 
-    var button_off = '<button type="button" id="' + id + '"'
-      + ' class="btn group btn-off btn-lg">' + name + ' </button>';
+    const button_off = `<button type="button" id="${id}"`
+      + ` class="btn group btn-off btn-lg">${name} </button>`;
 
     if (on) {
-      contentToInsert += '<div class="col-sm-6 col-md-4">' + button_on
-        + '</div>';
+      contentToInsert += `<div class="col-sm-6 col-md-4">${button_on
+         }</div>`;
     } else {
-      contentToInsert += '<div class="col-sm-6 col-md-4">' + button_off
-        + '</div>';
+      contentToInsert += `<div class="col-sm-6 col-md-4">${button_off
+         }</div>`;
     }
 
   });
 
-  $("#groups").append('<div class="row">').append(contentToInsert).append(
+  $('#groups').append('<div class="row">').append(contentToInsert).append(
     '</div>');
 }
 
 function printSchedules(json) {
-  $("#schedules").empty().append("<strong>Schedules</strong> </br>");
+  $('#schedules').empty().append('<strong>Schedules</strong> </br>');
 
-  var contentToInsert = '';
-  $.each(json, function (i, schedule) {
-    var name = schedule.name;
-    var id = schedule.id;
-    var description = schedule.description
-    var autodelete = schedule.autodelete
-    var created = schedule.created
-    var starttime = schedule.starttime
-    var status = schedule.status
-    var time = schedule.time
-    var command = schedule.command
-    var address = command.address
-    var method = command.method
-    var body = command.body
+  let contentToInsert = '';
+  $.each(json, (i, schedule) => {
+    const name = schedule.name;
+    const id = schedule.id;
+    const description = schedule.description;
+    const autodelete = schedule.autodelete;
+    const created = schedule.created;
+    const starttime = schedule.starttime;
+    const status = schedule.status;
+    const time = schedule.time;
+    const command = schedule.command;
+    const address = command.address;
+    const method = command.method;
+    const body = command.body;
 
-    var schedule_text = 'Id: ' + id + '</br>'
-      + 'Description: ' + description + '</br>'
-      + 'Autodelete: ' + autodelete + '</br>'
-      + 'Created: ' + created + '</br>'
-      + 'Starttime: ' + starttime + '</br>'
-      + 'Time: ' + time + '</br>'
+    const schedule_text = `Id: ${id}</br>`
+      + `Description: ${description}</br>`
+      + `Autodelete: ${autodelete}</br>`
+      + `Created: ${created}</br>`
+      + `Starttime: ${starttime}</br>`
+      + `Time: ${time}</br>`
       + 'Command:</br>'
-      + '      Address: ' + address + '</br>'
-      + '      Method: ' + method + '</br>'
-      + '      Body: ' + body + '</br></br>';
+      + `      Address: ${address}</br>`
+      + `      Method: ${method}</br>`
+      + `      Body: ${body}</br></br>`;
 
-    contentToInsert += '<a href="#" class="list-group-item">'
-      + '<h4 class="list-group-item-heading">' + name + '</h4>'
-      + '<p class="list-group-item-text"><pre>' + schedule_text + '</pre></p></a>';
+    contentToInsert += `${'<a href="#" class="list-group-item">'
+      + '<h4 class="list-group-item-heading">'}${name}</h4>`
+      + `<p class="list-group-item-text"><pre>${schedule_text}</pre></p></a>`;
   });
 
-  $("#schedules").append('<div class="list-group">').append(contentToInsert)
+  $('#schedules').append('<div class="list-group">').append(contentToInsert)
     .append('</div>');
 }
 
 function printSensors(json) {
-  $("#sensors").empty().append("<strong>Sensors</strong> </br>");
+  $('#sensors').empty().append('<strong>Sensors</strong> </br>');
 
-  var contentToInsert = '';
-  $.each(json, function (i, sensor) {
-    var id = sensor.id;
-    var state = sensor.state;
-    var daylight = state.daylight;
-    var lastupdated = state.lastupdated;
-    var buttonevent = state.buttonevent;
-    var status = state.status;
-    var config = sensor.config;
-    var on = config.on;
-    var battery = config.battery
-    var reachable = config.reachable;
-    var lat = config.lat;
-    var long = config.long;
-    var sunriseoffset = config.sunriseoffset;
-    var sunsetoffset = config.sunsetoffset;
-    var type = sensor.type
-    var modelid = sensor.modelid
-    var manufacturername = sensor.manufacturername;
-    var uniqueid = sensor.uniqueid;
-    var swversion = sensor.swversion;
-    var name = sensor.name;
+  let contentToInsert = '';
+  $.each(json, (i, sensor) => {
+    const id = sensor.id;
+    const state = sensor.state;
+    const daylight = state.daylight;
+    const lastupdated = state.lastupdated;
+    const buttonevent = state.buttonevent;
+    const status = state.status;
+    const config = sensor.config;
+    const on = config.on;
+    const battery = config.battery;
+    const reachable = config.reachable;
+    const lat = config.lat;
+    const long = config.long;
+    const sunriseoffset = config.sunriseoffset;
+    const sunsetoffset = config.sunsetoffset;
+    const type = sensor.type;
+    const modelid = sensor.modelid;
+    const manufacturername = sensor.manufacturername;
+    const uniqueid = sensor.uniqueid;
+    const swversion = sensor.swversion;
+    const name = sensor.name;
 
-    var sensor_text = 'ID: ' + id + '</br>'
+    const sensor_text = `ID: ${id}</br>`
       + 'State:</br>'
-      + '      Daylight: ' + daylight + '</br>'
-      + '      Lastupdated: ' + lastupdated + '</br>'
-      + '      Buttonevent: ' + buttonevent + '</br>'
-      + '      Status: ' + status + '</br>'
+      + `      Daylight: ${daylight}</br>`
+      + `      Lastupdated: ${lastupdated}</br>`
+      + `      Buttonevent: ${buttonevent}</br>`
+      + `      Status: ${status}</br>`
       + 'Config:</br>'
-      + '      On: ' + on + '</br>'
-      + '      Battery: ' + battery + '</br>'
-      + '      Reachable: ' + reachable + '</br>'
-      + '      Lat: ' + lat + '</br>'
-      + '      Long: ' + long + '</br>'
-      + '      Sunriseoffset: ' + sunriseoffset + '</br>'
-      + '      Sunsetoffset: ' + sunsetoffset + '</br>'
-      + 'Type: ' + type + '</br>'
-      + 'Modelid: ' + modelid + '</br>'
-      + 'Manufacturername: ' + manufacturername + '</br>'
-      + 'Uniqueid: ' + uniqueid + '</br>'
-      + 'Swversion: ' + swversion + '</br></br>';
+      + `      On: ${on}</br>`
+      + `      Battery: ${battery}</br>`
+      + `      Reachable: ${reachable}</br>`
+      + `      Lat: ${lat}</br>`
+      + `      Long: ${long}</br>`
+      + `      Sunriseoffset: ${sunriseoffset}</br>`
+      + `      Sunsetoffset: ${sunsetoffset}</br>`
+      + `Type: ${type}</br>`
+      + `Modelid: ${modelid}</br>`
+      + `Manufacturername: ${manufacturername}</br>`
+      + `Uniqueid: ${uniqueid}</br>`
+      + `Swversion: ${swversion}</br></br>`;
 
-    contentToInsert += '<a href="#" class="list-group-item">'
-      + '<h4 class="list-group-item-heading">' + name + '</h4>'
-      + '<p class="list-group-item-text"><pre>' + sensor_text + '</pre></p></a>';
+    contentToInsert += `${'<a href="#" class="list-group-item">'
+      + '<h4 class="list-group-item-heading">'}${name}</h4>`
+      + `<p class="list-group-item-text"><pre>${sensor_text}</pre></p></a>`;
   });
-  $("#sensors").append('<div class="list-group">').append(contentToInsert)
+  $('#sensors').append('<div class="list-group">').append(contentToInsert)
     .append('</div>');
 }
 
 function printPlugs(json) {
-  $("#plugs").empty().append("<strong>Plugs</strong> </br>");
+  $('#plugs').empty().append('<strong>Plugs</strong> </br>');
 
-  var contentToInsert = '';
-  $.each(json, function (i, plug) {
+  let contentToInsert = '';
+  $.each(json, (i, plug) => {
 
-    var state = plug.state;
-    var on = state.on;
-    var id = plug.id;
-    var name = plug.name;
+    const state = plug.state;
+    const on = state.on;
+    const id = plug.id;
+    const name = plug.name;
 
-    var button_on = '<button type="button" id="' + id + '"'
-      + ' class="btn plug btn-on btn-lg">' + name + ' </button>';
+    const button_on = `<button type="button" id="${id}"`
+      + ` class="btn plug btn-on btn-lg">${name} </button>`;
 
-    var button_off = '<button type="button" id="' + id + '"'
-      + ' class="btn plug btn-off btn-lg">' + name + ' </button>';
+    const button_off = `<button type="button" id="${id}"`
+      + ` class="btn plug btn-off btn-lg">${name} </button>`;
 
     if (on) {
-      contentToInsert += '<div class="col-sm-6 col-md-4">' + button_on
-        + '</div>';
+      contentToInsert += `<div class="col-sm-6 col-md-4">${button_on
+         }</div>`;
     } else {
-      contentToInsert += '<div class="col-sm-6 col-md-4">' + button_off
-        + '</div>';
+      contentToInsert += `<div class="col-sm-6 col-md-4">${button_off
+         }</div>`;
     }
 
   });
 
-  $("#plugs").append('<div class="row">').append(contentToInsert).append(
+  $('#plugs').append('<div class="row">').append(contentToInsert).append(
     '</div>');
 }

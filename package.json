@@ -7,8 +7,9 @@
     "start": "node --harmony src/index.js",
     "nyc": "nyc",
     "jasmine": "jasmine",
-    "lint": "eslint ./src ./spec --ext .js --fix",
-    "lint-and-jasmine": "npm run lint && npm run jasmine"
+    "lint": "eslint . --ext .js --fix",
+    "lint-and-jasmine": "npm run lint && npm run jasmine",
+    "browsersync": "browser-sync start --proxy 127.0.0.1:1981 --directory --files \"webapp/**/*\""
   },
   "repository": {
     "type": "git",
@@ -33,6 +34,7 @@
   },
   "devDependencies": {
     "babel-eslint": "^7.1.1",
+    "browser-sync": "^2.18.7",
     "eslint-config-airbnb": "^14.0.0",
     "eslint-plugin-import": "^2.2.0",
     "eslint-plugin-jasmine": "^2.2.0",
