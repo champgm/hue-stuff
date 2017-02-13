@@ -5,15 +5,22 @@ const UtilityScenes = require('./util/hue/scene/UtilityScenes');
 const LightUtil = require('./util/hue/light/LightUtil');
 const SceneUtil = require('./util/hue/scene/SceneUtil');
 const GroupUtil = require('./util/hue/group/GroupUtil');
+const alexaVerifier = require('alexa-verifier-middleware');
 const makeRequest = require('request-promise');
+const bodyParser = require('body-parser');
 const express = require('express');
+const https = require('https');
 const path = require('path');
 const util = require('util');
+const fs = require('fs');
 
 class Routing {
-  constructor(externalExpressPort, internalExpressPort, bridgeDetails, plugIps, secretEndpoints) {
-    this.externalExpressPort = externalExpressPort;
-    this.internalExpressPort = internalExpressPort;
+  constructor(expressConfiguration, bridgeDetails, plugIps, secretEndpoints) {
+    this.externalExpressPort = expressConfiguration.externalPort;
+    this.internalExpressPort = expressConfiguration.internalPort;
+    this.sslCertPath = expressConfiguration.sslCertPath;
+    this.sslKeyPath = expressConfiguration.sslKeyPath;
+    this.sslCertPath = expressConfiguration.sslCertPath;
     this.bridgeIp = bridgeDetails.bridgeIp;
     this.bridgeToken = bridgeDetails.bridgeToken;
     this.bridgePort = bridgeDetails.bridgePort;
@@ -23,8 +30,9 @@ class Routing {
   }
 
   async start() {
-    const internalApplication = express();
     const externalApplication = express();
+    const internalApplication = express();
+
     const requestOptionsUtil = new RequestOptionsUtil(this.bridgeUri);
     const lightUtil = new LightUtil(this.bridgeUri);
     const sceneUtil = new SceneUtil(this.bridgeUri);
@@ -48,17 +56,27 @@ class Routing {
     this.routeInternalGets(internalApplication, utils);
     this.routeInternalPuts(internalApplication, utils);
 
-    // Route gets and puts for the external application
-    this.routeExternalPuts(externalApplication, utils, this.secretEndpoints);
+    // Check to make sure everything needed for the external server is available
+    if (this.sslCertPath && this.sslKeyPath && this.secretEndpoints) {
+      // Route gets and puts for the external application
+      this.routeExternalPuts(externalApplication, utils, this.secretEndpoints);
 
+      // Read the SSL stuff
+      const certificate = fs.readFileSync(this.sslCertPath);
+      const privateKey = fs.readFileSync(this.sslKeyPath);
+
+      // Start the external server
+      console.log('Listning on externalApplication');
+      https.createServer({ key: privateKey, cert: certificate }, externalApplication)
+        .listen(this.externalExpressPort, () => {
+          console.log(`external listening on port ${this.externalExpressPort}!`);
+        });
+    }
+
+    // Stoart the local server
     console.log('Listning on internalApplication');
     internalApplication.listen(this.internalExpressPort, () => {
       console.log(`internal listening on port ${this.internalExpressPort}!`);
-    });
-
-    console.log('Listning on externalApplication');
-    externalApplication.listen(this.externalExpressPort, () => {
-      console.log(`external listening on port ${this.externalExpressPort}!`);
     });
 
     return false;
@@ -96,34 +114,79 @@ class Routing {
   }
 
   routeExternalPuts(externalApplication, utils, secretEndpoints) {
-    if (!(this.secretEndpoints.red && this.secretEndpoints.off && this.secretEndpoints.white)) {
+    if (!(secretEndpoints && secretEndpoints.endpoint && secretEndpoints.redSceneId && secretEndpoints.whiteSceneId)) {
+      console.log(`${this.constructor.name}: Secret endpoints not configured! Will not add bindings to external server!`);
+      console.log(`${this.constructor.name}: Secret endpoints: ${JSON.stringify(secretEndpoints)}`);
       return;
     }
+    // Super secret stuff
+    const whiteSceneId = secretEndpoints.whiteSceneId;
+    const redSceneId = secretEndpoints.redSceneId;
+    const secretEndpoint = secretEndpoints.endpoint;
     const sceneUtil = utils.sceneUtil;
-    const red = secretEndpoints.red;
-    const off = secretEndpoints.off;
-    const white = secretEndpoints.white;
 
-    externalApplication.get(`/${red}`, async (request, response) => {
-      console.log('red called');
-      const result = await sceneUtil.activateScene('ERgF0PTi-61fWYb');
-      response.send(result);
-      console.log('Request handled.');
-    });
 
-    externalApplication.get(`/${white}`, async (request, response) => {
-      console.log('red called');
-      const result = await sceneUtil.activateScene('T2-8b5kh32vSxCz');
-      response.send(result);
-      console.log('Request handled.');
-    });
+    // For security, there's a thing which will verify that this request comes from amazon
+    // and isn't an attack or something
+    const alexaRouter = express.Router(); // Instantiate an express "router"
+    externalApplication.use(alexaRouter); // Use it
+    alexaRouter.use(alexaVerifier); // Make the router use the Alexa call verifier
 
-    externalApplication.get(`/${off}`, async (request, response) => {
-      console.log('red called');
-      const result = await sceneUtil.activateScene(UtilityScenes.getAllOffId());
-      response.send(result);
+    // This will help us parse POSTs
+    externalApplication.use(bodyParser.json()); // support json encoded bodies
+    externalApplication.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
+
+    // Right now, these are the only accepted responses.
+    const processPost = async (request, response) => {
+      let chosenScene;
+      if (request.body.request.intent) {
+        const scene = request.body.request.intent.slots.Scene.value;
+        chosenScene = scene;
+        switch (scene) {
+          case 'red':
+            await sceneUtil.activateScene(redSceneId);
+            break;
+          case 'white':
+            await sceneUtil.activateScene(whiteSceneId);
+            break;
+          case 'off':
+            await sceneUtil.activateScene(UtilityScenes.getAllOffId());
+            break;
+          case 'on':
+            await sceneUtil.activateScene(whiteSceneId);
+            break;
+          default:
+            await sceneUtil.activateScene(whiteSceneId);
+            break;
+        }
+      } else {
+        await sceneUtil.activateScene(whiteSceneId);
+        chosenScene = 'on';
+      }
+
+      // Craft a nice response telling echo what to say
+      const alexaResponse = {
+        version: '1.0',
+        response: {
+          outputSpeech: {
+            type: 'PlainText',
+            text: `Done turning lights ${chosenScene}.`
+          },
+          reprompt: {
+            outputSpeech: {
+              type: 'PlainText',
+              text: null
+            }
+          },
+          shouldEndSession: true
+        }
+      };
+      response.send(alexaResponse);
       console.log('Request handled.');
-    });
+    };
+
+    // Start this app on the secret endpoint
+    externalApplication.post(`/${secretEndpoint}`, processPost);
   }
 
   routeInternalPuts(internalApplication, utils) {
