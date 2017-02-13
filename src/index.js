@@ -86,7 +86,9 @@ try {
 }
 
 // Just a logger to let you know if the secret endpoint is configured
-if (!process.env.SECRET_EXTERNAL || !process.env.SECRET_WHITE_ID || !process.env.SECRET_RED_ID) {
+if (!process.env.SECRET_EXTERNAL ||
+  !process.env.SECRET_WHITE_ID ||
+  !process.env.SECRET_RED_ID) {
   console.error('All secret endpoints not configured, will not start external server.');
   console.log(`process.env.SECRET_EXTERNAL: ${process.env.SECRET_EXTERNAL}`);
   console.log(`process.env.SECRET_WHITE_ID: ${process.env.SECRET_WHITE_ID}`);
@@ -94,17 +96,19 @@ if (!process.env.SECRET_EXTERNAL || !process.env.SECRET_WHITE_ID || !process.env
 } else {
   console.log('Found secret endpoints.');
 }
-const secretEndpoints = {
+
+const secretConfiguration = {
   endpoint: process.env.SECRET_EXTERNAL,
   whiteSceneId: process.env.SECRET_WHITE_ID,
-  redSceneId: process.env.SECRET_RED_ID
+  redSceneId: process.env.SECRET_RED_ID,
+  sslCertPath,
+  sslKeyPath
 };
 
 const expressConfiguration = {
   externalPort,
   internalPort,
-  sslCertPath,
-  sslKeyPath
+
 };
 
 const bridgeDetails = {
@@ -118,7 +122,7 @@ const server = new Routing(
   expressConfiguration,
   bridgeDetails,
   plugIps,
-  secretEndpoints
+  secretConfiguration
 );
 
 server.start();
