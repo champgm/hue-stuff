@@ -13,7 +13,7 @@ class HueApplication {
 
   start() {
     // Add the webapp folder as static content. This contains the UI.
-    const webAppFolder = path.join(__dirname, '../../webapp');
+    const webAppFolder = path.join(__dirname, '../../../webapp');
     console.log(`Static content will be read from: ${webAppFolder}`);
     this.application.use(express.static(webAppFolder));
 
