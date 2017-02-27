@@ -1,12 +1,14 @@
 <h2>Hue Light Control</h2>
-<ul class="tabs">
-  <li *ngFor="let tab of tabs" [class.selected]="tab === selectedTab" (click)="onSelect(tab)">
-    {{tab}}
-  </li>
-</ul>
+<nav>
+  <ul class="tabs">
+    <li *ngFor="let tab of tabs" [class.selected]="tab === selectedTab" (click)="onSelect(tab)">
+      <a routerLink="/{{tab | lowercase}}">{{tab}}</a>
+    </li>
+  </ul>
+</nav>
 <div *ngIf="selectedTab">
   <h2>
     {{selectedTab | uppercase}} selected
   </h2>
-  <button (click)="gotoDetail()">View Details</button>
 </div>
+<router-outlet></router-outlet>

@@ -9,26 +9,37 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 const core_1 = require('@angular/core');
-let AppComponent = class AppComponent {
-    constructor() {
-        this.selectedTab = "Scenes";
-    }
-    onSelect(tab) {
-        this.selectedTab = tab;
+const http_1 = require('@angular/http');
+require('rxjs/add/operator/toPromise');
+let SensorsComponent = class SensorsComponent {
+    constructor(http) {
+        this.http = http;
+        this.itemsUri = `/getsensors`;
     }
     ngOnInit() {
-        this.getTabs();
+        this.getItems();
     }
-    getTabs() {
-        this.tabs = ["Lights", "Scenes", "Groups", "Schedules", "Sensors", "Plugs"];
+    getItems() {
+        this.http.get(this.itemsUri).toPromise()
+            .then(response => {
+            const json = response.json();
+            this.itemIds = Object.keys(json);
+            this.items = json;
+        });
+    }
+    onSelect(itemId) {
+        console.log(`${this.constructor.name}: Selected: ${itemId}`);
+    }
+    onEdit(itemId) {
+        console.log(`${this.constructor.name}: Edited: ${itemId}`);
     }
 };
-AppComponent = __decorate([
+SensorsComponent = __decorate([
     core_1.Component({
         moduleId: module.id,
-        selector: 'my-app',
-        templateUrl: './app.component.html',
+        selector: 'sensors',
+        templateUrl: '../common/items.component.html',
     }), 
-    __metadata('design:paramtypes', [])
-], AppComponent);
-exports.AppComponent = AppComponent;
+    __metadata('design:paramtypes', [http_1.Http])
+], SensorsComponent);
+exports.SensorsComponent = SensorsComponent;

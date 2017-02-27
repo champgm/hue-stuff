@@ -9,32 +9,51 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 const core_1 = require('@angular/core');
-const platform_browser_1 = require('@angular/platform-browser');
-const app_routing_module_1 = require('./app-routing.module');
+const router_1 = require('@angular/router');
 const groups_component_1 = require('./tabs/groups/groups.component');
-const lights_component_1 = require('./tabs/lights/lights.component');
 const plugs_component_1 = require('./tabs/plugs/plugs.component');
-const scenes_component_1 = require('./tabs/scenes/scenes.component');
 const schedules_component_1 = require('./tabs/schedules/schedules.component');
 const sensors_component_1 = require('./tabs/sensors/sensors.component');
-const http_1 = require('@angular/http');
+const scenes_component_1 = require('./tabs/scenes/scenes.component');
+const lights_component_1 = require('./tabs/lights/lights.component');
 const app_component_1 = require('./app.component');
-let AppModule = class AppModule {
+const routes = [
+    {
+        path: 'groups',
+        component: groups_component_1.GroupsComponent
+    },
+    {
+        path: 'lights',
+        component: lights_component_1.LightsComponent
+    },
+    {
+        path: 'plugs',
+        component: plugs_component_1.PlugsComponent
+    },
+    {
+        path: 'scenes',
+        component: scenes_component_1.ScenesComponent
+    },
+    {
+        path: 'schedules',
+        component: schedules_component_1.SchedulesComponent
+    },
+    {
+        path: 'sensors',
+        component: sensors_component_1.SensorsComponent
+    },
+    {
+        path: 'app',
+        component: app_component_1.AppComponent
+    }
+];
+let AppRoutingModule = class AppRoutingModule {
 };
-AppModule = __decorate([
+AppRoutingModule = __decorate([
     core_1.NgModule({
-        imports: [platform_browser_1.BrowserModule, app_routing_module_1.AppRoutingModule, http_1.HttpModule],
-        declarations: [
-            app_component_1.AppComponent,
-            groups_component_1.GroupsComponent,
-            lights_component_1.LightsComponent,
-            plugs_component_1.PlugsComponent,
-            scenes_component_1.ScenesComponent,
-            schedules_component_1.SchedulesComponent,
-            sensors_component_1.SensorsComponent
-        ],
-        bootstrap: [app_component_1.AppComponent]
+        imports: [router_1.RouterModule.forRoot(routes)],
+        exports: [router_1.RouterModule]
     }), 
     __metadata('design:paramtypes', [])
-], AppModule);
-exports.AppModule = AppModule;
+], AppRoutingModule);
+exports.AppRoutingModule = AppRoutingModule;

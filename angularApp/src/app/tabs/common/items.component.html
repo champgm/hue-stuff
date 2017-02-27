@@ -1,0 +1,12 @@
+<div>
+  <ul class="items">
+    <li *ngFor="let itemId of itemIds">
+      <div (click)="onSelect(itemId)">
+        {{items[itemId].name}}
+      </div>
+      <div (click)="onEdit(itemId)">
+        EDIT
+      </div>
+    </li>
+  </ul>
+</div>

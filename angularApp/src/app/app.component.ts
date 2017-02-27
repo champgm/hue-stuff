@@ -8,7 +8,7 @@ import { OnInit } from '@angular/core';
 })
 export class AppComponent implements OnInit {
   tabs: string[];
-  selectedTab: string;
+  selectedTab: string = "Scenes";
 
   onSelect(tab: string): void {
     this.selectedTab = tab;
