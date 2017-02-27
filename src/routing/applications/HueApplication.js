@@ -1,6 +1,7 @@
 const KnownParameterNames = require('../util/KnownParameterNames');
 const makeRequest = require('request-promise');
 const express = require('express');
+const morgan = require('morgan');
 const path = require('path');
 const util = require('util');
 
@@ -12,10 +13,17 @@ class HueApplication {
   }
 
   start() {
+    this.application.use(morgan('common'));
+
     // Add the webapp folder as static content. This contains the UI.
     const webAppFolder = path.join(__dirname, '../../../webapp');
     console.log(`Static content will be read from: ${webAppFolder}`);
-    this.application.use(express.static(webAppFolder));
+    this.application.use('/', express.static(webAppFolder));
+
+    // Add the webapp folder as static content. This contains the UI.
+    const angularAppFolder = path.join(__dirname, '../../../angularApp/target');
+    console.log(`Static content will be read from: ${angularAppFolder}`);
+    this.application.use('/angular', express.static(angularAppFolder));
 
     // Route gets and puts for the internal application
     this.routeInternalGets(this.application, this.hueUtilities);
