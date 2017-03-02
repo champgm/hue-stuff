@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { OnInit } from '@angular/core';
 import { Http } from '@angular/http';
+import {ItemsComponent} from '../common/items.component';
 
 import 'rxjs/add/operator/toPromise';
 
@@ -9,31 +10,11 @@ import 'rxjs/add/operator/toPromise';
   selector: 'scenes',
   templateUrl: '../common/items.component.html',
 })
-export class ScenesComponent implements OnInit {
-  items: any;
-  itemIds: string[];
+export class ScenesComponent extends ItemsComponent implements OnInit {
   itemsUri: string = `/getscenes?v2=true`;
 
-  constructor(private http: Http) { }
-
-  ngOnInit(): void {
-    this.getItems();
+  constructor(http: Http) {
+    super(http);
   }
 
-  getItems() {
-    this.http.get(this.itemsUri).toPromise()
-      .then(response => {
-        const json = response.json();
-        this.itemIds = Object.keys(json);
-        this.items = json;
-      });
-  }
-
-  onSelect(itemId: string) {
-    console.log(`${this.constructor.name}: Selected: ${itemId}`);
-  }
-
-  onEdit(itemId: string) {
-    console.log(`${this.constructor.name}: Edited: ${itemId}`);
-  }
 }

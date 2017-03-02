@@ -59,6 +59,7 @@ if (!process.env.HUE_BRIDGE_IP) {
 } else {
   console.log('Bridge IP set.');
 }
+console.log(`Bridge IP: ${process.env.HUE_BRIDGE_IP}`);
 
 // This is the API key that will authenticate you to the bridge.
 // More info here: https://developers.meethue.com/documentation/getting-started

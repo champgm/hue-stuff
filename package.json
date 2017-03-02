@@ -9,6 +9,7 @@
 
 
     "start": "node --harmony src/index.js",
+    "restart": "npm run build && node --harmony src/index.js",
     "nyc": "nyc",
     "jasmine": "jasmine",
     "lint": "eslint . --ext .js --fix",

@@ -10,28 +10,15 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 const core_1 = require('@angular/core');
 const http_1 = require('@angular/http');
+const items_component_1 = require('../common/items.component');
 require('rxjs/add/operator/toPromise');
-let ScenesComponent = class ScenesComponent {
+let ScenesComponent = class ScenesComponent extends items_component_1.ItemsComponent {
     constructor(http) {
-        this.http = http;
+        super(http);
+        // items: any;
+        // itemIds: string[];
+        // selectedItemId: string;
         this.itemsUri = `/getscenes?v2=true`;
-    }
-    ngOnInit() {
-        this.getItems();
-    }
-    getItems() {
-        this.http.get(this.itemsUri).toPromise()
-            .then(response => {
-            const json = response.json();
-            this.itemIds = Object.keys(json);
-            this.items = json;
-        });
-    }
-    onSelect(itemId) {
-        console.log(`${this.constructor.name}: Selected: ${itemId}`);
-    }
-    onEdit(itemId) {
-        console.log(`${this.constructor.name}: Edited: ${itemId}`);
     }
 };
 ScenesComponent = __decorate([
