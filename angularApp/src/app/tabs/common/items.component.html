@@ -1,12 +1,28 @@
 <div>
   <ul class="items">
-    <li *ngFor="let itemId of itemIds" [class.selected]="itemId === selectedItemId">
+    <li *ngFor="let itemId of itemIds" [class.selected]="itemId === selectedItemId" [class.on]="isOn(itemId)">
       <div (click)="onSelect(itemId)">
         {{items[itemId].name}}
+      </div>
+      <div (click)="onView(itemId)">
+        VIEW
       </div>
       <div (click)="onEdit(itemId)">
         EDIT
       </div>
     </li>
   </ul>
+</div>
+<div *ngIf="toViewItemId" class="view">
+  <h2>"{{items[toViewItemId].name}}" details:</h2>
+  <div>
+    <pre class=viewItem>{{prettyPrint(items[toViewItemId])}}</pre>
+  </div>
+</div>
+<div *ngIf="toEditItemId" class="edit">
+  <h2>"{{itemToEdit.name}}" details:</h2>
+  <textarea [(ngModel)]='itemJsonToEdit' rows="30" cols="30"></textarea>
+  <div class="submitEdit" (click)="submitJson(itemId)">
+    SUBMIT
+  </div>
 </div>

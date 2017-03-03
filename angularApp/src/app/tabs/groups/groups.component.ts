@@ -11,10 +11,14 @@ import 'rxjs/add/operator/toPromise';
   templateUrl: '../common/items.component.html',
 })
 export class GroupsComponent extends ItemsComponent implements OnInit {
-  itemsUri: string = `/getgroups`;
+  itemsUri: string = `/getgroups?`;
+  selectUri: string = `/togglegroup?groupid=`;
 
   constructor(http: Http) {
     super(http);
   }
 
+  isOn(itemId: string): boolean {
+    return false;
+  }
 }

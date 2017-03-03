@@ -19,6 +19,6 @@ export class AppComponent implements OnInit {
   }
 
   getTabs(): void {
-    this.tabs = ["Lights", "Scenes", "Groups", "Schedules", "Sensors", "Plugs"];
+    this.tabs = ["Lights", "Scenes", "Groups", "Schedules", "Sensors", "Rules", "Plugs"];
   }
 }

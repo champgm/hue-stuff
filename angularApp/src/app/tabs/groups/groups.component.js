@@ -15,10 +15,11 @@ require('rxjs/add/operator/toPromise');
 let GroupsComponent = class GroupsComponent extends items_component_1.ItemsComponent {
     constructor(http) {
         super(http);
-        this.itemsUri = `/getgroups`;
+        this.itemsUri = `/getgroups?`;
+        this.selectUri = `/togglegroup?groupid=`;
     }
-    ngOnInit() {
-        this.getItems();
+    isOn(itemId) {
+        return false;
     }
 };
 GroupsComponent = __decorate([

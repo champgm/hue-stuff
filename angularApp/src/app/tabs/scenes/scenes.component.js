@@ -15,10 +15,11 @@ require('rxjs/add/operator/toPromise');
 let ScenesComponent = class ScenesComponent extends items_component_1.ItemsComponent {
     constructor(http) {
         super(http);
-        // items: any;
-        // itemIds: string[];
-        // selectedItemId: string;
-        this.itemsUri = `/getscenes?v2=true`;
+        this.itemsUri = `/getscenes?v2=true&`;
+        this.selectUri = `/activatescene?sceneid=`;
+    }
+    isOn(itemId) {
+        return false;
     }
 };
 ScenesComponent = __decorate([

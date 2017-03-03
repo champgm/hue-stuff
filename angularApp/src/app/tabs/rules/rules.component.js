@@ -12,35 +12,21 @@ const core_1 = require('@angular/core');
 const http_1 = require('@angular/http');
 const items_component_1 = require('../common/items.component');
 require('rxjs/add/operator/toPromise');
-let LightsComponent = class LightsComponent extends items_component_1.ItemsComponent {
+let RulesComponent = class RulesComponent extends items_component_1.ItemsComponent {
     constructor(http) {
         super(http);
-        this.itemsUri = `/getlights?`;
-        this.selectUri = `/togglelight?lightid=`;
-    }
-    onSelect(itemId) {
-        const response = super.onSelect(itemId);
-        response
-            .then(response => {
-            const json = response.json();
-            this.items[itemId] = json;
-        });
-        return response;
+        this.itemsUri = `/getrules`;
     }
     isOn(itemId) {
-        const item = this.items[itemId];
-        if (!item || !item.state) {
-            return false;
-        }
-        return item.state.on;
+        return false;
     }
 };
-LightsComponent = __decorate([
+RulesComponent = __decorate([
     core_1.Component({
         moduleId: module.id,
-        selector: 'lights',
+        selector: 'rules',
         templateUrl: '../common/items.component.html',
     }), 
     __metadata('design:paramtypes', [http_1.Http])
-], LightsComponent);
-exports.LightsComponent = LightsComponent;
+], RulesComponent);
+exports.RulesComponent = RulesComponent;

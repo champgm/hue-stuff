@@ -15,10 +15,11 @@ require('rxjs/add/operator/toPromise');
 let PlugsComponent = class PlugsComponent extends items_component_1.ItemsComponent {
     constructor(http) {
         super(http);
-        this.itemsUri = `/getplugs`;
+        this.itemsUri = `/getplugs?`;
+        this.selectUri = `/toggleplug?plugid=`;
     }
-    ngOnInit() {
-        this.getItems();
+    isOn(itemId) {
+        return false;
     }
 };
 PlugsComponent = __decorate([

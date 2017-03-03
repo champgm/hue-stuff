@@ -20,7 +20,7 @@ let AppComponent = class AppComponent {
         this.getTabs();
     }
     getTabs() {
-        this.tabs = ["Lights", "Scenes", "Groups", "Schedules", "Sensors", "Plugs"];
+        this.tabs = ["Lights", "Scenes", "Groups", "Schedules", "Sensors", "Rules", "Plugs"];
     }
 };
 AppComponent = __decorate([

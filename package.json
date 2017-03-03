@@ -6,8 +6,6 @@
   "scripts": {
     "build": "tsc -p angularApp/src/",
     "build:watch": "tsc -p angularApp/src/ -w",
-
-
     "start": "node --harmony src/index.js",
     "restart": "npm run build && node --harmony src/index.js",
     "nyc": "nyc",
@@ -27,17 +25,6 @@
   },
   "homepage": "https://github.com/champgm/hue-stuff#readme",
   "dependencies": {
-    "alexa-verifier-middleware": "^0.2.0",
-    "body-parser": "^1.16.1",
-    "eslint": "^3.13.1",
-    "express": "^4.14.0",
-    "hs100-api": "^0.3.0",
-    "https": "^1.0.0",
-    "minimist": "^1.2.0",
-    "morgan": "^1.8.1",
-    "request": "^2.79.0",
-    "request-promise": "^4.1.1",
-
     "@angular/common": "~2.4.0",
     "@angular/compiler": "~2.4.0",
     "@angular/core": "~2.4.0",
@@ -46,11 +33,23 @@
     "@angular/platform-browser": "~2.4.0",
     "@angular/platform-browser-dynamic": "~2.4.0",
     "@angular/router": "~3.4.0",
-
+    "alexa-verifier-middleware": "^0.2.0",
     "angular-in-memory-web-api": "~0.2.4",
-    "systemjs": "0.19.40",
+    "body-parser": "^1.16.1",
     "core-js": "^2.4.1",
+    "eslint": "^3.13.1",
+    "express": "^4.14.0",
+    "hs100-api": "^0.3.0",
+    "https": "^1.0.0",
+    "minimist": "^1.2.0",
+    "morgan": "^1.8.1",
+    "ng2-json-editor": "^0.6.0",
+    "ng2-jsoneditor": "^0.1.0",
+    "request": "^2.79.0",
+    "request-promise": "^4.1.1",
     "rxjs": "5.0.1",
+    "systemjs": "0.19.40",
+    "ts-helpers": "^1.1.2",
     "zone.js": "^0.7.4"
   },
   "devDependencies": {
@@ -63,11 +62,9 @@
     "eslint-plugin-react": "^6.9.0",
     "jasmine": "^2.5.3",
     "nyc": "^10.1.2",
-
     "concurrently": "^3.2.0",
     "lite-server": "^2.2.2",
     "typescript": "~2.0.10",
-
     "canonical-path": "0.0.2",
     "tslint": "^3.15.1",
     "lodash": "^4.16.4",
@@ -79,7 +76,6 @@
     "karma-jasmine-html-reporter": "^0.2.2",
     "protractor": "~4.0.14",
     "rimraf": "^2.5.4",
-
     "@types/node": "^6.0.46",
     "@types/jasmine": "2.5.36"
   }

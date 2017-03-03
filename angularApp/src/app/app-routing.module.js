@@ -13,10 +13,12 @@ const router_1 = require('@angular/router');
 const groups_component_1 = require('./tabs/groups/groups.component');
 const plugs_component_1 = require('./tabs/plugs/plugs.component');
 const schedules_component_1 = require('./tabs/schedules/schedules.component');
+const rules_component_1 = require('./tabs/rules/rules.component');
 const sensors_component_1 = require('./tabs/sensors/sensors.component');
 const scenes_component_1 = require('./tabs/scenes/scenes.component');
 const lights_component_1 = require('./tabs/lights/lights.component');
 const app_component_1 = require('./app.component');
+const angular = 'angular/';
 const routes = [
     {
         path: 'groups',
@@ -43,8 +45,21 @@ const routes = [
         component: sensors_component_1.SensorsComponent
     },
     {
+        path: 'rules',
+        component: rules_component_1.RulesComponent
+    },
+    {
         path: 'app',
         component: app_component_1.AppComponent
+    },
+    // {
+    //   path: 'edit/:itemId',
+    //   component: HeroDetailComponent
+    // },
+    {
+        path: '',
+        redirectTo: '/scenes',
+        pathMatch: 'full'
     }
 ];
 let AppRoutingModule = class AppRoutingModule {
