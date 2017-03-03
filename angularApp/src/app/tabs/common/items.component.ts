@@ -16,8 +16,10 @@ export abstract class ItemsComponent implements OnInit {
   JSON: JSON;
   itemJsonToEdit: string;
   itemToEdit: any;
+  http: Http;
 
-  constructor(private http: Http) {
+  constructor(http: Http) {
+    this.http = http;
     this.JSON = JSON;
   }
 
@@ -61,9 +63,11 @@ export abstract class ItemsComponent implements OnInit {
     this.itemJsonToEdit = undefined;
   }
 
-  submitJson() {
+  // getFullItem()
+
+  submitJson(itemId: string) {
     console.log(`${this.constructor.name}: submitJson called`);
-    console.log(`${this.constructor.name}: JSON was: ${JSON.stringify(this.itemJsonToEdit)}`);
+    console.log(`${this.constructor.name}: JSON was: ${this.itemJsonToEdit}`);
     this.itemJsonToEdit = "boop boop beep";
   }
 

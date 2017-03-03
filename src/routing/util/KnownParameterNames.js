@@ -64,6 +64,10 @@ class KnownParameterNames {
     return 'rulelist';
   }
 
+  static getRuleId() {
+    return 'ruleid';
+  }
+
   static getPlugId() {
     return 'plugid';
   }

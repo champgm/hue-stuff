@@ -16,9 +16,18 @@ let RulesComponent = class RulesComponent extends items_component_1.ItemsCompone
     constructor(http) {
         super(http);
         this.itemsUri = `/getrules`;
+        this.updateUri = `/updaterule?ruleid=`;
     }
     isOn(itemId) {
         return false;
+    }
+    submitJson(itemId) {
+        console.log(`${this.constructor.name}: submitJson called`);
+        console.log(`${this.constructor.name}: Raw string: ${this.itemJsonToEdit}`);
+        console.log(`${this.constructor.name}: JSON was: ${JSON.parse(this.itemJsonToEdit)}`);
+        this.itemJsonToEdit = "boop boop beep";
+        const editedItem = JSON.parse(this.itemJsonToEdit);
+        this.http.put(`${this.updateUri}${this.itemToEdit.id}`, editedItem).toPromise();
     }
 };
 RulesComponent = __decorate([

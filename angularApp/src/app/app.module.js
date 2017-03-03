@@ -20,6 +20,7 @@ const schedules_component_1 = require('./tabs/schedules/schedules.component');
 const sensors_component_1 = require('./tabs/sensors/sensors.component');
 const http_1 = require('@angular/http');
 const common_1 = require('@angular/common');
+const forms_1 = require('@angular/forms');
 // import { JSONEditorModule } from 'ng2-jsoneditor';
 const app_component_1 = require('./app.component');
 let AppModule = class AppModule {
@@ -29,7 +30,8 @@ AppModule = __decorate([
         imports: [
             platform_browser_1.BrowserModule,
             app_routing_module_1.AppRoutingModule,
-            http_1.HttpModule
+            http_1.HttpModule,
+            forms_1.FormsModule
         ],
         declarations: [
             app_component_1.AppComponent,

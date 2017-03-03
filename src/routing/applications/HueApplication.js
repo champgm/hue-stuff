@@ -45,6 +45,7 @@ class HueApplication {
     const lightUtil = utils.lightUtil;
     const sceneUtil = utils.sceneUtil;
     const groupUtil = utils.groupUtil;
+    const ruleUtil = utils.ruleUtil;
     const plugUtil = utils.plugUtil;
 
     console.log('Routing togglelight');
@@ -84,6 +85,18 @@ class HueApplication {
 
       const toggleResult = await plugUtil.togglePlug(plugId);
       response.send(toggleResult);
+      console.log('Request handled.');
+    });
+
+    console.log('Routing updaterule');
+    internalApplication.put('/updaterule', async (request, response) => {
+      console.log('updaterule called');
+      const ruleId = HueApplication.getRequiredId(request, response, KnownParameterNames.getRuleId());
+      console.log(`Ruleid from request: ${ruleId}`);
+
+      console.log(`${this.constructor.name}: request body: ${JSON.stringify(request.body)}`);
+      // const updateResult = plugUtil.updateRule
+      // response.send(toggleResult);
       console.log('Request handled.');
     });
   }

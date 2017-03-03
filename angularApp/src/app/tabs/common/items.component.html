@@ -21,7 +21,7 @@
 </div>
 <div *ngIf="toEditItemId" class="edit">
   <h2>"{{itemToEdit.name}}" details:</h2>
-  <textarea [(ngModel)]='itemJsonToEdit' rows="30" cols="30"></textarea>
+  <textarea ref-textarea [(ngModel)]="itemJsonToEdit" rows="30" cols="60"></textarea>
   <div class="submitEdit" (click)="submitJson(itemId)">
     SUBMIT
   </div>
