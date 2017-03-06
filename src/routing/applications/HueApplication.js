@@ -22,15 +22,11 @@ class HueApplication {
     console.log(`Static content will be read from: ${webAppFolder}`);
     this.application.use('/', express.static(webAppFolder));
 
-    // Angular stuff
-    const angularAppFolder = path.join(__dirname, '../../../angularApp/src');
-    console.log(`Angular content will be read from: ${angularAppFolder}`);
-    this.application.use('/angular', express.static(angularAppFolder));
     // It needs to access the node_modules.
     // I really haven't found a better way to do this.
     const nodeModulesFolder = path.join(__dirname, '../../../node_modules');
     console.log(`Node Modules content will be read from: ${nodeModulesFolder}`);
-    this.application.use('/angular/node_modules', express.static(nodeModulesFolder));
+    this.application.use('/node_modules', express.static(nodeModulesFolder));
 
     // Route gets and puts for the internal application
     this.routeInternalGets(this.application, this.hueUtilities);

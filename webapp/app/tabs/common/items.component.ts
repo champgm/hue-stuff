@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { OnInit } from '@angular/core';
 import { Http } from '@angular/http';
-import { JsonEditorModule } from 'ng2-json-editor';
 
 import 'rxjs/add/operator/toPromise';
 
