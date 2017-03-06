@@ -6,17 +6,20 @@ import { JsonEditorModule } from 'ng2-json-editor';
 import 'rxjs/add/operator/toPromise';
 
 export abstract class ItemsComponent implements OnInit {
+  http: Http;
+  JSON: JSON;
+
+  updateUri: string;
+  selectUri: string;
+  itemsUri: string;
   items: any;
   itemIds: string[];
   selectedItemId: string;
-  selectUri: string;
-  itemsUri: string;
-  toEditItemId: string;
-  toViewItemId: string;
-  JSON: JSON;
-  itemJsonToEdit: string;
+  itemIdToView: string;
+  itemIdToEdit: string;
   itemToEdit: any;
-  http: Http;
+  itemJsonToEdit: string;
+  editResult: string;
 
   constructor(http: Http) {
     this.http = http;
@@ -31,8 +34,8 @@ export abstract class ItemsComponent implements OnInit {
     return this.http.get(uri).toPromise();
   }
 
-  getItems() {
-    this.httpGet(this.itemsUri)
+  async getItems() {
+    await this.httpGet(this.itemsUri)
       .then(response => {
         const json = response.json();
         this.itemIds = Object.keys(json);
@@ -48,27 +51,49 @@ export abstract class ItemsComponent implements OnInit {
     }
   }
 
+  onView(itemId: string) {
+    console.log(`${this.constructor.name}: onView called with itemId: ${itemId}`);
+    this.itemIdToView = itemId;
+    this.itemIdToEdit = undefined;
+    this.itemJsonToEdit = undefined;
+  }
+
   onEdit(itemId: string) {
     console.log(`${this.constructor.name}: onEdit called with itemId: ${itemId}`);
-    this.toEditItemId = itemId;
-    this.toViewItemId = undefined;
+    this.itemIdToEdit = itemId;
+    this.itemIdToView = undefined;
     this.itemToEdit = this.items[itemId];
     this.itemJsonToEdit = this.prettyPrint(this.items[itemId]);
   }
 
-  onView(itemId: string) {
-    console.log(`${this.constructor.name}: onView called with itemId: ${itemId}`);
-    this.toViewItemId = itemId;
-    this.toEditItemId = undefined;
-    this.itemJsonToEdit = undefined;
+  async submitJson() {
+    let editedItem;
+    try {
+      editedItem = JSON.parse(this.itemJsonToEdit);
+    } catch (error) {
+      this.editResult = `Unable to parse input JSON: ${this.itemJsonToEdit}`;
+      return;
+    }
+    if (this.updateUri) {
+      const response = await this.http.put(`${this.updateUri}${this.itemIdToEdit}`, editedItem).toPromise();
+      this.editResult = JSON.parse(response["_body"]);
+    }
+    await this.getItems();
+    this.onEdit(this.itemIdToEdit);
   }
 
-  // getFullItem()
+  resetEdit() {
+    this.itemJsonToEdit = this.prettyPrint(this.items[this.itemIdToEdit]);
+  }
 
-  submitJson(itemId: string) {
-    console.log(`${this.constructor.name}: submitJson called`);
-    console.log(`${this.constructor.name}: JSON was: ${this.itemJsonToEdit}`);
-    this.itemJsonToEdit = "boop boop beep";
+  cancelEdit() {
+    this.itemJsonToEdit = undefined;
+    this.itemIdToEdit = undefined;
+    this.itemToEdit = undefined;
+  }
+
+  clearEditResult() {
+    this.editResult = undefined;
   }
 
   prettyPrint(jsonItem: any) {

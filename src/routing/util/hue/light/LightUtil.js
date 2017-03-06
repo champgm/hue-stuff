@@ -54,6 +54,13 @@ class LightUtil {
     const onState = { on: true };
     return this.setLightState(lightId, onState);
   }
+
+  async update(itemId, json) {
+    const uri = `lights/${itemId}`;
+    const putOptions = this.requestOptionsUtil.putWithBody(uri, json);
+    const response = await makeRequest(putOptions);
+    return response;
+  }
 }
 
 module.exports = LightUtil;

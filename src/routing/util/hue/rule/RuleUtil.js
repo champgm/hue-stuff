@@ -7,9 +7,9 @@ class RuleUtil {
     this.requestOptionsUtil = new RequestOptionsUtil(bridgeUri);
   }
 
-  async updateRule(ruleId, ruleJson) {
-    const rulesUri = `rules/${ruleId}`;
-    const putOptions = this.requestOptionsUtil.putWithBody(rulesUri, ruleJson);
+  async update(itemId, json) {
+    const uri = `rules/${itemId}`;
+    const putOptions = this.requestOptionsUtil.putWithBody(uri, json);
     const response = await makeRequest(putOptions);
     return response;
   }

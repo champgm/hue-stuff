@@ -13,16 +13,29 @@
     </li>
   </ul>
 </div>
-<div *ngIf="toViewItemId" class="view">
-  <h2>"{{items[toViewItemId].name}}" details:</h2>
+<div *ngIf="itemIdToView" class="view">
+  <h2>"{{items[itemIdToView].name}}" details:</h2>
   <div>
-    <pre class=viewItem>{{prettyPrint(items[toViewItemId])}}</pre>
+    <pre class=viewItem>{{prettyPrint(items[itemIdToView])}}</pre>
   </div>
 </div>
-<div *ngIf="toEditItemId" class="edit">
+<div *ngIf="itemIdToEdit" class="edit">
   <h2>"{{itemToEdit.name}}" details:</h2>
   <textarea ref-textarea [(ngModel)]="itemJsonToEdit" rows="30" cols="60"></textarea>
+  <div class="cancelEdit" (click)="cancelEdit()">
+    CANCEL
+  </div>
+  <div class="resetEdit" (click)="resetEdit(itemId)">
+    RESET
+  </div>
   <div class="submitEdit" (click)="submitJson(itemId)">
     SUBMIT
+  </div>
+</div>
+<div *ngIf="editResult" class="editResult">
+  <h2>Edit results:</h2>
+  <pre class=viewItem>{{prettyPrint(editResult)}}</pre>
+  <div class="clearEditResult" (click)="clearEditResult()">
+    CLEAR
   </div>
 </div>

@@ -13,6 +13,7 @@ import 'rxjs/add/operator/toPromise';
 export class LightsComponent extends ItemsComponent implements OnInit {
   itemsUri: string = `/getlights?`;
   selectUri: string = `/togglelight?lightid=`;
+  updateUri: string = `/updatelight?lightid=`;
 
   constructor(http: Http) {
     super(http);
@@ -35,4 +36,5 @@ export class LightsComponent extends ItemsComponent implements OnInit {
     }
     return item.state.on;
   }
+
 }

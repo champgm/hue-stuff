@@ -1,5 +1,6 @@
 const KnownParameterNames = require('../util/KnownParameterNames');
 const makeRequest = require('request-promise');
+const bodyParser = require('body-parser');
 const express = require('express');
 const morgan = require('morgan');
 const path = require('path');
@@ -14,6 +15,7 @@ class HueApplication {
 
   start() {
     this.application.use(morgan('common'));
+    this.application.use(bodyParser.json());
 
     // Add the webapp folder as static content. This contains the UI.
     const webAppFolder = path.join(__dirname, '../../../webapp');
@@ -57,6 +59,15 @@ class HueApplication {
       console.log('Request handled.');
     });
 
+    console.log('Routing updatelight');
+    internalApplication.put('/updatelight', async (request, response) => {
+      console.log('updatelight called');
+      const itemId = HueApplication.getRequiredId(request, response, KnownParameterNames.getLightId());
+      const updateResponse = await lightUtil.update(itemId, request.body);
+      response.send(updateResponse);
+      console.log('Request handled.');
+    });
+
     console.log('Routing activatescene');
     internalApplication.get('/activatescene', async (request, response) => {
       console.log('activatescene called');
@@ -68,12 +79,30 @@ class HueApplication {
       console.log('Request handled.');
     });
 
+    console.log('Routing updatescene');
+    internalApplication.put('/updatescene', async (request, response) => {
+      console.log('updatescene called');
+      const itemId = HueApplication.getRequiredId(request, response, KnownParameterNames.getSceneId());
+      const updateResponse = await sceneUtil.update(itemId, request.body);
+      response.send(updateResponse);
+      console.log('Request handled.');
+    });
+
     console.log('Routing togglegroup');
     internalApplication.get('/togglegroup', async (request, response) => {
       console.log('togglegroup called');
       const groupId = HueApplication.getRequiredId(request, response, KnownParameterNames.getGroupId());
       const toggledGroup = await groupUtil.toggleGroup(groupId);
       response.send(toggledGroup);
+      console.log('Request handled.');
+    });
+
+    console.log('Routing updategroup');
+    internalApplication.put('/updategroup', async (request, response) => {
+      console.log('updategroup called');
+      const itemId = HueApplication.getRequiredId(request, response, KnownParameterNames.getGroupId());
+      const updateResponse = await groupUtil.update(itemId, request.body);
+      response.send(updateResponse);
       console.log('Request handled.');
     });
 
@@ -91,12 +120,9 @@ class HueApplication {
     console.log('Routing updaterule');
     internalApplication.put('/updaterule', async (request, response) => {
       console.log('updaterule called');
-      const ruleId = HueApplication.getRequiredId(request, response, KnownParameterNames.getRuleId());
-      console.log(`Ruleid from request: ${ruleId}`);
-
-      console.log(`${this.constructor.name}: request body: ${JSON.stringify(request.body)}`);
-      // const updateResult = plugUtil.updateRule
-      // response.send(toggleResult);
+      const itemId = HueApplication.getRequiredId(request, response, KnownParameterNames.getRuleId());
+      const updateResponse = await ruleUtil.update(itemId, request.body);
+      response.send(updateResponse);
       console.log('Request handled.');
     });
   }

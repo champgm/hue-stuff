@@ -13,6 +13,7 @@ import 'rxjs/add/operator/toPromise';
 export class GroupsComponent extends ItemsComponent implements OnInit {
   itemsUri: string = `/getgroups?`;
   selectUri: string = `/togglegroup?groupid=`;
+  updateUri: string = `/updategroup?groupid=`
 
   constructor(http: Http) {
     super(http);

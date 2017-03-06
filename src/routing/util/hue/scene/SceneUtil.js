@@ -99,6 +99,13 @@ class SceneUtil {
     }
   }
 
+  async update(itemId, json) {
+    const uri = `scenes/${itemId}`;
+    const putOptions = this.requestOptionsUtil.putWithBody(uri, json);
+    const response = await makeRequest(putOptions);
+    return response;
+  }
+
 }
 
 module.exports = SceneUtil;

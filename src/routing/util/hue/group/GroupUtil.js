@@ -53,6 +53,13 @@ class GroupUtil {
     const onAction = { on: true };
     return this.setGroupAction(groupId, onAction);
   }
+
+  async update(itemId, json) {
+    const uri = `groups/${itemId}`;
+    const putOptions = this.requestOptionsUtil.putWithBody(uri, json);
+    const response = await makeRequest(putOptions);
+    return response;
+  }
 }
 
 module.exports = GroupUtil;

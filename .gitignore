@@ -21,4 +21,4 @@ node_modules/
 npm-debug.log
 
 # Angular
-**/target/*.js*
+angularApp/src/app/**/*.js*

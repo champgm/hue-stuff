@@ -13,6 +13,7 @@ import 'rxjs/add/operator/toPromise';
 export class ScenesComponent extends ItemsComponent implements OnInit {
   itemsUri: string = `/getscenes?v2=true&`;
   selectUri: string = `/activatescene?sceneid=`;
+  updateUri: string = `/updatescene?sceneid=`;
 
   constructor(http: Http) {
     super(http);
