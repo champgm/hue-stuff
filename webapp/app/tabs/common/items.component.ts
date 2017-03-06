@@ -57,6 +57,10 @@ export abstract class ItemsComponent implements OnInit {
     this.itemJsonToEdit = undefined;
   }
 
+  clearView() {
+    this.itemIdToView = undefined;
+  }
+
   onEdit(itemId: string) {
     console.log(`${this.constructor.name}: onEdit called with itemId: ${itemId}`);
     this.itemIdToEdit = itemId;

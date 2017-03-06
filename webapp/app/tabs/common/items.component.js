@@ -43,6 +43,9 @@ class ItemsComponent {
         this.itemIdToEdit = undefined;
         this.itemJsonToEdit = undefined;
     }
+    clearView() {
+        this.itemIdToView = undefined;
+    }
     onEdit(itemId) {
         console.log(`${this.constructor.name}: onEdit called with itemId: ${itemId}`);
         this.itemIdToEdit = itemId;

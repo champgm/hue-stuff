@@ -1,14 +1,16 @@
+<!--<div class="container-fluid">-->
 <h2>Hue Light Control</h2>
 <nav>
-  <ul class="tabs">
+  <ul class="nav nav-tabs" id="mainTab">
     <li *ngFor="let tab of tabs" [class.selected]="tab === selectedTab" (click)="onSelect(tab)">
-      <a routerLink="/{{tab | lowercase}}">{{tab}}</a>
+      <a data-toggle="tab" routerLink="/{{tab | lowercase}}">{{tab}}</a>
     </li>
   </ul>
 </nav>
-<div *ngIf="selectedTab">
+<!--<div *ngIf="selectedTab">
   <h2>
     {{selectedTab | uppercase}} selected
   </h2>
-</div>
+</div>-->
 <router-outlet></router-outlet>
+<!--</div>-->

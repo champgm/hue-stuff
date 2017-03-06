@@ -1,41 +1,45 @@
-<div>
-  <ul class="items">
-    <li *ngFor="let itemId of itemIds" [class.selected]="itemId === selectedItemId" [class.on]="isOn(itemId)">
-      <div (click)="onSelect(itemId)">
-        {{items[itemId].name}}
-      </div>
-      <div (click)="onView(itemId)">
-        VIEW
-      </div>
-      <div (click)="onEdit(itemId)">
-        EDIT
-      </div>
-    </li>
-  </ul>
-</div>
-<div *ngIf="itemIdToView" class="view">
-  <h2>"{{items[itemIdToView].name}}" details:</h2>
-  <div>
-    <pre class=viewItem>{{prettyPrint(items[itemIdToView])}}</pre>
+<div class="tab-content tab-pane">
+  <!--<ul class="items">-->
+  <div *ngFor="let itemId of itemIds" [class.selected]="itemId === selectedItemId" [class.on]="isOn(itemId)" class="col-sm-6 col-md-4">
+    <!--<li *ngFor="let itemId of itemIds" [class.selected]="itemId === selectedItemId" [class.on]="isOn(itemId)" class="list-group">-->
+    <div class="btn btn-off btn-lg" type="button" (click)="onSelect(itemId)">
+      {{items[itemId].name}}
+    </div>
+    <div class="btn btn-off btn-lg" type="button" (click)="onView(itemId)">
+      VIEW
+    </div>
+    <div class="btn btn-off btn-lg" type="button" (click)="onEdit(itemId)">
+      EDIT
+    </div>
+    <!--</li>-->
+    <!--</ul>-->
   </div>
-</div>
-<div *ngIf="itemIdToEdit" class="edit">
-  <h2>"{{itemToEdit.name}}" details:</h2>
-  <textarea ref-textarea [(ngModel)]="itemJsonToEdit" rows="30" cols="60"></textarea>
-  <div class="cancelEdit" (click)="cancelEdit()">
-    CANCEL
+  <div *ngIf="itemIdToView" class="view">
+    <h2>"{{items[itemIdToView].name}}" details:</h2>
+    <div>
+      <pre class=viewItem>{{prettyPrint(items[itemIdToView])}}</pre>
+    </div>
+    <div class="clearViewResult" (click)="clearViewResult()">
+      CLEAR
+    </div>
   </div>
-  <div class="resetEdit" (click)="resetEdit(itemId)">
-    RESET
+  <div *ngIf="itemIdToEdit" class="edit">
+    <h2>"{{itemToEdit.name}}" details:</h2>
+    <textarea ref-textarea [(ngModel)]="itemJsonToEdit" rows="30" cols="60"></textarea>
+    <div class="cancelEdit" (click)="cancelEdit()">
+      CANCEL
+    </div>
+    <div class="resetEdit" (click)="resetEdit(itemId)">
+      RESET
+    </div>
+    <div class="submitEdit" (click)="submitJson(itemId)">
+      SUBMIT
+    </div>
   </div>
-  <div class="submitEdit" (click)="submitJson(itemId)">
-    SUBMIT
+  <div *ngIf="editResult" class="editResult">
+    <h2>Edit results:</h2>
+    <pre class=viewItem>{{prettyPrint(editResult)}}</pre>
+    <div class="clearEditResult" (click)="clearEditResult()">
+      CLEAR
+    </div>
   </div>
-</div>
-<div *ngIf="editResult" class="editResult">
-  <h2>Edit results:</h2>
-  <pre class=viewItem>{{prettyPrint(editResult)}}</pre>
-  <div class="clearEditResult" (click)="clearEditResult()">
-    CLEAR
-  </div>
-</div>
