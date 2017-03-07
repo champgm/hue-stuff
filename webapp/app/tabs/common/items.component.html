@@ -1,19 +1,16 @@
 <div class="tab-content tab-pane">
-  <!--<ul class="items">-->
   <div *ngFor="let itemId of itemIds" [class.selected]="itemId === selectedItemId" [class.on]="isOn(itemId)" class="col-sm-6 col-md-4">
-    <!--<li *ngFor="let itemId of itemIds" [class.selected]="itemId === selectedItemId" [class.on]="isOn(itemId)" class="list-group">-->
-    <div class="btn btn-off btn-lg" type="button" (click)="onSelect(itemId)">
+    <div class="btn btn-off btn-lg item" type="button" (click)="onSelect(itemId)">
       {{items[itemId].name}}
     </div>
-    <div class="btn btn-off btn-lg" type="button" (click)="onView(itemId)">
+    <div class="btn btn-off btn-lg item" type="button" (click)="onView(itemId)">
       VIEW
     </div>
-    <div class="btn btn-off btn-lg" type="button" (click)="onEdit(itemId)">
+    <div class="btn btn-off btn-lg item" type="button" (click)="onEdit(itemId)">
       EDIT
     </div>
-    <!--</li>-->
-    <!--</ul>-->
   </div>
+  <!--MODAL?-->
   <div *ngIf="itemIdToView" class="view">
     <h2>"{{items[itemIdToView].name}}" details:</h2>
     <div>

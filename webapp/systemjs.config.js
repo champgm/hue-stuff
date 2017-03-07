@@ -26,7 +26,7 @@
       // other libraries
       rxjs: 'node_modules/rxjs',
       'angular-in-memory-web-api': 'node_modules/angular-in-memory-web-api/bundles/in-memory-web-api.umd.js',
-      'ng2-json-editor': 'node_modules/ng2-json-editor'
+      'ng2-bootstrap': 'node_modules/ng2-bootstrap/bundles/ng2-bootstrap.umd.js'
     },
     // packages tells the System loader how to load when no filename and/or no extension
     packages: {
@@ -38,7 +38,12 @@
       },
       'ng2-jsoneditor': {
         defaultExtension: 'js'
-      }
+      },
+      'ng2-bootstrap': {
+        format: 'cjs',
+        main: 'bundles/ng2-bootstrap.umd.js',
+        defaultExtension: 'js'
+      },
     },
     defaultJSExtensions: true
   });
