@@ -11,14 +11,11 @@ import 'rxjs/add/operator/toPromise';
   templateUrl: '../common/items.component.html',
 })
 export class SchedulesComponent extends ItemsComponent implements OnInit {
+  itemType: string = 'schedules';
   itemsUri: string = `/getschedules`;
   updateUri: string = `/updateschedule?scheduleid=`;
 
   constructor(http: Http) {
     super(http);
-  }
-
-  isOn(itemId: string): boolean {
-    return false;
   }
 }

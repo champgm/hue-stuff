@@ -1,0 +1,64 @@
+.btn-group>.btn-group:first-child:not(:last-child)>.btn:last-child {
+  /* Select Button */
+  padding: 14.5px 12px;
+}
+
+.btn-view-edit {
+  /*View & Edit Buttons*/
+  padding: 5px 7px 4px 6px;
+  font-size: 12px;
+}
+
+.btn-group {
+  display: flex;
+}
+
+.modal-dialog {
+  /* This makes Modal windows fit their content instad of being a set size */
+  position: relative;
+  display: table;
+  overflow-y: auto;
+  overflow-x: auto;
+  width: auto;
+  min-width: 300px;
+}
+
+.btn-group-vertical>.btn:first-child:not(:last-child) {
+  /*This sharpens the bottom left corner of the top view & edit button*/
+  border-top-left-radius: 0;
+  border-top-right-radius: 4px;
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+.btn-group-vertical>.btn:last-child:not(:first-child) {
+  /*This sharpens the top right corner of the bottom view & edit button*/
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 4px;
+  border-bottom-left-radius: 0px;
+}
+
+
+/*
+ * Used together, these can center button groups
+ * tac must be on the group's container, and ilb must be on the group.
+ */
+
+.tac {
+  text-align: center
+}
+
+.ilb {
+  white-space: nowrap;
+  display: inline-block
+}
+
+
+/*.outline {
+  padding: 20px;
+  outline: 2px solid #ccc;
+  outline-offset: -10px;
+  -moz-outline-radius: 10px;
+  -webkit-outline-radius: 10px;
+}*/

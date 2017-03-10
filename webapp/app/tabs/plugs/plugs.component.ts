@@ -11,14 +11,11 @@ import 'rxjs/add/operator/toPromise';
   templateUrl: '../common/items.component.html',
 })
 export class PlugsComponent extends ItemsComponent implements OnInit {
+  itemType: string = 'plugs';
   itemsUri: string = `/getplugs?`;
   selectUri: string = `/toggleplug?plugid=`;
 
   constructor(http: Http) {
     super(http);
-  }
-
-  isOn(itemId: string): boolean {
-    return false;
   }
 }

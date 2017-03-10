@@ -1,6 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { OnInit } from '@angular/core';
 import { Http } from '@angular/http';
+// import { ModalDirective } from 'ng2-bootstrap/modal';
+import { ModalDirective } from 'ng2-bootstrap';
 
 import 'rxjs/add/operator/toPromise';
 
@@ -8,6 +10,11 @@ export abstract class ItemsComponent implements OnInit {
   http: Http;
   JSON: JSON;
 
+  @ViewChild('viewModal') public viewModal: ModalDirective;
+  @ViewChild('editModal') public editModal: ModalDirective;
+  @ViewChild('editResultModal') public editResultModal: ModalDirective;
+
+  topPad: number = 50;
   updateUri: string;
   selectUri: string;
   itemsUri: string;
@@ -55,9 +62,11 @@ export abstract class ItemsComponent implements OnInit {
     this.itemIdToView = itemId;
     this.itemIdToEdit = undefined;
     this.itemJsonToEdit = undefined;
+    this.viewModal.show();
   }
 
   clearView() {
+    this.viewModal.hide();
     this.itemIdToView = undefined;
   }
 
@@ -67,6 +76,7 @@ export abstract class ItemsComponent implements OnInit {
     this.itemIdToView = undefined;
     this.itemToEdit = this.items[itemId];
     this.itemJsonToEdit = this.prettyPrint(this.items[itemId]);
+    this.editModal.show();
   }
 
   async submitJson() {
@@ -81,6 +91,7 @@ export abstract class ItemsComponent implements OnInit {
       const response = await this.http.put(`${this.updateUri}${this.itemIdToEdit}`, editedItem).toPromise();
       this.editResult = JSON.parse(response["_body"]);
     }
+    this.editResultModal.show();
     await this.getItems();
     this.onEdit(this.itemIdToEdit);
   }
@@ -93,15 +104,19 @@ export abstract class ItemsComponent implements OnInit {
     this.itemJsonToEdit = undefined;
     this.itemIdToEdit = undefined;
     this.itemToEdit = undefined;
+    this.editModal.hide();
   }
 
   clearEditResult() {
     this.editResult = undefined;
+    this.editResultModal.hide();
   }
 
   prettyPrint(jsonItem: any) {
     return JSON.stringify(jsonItem, null, 4);
   }
 
-  abstract isOn(itemId: string): boolean;
+  isOn(itemId: string): boolean {
+    return true;
+  }
 }

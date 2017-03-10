@@ -1,42 +1,91 @@
 <div class="tab-content tab-pane">
-  <div *ngFor="let itemId of itemIds" [class.selected]="itemId === selectedItemId" [class.on]="isOn(itemId)" class="col-sm-6 col-md-4">
-    <div class="btn btn-off btn-lg item" type="button" (click)="onSelect(itemId)">
-      {{items[itemId].name}}
-    </div>
-    <div class="btn btn-off btn-lg item" type="button" (click)="onView(itemId)">
-      VIEW
-    </div>
-    <div class="btn btn-off btn-lg item" type="button" (click)="onEdit(itemId)">
-      EDIT
-    </div>
-  </div>
-  <!--MODAL?-->
-  <div *ngIf="itemIdToView" class="view">
-    <h2>"{{items[itemIdToView].name}}" details:</h2>
-    <div>
-      <pre class=viewItem>{{prettyPrint(items[itemIdToView])}}</pre>
-    </div>
-    <div class="clearViewResult" (click)="clearViewResult()">
-      CLEAR
-    </div>
-  </div>
-  <div *ngIf="itemIdToEdit" class="edit">
-    <h2>"{{itemToEdit.name}}" details:</h2>
-    <textarea ref-textarea [(ngModel)]="itemJsonToEdit" rows="30" cols="60"></textarea>
-    <div class="cancelEdit" (click)="cancelEdit()">
-      CANCEL
-    </div>
-    <div class="resetEdit" (click)="resetEdit(itemId)">
-      RESET
-    </div>
-    <div class="submitEdit" (click)="submitJson(itemId)">
-      SUBMIT
+
+  <div class="container">
+    <div class="row-fluid">
+      <div *ngFor="let itemId of itemIds; let i = index">
+        <!--<div class="col-xs-4 outline tac">-->
+        <div class="col-xs-12 col-sm-6 col-lg-4 outline tac">
+          <div class="btn-group outline ilb" [class.selected]="itemId === selectedItemId" [class.on]="isOn(itemId)" [style.margin-top.px]="topPad">
+
+            <!--primary = on, default = off-->
+            <div class="btn-group btn-group-lg" *ngIf="isOn(itemId)">
+              <label type="button" class="btn-select btn btn-primary" (click)="onSelect(itemId)">{{items[itemId].name}}</label>
+            </div>
+            <div class="btn-group btn-group-lg" *ngIf="!isOn(itemId)">
+              <label type="button" class="btn-select btn btn-default" (click)="onSelect(itemId)">{{items[itemId].name}}</label>
+            </div>
+
+            <!--View & Edit buttons-->
+            <div class="btn-group-vertical">
+              <label type="button" class="btn btn-info btn-view-edit" (click)="onView(itemId)">VIEW</label>
+              <label type="button" class="btn btn-warning btn-view-edit" (click)="onEdit(itemId)">EDIT</label>
+            </div>
+
+          </div>
+        </div>
+      </div>
     </div>
   </div>
-  <div *ngIf="editResult" class="editResult">
-    <h2>Edit results:</h2>
-    <pre class=viewItem>{{prettyPrint(editResult)}}</pre>
-    <div class="clearEditResult" (click)="clearEditResult()">
-      CLEAR
+</div>
+
+<!--View-Item Modal-->
+<div bsModal #viewModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myViewModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" *ngIf="itemIdToView">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title pull-left">"{{items[itemIdToView].name}}" details:</h4>
+        <button type="button" class="close pull-right" aria-label="Close" (click)="clearView()">
+              <span aria-hidden="true">&times;</span>
+            </button>
+      </div>
+      <div class="modal-body">
+        <pre class=viewItem>
+{{prettyPrint(items[itemIdToView])}}
+        </pre>
+      </div>
     </div>
   </div>
+</div>
+
+<!--Edit-Item Modal-->
+<div bsModal #editModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myEditModalLabel" aria-hidden="true">
+  <div class="modal-dialog" *ngIf="itemIdToEdit">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title pull-left">"{{itemToEdit.name}}" details:</h4>
+        <button type="button" class="close pull-right" aria-label="Close" (click)="cancelEdit()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <textarea ref-textarea [(ngModel)]="itemJsonToEdit" rows="30" cols="60"></textarea>
+        <div class="tac">
+          <div class="btn-group btn-group-justified ilb">
+            <!--<div class="btn-group btn-group">-->
+            <label type="button" class="btn btn-warning" (click)="cancelEdit(itemId)">CANCEL</label>
+            <label type="button" class="btn btn-default" (click)="resetEdit(itemId)">RESET</label>
+            <label type="button" class="btn btn-success" (click)="submitJson(itemId)">SUBMIT</label>
+          </div>
+        </div>
+
+        <!--Edit-Result Modal-->
+        <div bsModal #editResultModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myEditResultModalLabel"
+          aria-hidden="true">
+          <div class="modal-dialog" *ngIf="editResult">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h4 class="modal-title pull-left">Edit results:</h4>
+                <button type="button" class="close pull-right" aria-label="Close" (click)="clearEditResult()">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <pre class=viewItem>{{prettyPrint(editResult)}}</pre>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -11,15 +11,12 @@ import 'rxjs/add/operator/toPromise';
   templateUrl: '../common/items.component.html',
 })
 export class ScenesComponent extends ItemsComponent implements OnInit {
+  itemType: string = 'scenes';
   itemsUri: string = `/getscenes?v2=true&`;
   selectUri: string = `/activatescene?sceneid=`;
   updateUri: string = `/updatescene?sceneid=`;
 
   constructor(http: Http) {
     super(http);
-  }
-
-  isOn(itemId: string): boolean {
-    return false;
   }
 }

@@ -11,6 +11,7 @@ import 'rxjs/add/operator/toPromise';
   templateUrl: '../common/items.component.html',
 })
 export class LightsComponent extends ItemsComponent implements OnInit {
+  itemType: string = 'lights';
   itemsUri: string = `/getlights?`;
   selectUri: string = `/togglelight?lightid=`;
   updateUri: string = `/updatelight?lightid=`;
@@ -36,5 +37,4 @@ export class LightsComponent extends ItemsComponent implements OnInit {
     }
     return item.state.on;
   }
-
 }

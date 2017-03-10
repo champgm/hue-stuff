@@ -1,9 +1,10 @@
-<h2>Hue Light Control</h2>
-<nav>
-  <ul class="nav nav-tabs" id="mainTab">
-    <li *ngFor="let tab of tabs" [class.selected]="tab === selectedTab" (click)="onSelect(tab)">
-      <a data-toggle="tab" routerLink="/{{tab | lowercase}}">{{tab}}</a>
-    </li>
-  </ul>
-</nav>
+<div>
+  <nav>
+    <div class="btn-group-lg text-center">
+      <label *ngFor="let tab of tabs" class="btn btn-secondary" [(ngModel)]="selectedTabTitle" btnRadio="{{tab.title}}" (click)="onSelect(tab)">
+        {{tab.title}}
+      </label>
+    </div>
+  </nav>
+</div>
 <router-outlet></router-outlet>
