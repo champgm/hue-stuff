@@ -61,7 +61,7 @@ module.exports = {
     }),
 
     new HtmlWebpackPlugin({
-      template: "webapp/index.html"
+      template: "webapp/prodIndex.html"
     })
   ]
 };

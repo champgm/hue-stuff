@@ -29,17 +29,24 @@ class AlexaApplication {
     // Route gets and puts for the external application
     this.routeExternalPuts();
 
-    // Read the SSL stuff
-    const certificate = fs.readFileSync(this.secretConfiguration.sslCertPath);
-    const privateKey = fs.readFileSync(this.secretConfiguration.sslKeyPath);
 
-    // Start the external server
-    console.log(`${this.constructor.name}: Starting Alexa Application...`);
-    https.createServer({ key: privateKey, cert: certificate }, this.application)
-      .listen(this.port, () => {
-        console.log(`Alexa Application listening on port ${this.port}!`);
-      });
-    return true;
+    try {
+      // Read the SSL stuff
+      const certificate = fs.readFileSync(this.secretConfiguration.sslCertPath);
+      const privateKey = fs.readFileSync(this.secretConfiguration.sslKeyPath);
+
+      // Start the external server
+      console.log(`${this.constructor.name}: Starting Alexa Application...`);
+      https.createServer({ key: privateKey, cert: certificate }, this.application)
+        .listen(this.port, () => {
+          console.log(`Alexa Application listening on port ${this.port}!`);
+        });
+      return true;
+    } catch (error) {
+      console.log("Error starting Alexa endpoint.");
+      console.log(`${JSON.stringify(error)}`);
+      return false;
+    }
   }
 
   routeExternalPuts() {
@@ -110,10 +117,60 @@ class AlexaApplication {
   }
 
   getOutputSpeech(chosenScene) {
+    let text;
+    switch (chosenScene) {
+      case "red":
+        text = "Is it almost time for bed?";
+        break;
+      case "white":
+        text = "Are you going to study?";
+        break;
+      case "on":
+        text = this.getOnText();
+        break;
+      case "off":
+        text = this.getOffText();
+        break;
+      default:
+        text = `Done turning lights ${chosenScene}.`;
+    }
     return {
       type: "PlainText",
-      text: `Done turning lights ${chosenScene}.`
+      text
     };
+  }
+
+  getOnText() {
+    const date = new Date();
+    const currentHour = date.getHours();
+    if (currentHour < 12) {
+      return "Good morning!";
+    }
+    if ((currentHour >= 12) && (currentHour <= 4)) {
+      return "Good afternoon! Welcome home!";
+    }
+    if ((currentHour > 5) && currentHour >= 12) {
+      return "Good evening! Welcome home!";
+    }
+    return "Your lights should be on now.";
+  }
+
+  getOffText() {
+    const date = new Date();
+    const currentHour = date.getHours();
+    if (currentHour < 12) {
+      return "Goodbye, have a nice day!";
+    }
+    if ((currentHour >= 12) && (currentHour <= 16)) {
+      return "Is it time for a nap?";
+    }
+    if ((currentHour > 16) && currentHour >= 21) {
+      return "Going out on the town? Have fun!";
+    }
+    if (currentHour > 21) {
+      return "Where are you going at this time of night?";
+    }
+    return "Your lights should be off now.";
   }
 }
 
