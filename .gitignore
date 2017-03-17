@@ -9,3 +9,6 @@ npm-debug.log
 **/*.map
 webapp/app/**/*.js*
 webapp/main.js
+webapp/vendor.js
+webapp/polyfills.js
+dist

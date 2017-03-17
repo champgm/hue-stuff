@@ -1,9 +1,9 @@
-const UtilityScenes = require('../util/hue/scene/UtilityScenes');
-const alexaVerifier = require('alexa-verifier-middleware');
-const bodyParser = require('body-parser');
-const express = require('express');
-const https = require('https');
-const fs = require('fs');
+const UtilityScenes = require("../util/hue/scene/UtilityScenes");
+const alexaVerifier = require("alexa-verifier-middleware");
+const bodyParser = require("body-parser");
+const express = require("express");
+const https = require("https");
+const fs = require("fs");
 
 class AlexaApplication {
   constructor(hueUtilities, port, secretConfiguration) {
@@ -22,7 +22,7 @@ class AlexaApplication {
       this.secretConfiguration.sslCertPath &&
       this.secretConfiguration.sslKeyPath)) {
       console.log(`${this.constructor.name}: Secret endpoints not configured! ` +
-        'Will not add bindings to external server!');
+        "Will not add bindings to external server!");
       return false;
     }
 
@@ -66,16 +66,16 @@ class AlexaApplication {
         const scene = request.body.request.intent.slots.Scene.value;
         chosenScene = scene;
         switch (scene) {
-          case 'red':
+          case "red":
             await sceneUtil.activateScene(redSceneId);
             break;
-          case 'white':
+          case "white":
             await sceneUtil.activateScene(whiteSceneId);
             break;
-          case 'off':
+          case "off":
             await sceneUtil.activateScene(UtilityScenes.getAllOffId());
             break;
-          case 'on':
+          case "on":
             await sceneUtil.activateScene(whiteSceneId);
             break;
           default:
@@ -84,20 +84,17 @@ class AlexaApplication {
         }
       } else {
         await sceneUtil.activateScene(whiteSceneId);
-        chosenScene = 'on';
+        chosenScene = "on";
       }
 
       // Craft a nice response telling echo what to say
       const alexaResponse = {
-        version: '1.0',
+        version: "1.0",
         response: {
-          outputSpeech: {
-            type: 'PlainText',
-            text: `Done turning lights ${chosenScene}.`
-          },
+          outputSpeech: this.getOutputSpeech(chosenScene),
           reprompt: {
             outputSpeech: {
-              type: 'PlainText',
+              type: "PlainText",
               text: null
             }
           },
@@ -105,11 +102,18 @@ class AlexaApplication {
         }
       };
       response.send(alexaResponse);
-      console.log('Request handled.');
+      console.log("Request handled.");
     };
 
     // Start this app on the secret endpoint
     this.application.post(`/${secretEndpoint}`, processPost);
+  }
+
+  getOutputSpeech(chosenScene) {
+    return {
+      type: "PlainText",
+      text: `Done turning lights ${chosenScene}.`
+    };
   }
 }
 

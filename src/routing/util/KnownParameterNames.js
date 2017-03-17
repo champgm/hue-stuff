@@ -5,71 +5,71 @@
 class KnownParameterNames {
 
   static getLightId() {
-    return 'lightid';
+    return "lightid";
   }
 
   static getGroupId() {
-    return 'groupid';
+    return "groupid";
   }
 
   static getToggleGroupResult() {
-    return 'togglegroupresult';
+    return "togglegroupresult";
   }
 
   static getSceneId() {
-    return 'sceneid';
+    return "sceneid";
   }
 
   static getLight() {
-    return 'light';
+    return "light";
   }
 
   static getLightState() {
-    return 'lightstate';
+    return "lightstate";
   }
 
   static getScene() {
-    return 'scene';
+    return "scene";
   }
 
   static getV2() {
-    return 'v2';
+    return "v2";
   }
 
   static getLightList() {
-    return 'lightlist';
+    return "lightlist";
   }
 
   static getGroupList() {
-    return 'grouplist';
+    return "grouplist";
   }
 
   static getSceneList() {
-    return 'scenelist';
+    return "scenelist";
   }
 
   static getScheduleList() {
-    return 'schedulelist';
+    return "schedulelist";
   }
 
   static getActiveScene() {
-    return 'activescene';
+    return "activescene";
   }
 
   static getSensorList() {
-    return 'sensorlist';
+    return "sensorlist";
   }
 
   static getRuleList() {
-    return 'rulelist';
+    return "rulelist";
   }
 
   static getRuleId() {
-    return 'ruleid';
+    return "ruleid";
   }
 
   static getPlugId() {
-    return 'plugid';
+    return "plugid";
   }
 
 }

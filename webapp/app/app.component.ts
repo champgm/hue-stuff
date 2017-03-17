@@ -3,8 +3,11 @@ import { OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Tab } from './models/tab.model';
 
+import '../bootstrap.min.css';
+import '../bootstrap.override.css';
+
 @Component({
-  moduleId: module.id,
+  // moduleId: module.id,
   selector: 'my-app',
   templateUrl: './app.component.html',
 })

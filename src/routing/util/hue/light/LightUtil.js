@@ -1,6 +1,6 @@
 
-const makeRequest = require('request-promise');
-const RequestOptionsUtil = require('../../RequestOptionsUtil');
+const makeRequest = require("request-promise");
+const RequestOptionsUtil = require("../../RequestOptionsUtil");
 
 class LightUtil {
   constructor(bridgeUri) {
@@ -9,7 +9,7 @@ class LightUtil {
   }
 
   async getAllLights() {
-    const options = this.requestOptionsUtil.simpleGet('lights');
+    const options = this.requestOptionsUtil.simpleGet("lights");
     console.log(`Will GET with options: ${JSON.stringify(options)}`);
     const lights = await makeRequest(options);
 

@@ -6,7 +6,7 @@ import { ItemsComponent } from '../common/items.component';
 import 'rxjs/add/operator/toPromise';
 
 @Component({
-  moduleId: module.id,
+  // moduleId: module.id,
   selector: 'sensors',
   templateUrl: '../common/items.component.html',
 })

@@ -29,7 +29,7 @@ class RequestOptionsUtil {
    */
   simpleGet(uri) {
     const getOptions = {
-      method: 'GET',
+      method: "GET",
       uri: `${this.bridgeUri}/${uri}`,
       json: true
     };
@@ -47,7 +47,7 @@ class RequestOptionsUtil {
    */
   putWithBody(uri, body) {
     const putOptions = {
-      method: 'PUT',
+      method: "PUT",
       uri: `${this.bridgeUri}/${uri}`,
       json: true,
       body
