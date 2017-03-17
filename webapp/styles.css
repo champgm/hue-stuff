@@ -1,0 +1,52 @@
+button.light-toggler {
+    -webkit-border-radius: 28;
+    -moz-border-radius: 28;
+    border-radius: 28px;
+    font-family: Arial;
+    color: #ffffff;
+    font-size: 20px;
+    background: #dbdbdb;
+    padding: 20px 100px 20px 50px;
+    text-decoration: none;
+    width: 220px;
+    height: 220px;
+    margin: 20px
+}
+
+button.light-toggler.on {
+    background: red;
+}
+
+button.scene {
+    -webkit-border-radius: 28;
+    -moz-border-radius: 28;
+    border-radius: 28px;
+    font-family: Arial;
+    color: #ffffff;
+    font-size: 12px;
+    background: #dbdbdb;
+    padding: 20px 100px 20px 50px;
+    text-decoration: none;
+    width: 220px;
+    height: 150px;
+    margin: 20px
+}
+
+[class*="col-"] {
+    background-clip: padding-box;
+    border: 10px solid transparent;
+}
+
+.btn.item.btn-off.btn-lg {
+    background-color: #E0E0E0;
+    text-decoration: none;
+    background-position: 0;
+    transition: none;
+}
+
+.btn.item.btn-on.btn-lg {
+    background-color: #FF9933;
+    text-decoration: none;
+    background-position: 0;
+    transition: none;
+}

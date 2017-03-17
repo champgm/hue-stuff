@@ -1,6 +1,6 @@
 
-const makeRequest = require('request-promise');
-const RequestOptionsUtil = require('../../RequestOptionsUtil');
+const makeRequest = require("request-promise");
+const RequestOptionsUtil = require("../../RequestOptionsUtil");
 
 class GroupUtil {
   constructor(bridgeUri) {
@@ -9,7 +9,7 @@ class GroupUtil {
   }
 
   async getAllGroups() {
-    const options = this.requestOptionsUtil.simpleGet('groups');
+    const options = this.requestOptionsUtil.simpleGet("groups");
     console.log(`Will GET with options: ${JSON.stringify(options)}`);
     const groups = await makeRequest(options);
 
@@ -52,6 +52,13 @@ class GroupUtil {
   async turnGroupOn(groupId) {
     const onAction = { on: true };
     return this.setGroupAction(groupId, onAction);
+  }
+
+  async update(itemId, json) {
+    const uri = `groups/${itemId}`;
+    const putOptions = this.requestOptionsUtil.putWithBody(uri, json);
+    const response = await makeRequest(putOptions);
+    return response;
   }
 }
 

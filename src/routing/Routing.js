@@ -1,10 +1,11 @@
-const RequestOptionsUtil = require('./util/RequestOptionsUtil');
-const TPLinkPlugUtil = require('./util/tplink/plug/TPLinkPlugUtil');
-const AlexaApplication = require('./applications/AlexaApplication');
-const HueApplication = require('./applications/HueApplication');
-const LightUtil = require('./util/hue/light/LightUtil');
-const SceneUtil = require('./util/hue/scene/SceneUtil');
-const GroupUtil = require('./util/hue/group/GroupUtil');
+const RequestOptionsUtil = require("./util/RequestOptionsUtil");
+const TPLinkPlugUtil = require("./util/tplink/plug/TPLinkPlugUtil");
+const AlexaApplication = require("./applications/AlexaApplication");
+const HueApplication = require("./applications/HueApplication");
+const LightUtil = require("./util/hue/light/LightUtil");
+const SceneUtil = require("./util/hue/scene/SceneUtil");
+const GroupUtil = require("./util/hue/group/GroupUtil");
+const RuleUtil = require("./util/hue/rule/RuleUtil");
 
 class Routing {
   constructor(expressConfiguration, bridgeDetails, plugIps, secretConfiguration) {
@@ -21,6 +22,7 @@ class Routing {
     const lightUtil = new LightUtil(this.bridgeUri);
     const sceneUtil = new SceneUtil(this.bridgeUri);
     const groupUtil = new GroupUtil(this.bridgeUri);
+    const ruleUtil = new RuleUtil(this.bridgeUri);
     const plugUtil = new TPLinkPlugUtil(this.plugIps);
 
     const hueUtilities = {
@@ -28,6 +30,7 @@ class Routing {
       lightUtil,
       sceneUtil,
       groupUtil,
+      ruleUtil,
       plugUtil
     };
 

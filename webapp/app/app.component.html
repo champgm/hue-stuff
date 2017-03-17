@@ -1,0 +1,10 @@
+<div>
+  <nav>
+    <div class="btn-group-lg text-center">
+      <label *ngFor="let tab of tabs" class="btn btn-secondary" [(ngModel)]="selectedTabTitle" btnRadio="{{tab.title}}" (click)="onSelect(tab)">
+        {{tab.title}}
+      </label>
+    </div>
+  </nav>
+</div>
+<router-outlet></router-outlet>

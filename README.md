@@ -1,5 +1,7 @@
 # Hue-Stuff
 
+THIS IS REALLY OUT OF DATE, NEED TO REWRITE!
+
 "Hue Stuff" is a project to interface directly with the Phillips Hue bridge. The bridge has a fairly open and well documented API that is accessed via a RESTful calls. Our main goals for this project are as follows:
 
   - Provide a command line interface for bridge functions

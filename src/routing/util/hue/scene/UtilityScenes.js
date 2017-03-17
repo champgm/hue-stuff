@@ -14,12 +14,12 @@ class UtilityScenes {
   }
 
   static getAllOffId() {
-    return 'ee29c141-c738-44ec-8863-c4feff3741b7';
+    return "ee29c141-c738-44ec-8863-c4feff3741b7";
   }
 
   static getAllOffScene() {
     const allOffScene = {
-      name: 'ALL OFF',
+      name: "ALL OFF",
       id: UtilityScenes.getAllOffId()
     };
     return allOffScene;

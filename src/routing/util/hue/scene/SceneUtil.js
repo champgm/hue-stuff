@@ -1,8 +1,8 @@
 
-const makeRequest = require('request-promise');
-const RequestOptionsUtil = require('../../RequestOptionsUtil');
-const UtilityScenes = require('./UtilityScenes');
-const LightUtil = require('../light/LightUtil');
+const makeRequest = require("request-promise");
+const RequestOptionsUtil = require("../../RequestOptionsUtil");
+const UtilityScenes = require("./UtilityScenes");
+const LightUtil = require("../light/LightUtil");
 
 class SceneUtil {
   constructor(bridgeUri) {
@@ -13,14 +13,14 @@ class SceneUtil {
 
   async getAllScenes(v2ScenesRequested) {
     // First, get all of the bridge scenes
-    const options = this.requestOptionsUtil.simpleGet('scenes');
+    const options = this.requestOptionsUtil.simpleGet("scenes");
     console.log(`Will GET with options: ${JSON.stringify(options)}`);
     const scenes = await makeRequest(options);
 
     if (v2ScenesRequested) {
-      console.log('V2 Scenes requested, will return only V2 scenes.');
+      console.log("V2 Scenes requested, will return only V2 scenes.");
     } else {
-      console.log('V2 Scenes not requested, will return all.');
+      console.log("V2 Scenes not requested, will return all.");
     }
 
     // Start collecting all scenes.
@@ -97,6 +97,13 @@ class SceneUtil {
       const currentSceneState = await makeRequest(getOptions);
       return currentSceneState;
     }
+  }
+
+  async update(itemId, json) {
+    const uri = `scenes/${itemId}`;
+    const putOptions = this.requestOptionsUtil.putWithBody(uri, json);
+    const response = await makeRequest(putOptions);
+    return response;
   }
 
 }

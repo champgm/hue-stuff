@@ -1,4 +1,4 @@
-const Hs100Api = require('hs100-api');
+const Hs100Api = require("hs100-api");
 
 class TPLinkPlugUtil {
   constructor(plugIps) {

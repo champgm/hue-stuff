@@ -1,21 +1,14 @@
-# Eclipse
-.classpath
-.project
-.settings/
-hue-web/.tern-project
-
-# Intellij
-.idea/
-*.iml
-*.iws
-
 # Mac
 .DS_Store
-
-# Maven
-log/
-target/
 
 # Node
 node_modules/
 npm-debug.log
+
+# Angular
+**/*.map
+webapp/app/**/*.js*
+webapp/main.js
+webapp/vendor.js
+webapp/polyfills.js
+dist
