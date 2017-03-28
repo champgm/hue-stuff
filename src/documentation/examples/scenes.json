@@ -1,0 +1,35 @@
+{
+  "0dXzw83CypNG4yY": {
+    "name": "All Off v2",
+    "lights": [
+      "1",
+      "2",
+      "3",
+      "4",
+      "5",
+      "6",
+      "7"
+    ],
+    "owner": "77584ee540184794d3af91523c34302",
+    "recycle": true,
+    "locked": false,
+    "appdata": {},
+    "picture": "",
+    "lastupdated": "2016-01-23T17:49:54",
+    "version": 2
+  },
+  "9LlOfHxvnBz4n4K": {
+    "name": "BR Off v2",
+    "lights": [
+      "4",
+      "5"
+    ],
+    "owner": "77584ee540184794d3af91523c34302",
+    "recycle": true,
+    "locked": false,
+    "appdata": {},
+    "picture": "",
+    "lastupdated": "2016-04-24T22:45:10",
+    "version": 2
+  }
+}

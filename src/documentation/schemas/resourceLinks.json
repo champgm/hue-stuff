@@ -1,0 +1,10 @@
+{
+  "id": "resourceLinks",
+  "title": "Map<String,ResourceLink>",
+  "type": "object",
+  "patternProperties": {
+    ".{1,}": {
+      "$ref": "resourceLink.json#"
+    }
+  }
+}

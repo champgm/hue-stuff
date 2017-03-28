@@ -1,0 +1,29 @@
+{
+  "name": "Den",
+  "lights": [
+    "6",
+    "1",
+    "2",
+    "3"
+  ],
+  "type": "Room",
+  "state": {
+    "all_on": false,
+    "any_on": false
+  },
+  "class": "Living room",
+  "action": {
+    "on": false,
+    "bri": 254,
+    "hue": 33946,
+    "sat": 5,
+    "effect": "none",
+    "xy": [
+      0.3791,
+      0.3759
+    ],
+    "ct": 248,
+    "alert": "none",
+    "colormode": "xy"
+  }
+}

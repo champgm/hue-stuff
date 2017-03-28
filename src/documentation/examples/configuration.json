@@ -1,0 +1,52 @@
+{
+  "name": "Philips hue",
+  "zigbeechannel": 15,
+  "bridgeid": "1234",
+  "mac": "1234",
+  "dhcp": true,
+  "ipaddress": "1234",
+  "netmask": "1234",
+  "gateway": "1234",
+  "proxyaddress": "none",
+  "proxyport": 0,
+  "UTC": "2017-04-11T19:53:00",
+  "localtime": "2017-04-11T15:53:00",
+  "timezone": "America/New_York",
+  "modelid": "1234",
+  "swversion": "1234",
+  "apiversion": "1.0.0",
+  "swupdate": {
+    "updatestate": 0,
+    "checkforupdate": false,
+    "devicetypes": {
+      "bridge": false,
+      "lights": [],
+      "sensors": []
+    },
+    "url": "",
+    "text": "",
+    "notify": false
+  },
+  "linkbutton": false,
+  "portalservices": true,
+  "portalconnection": "connecting",
+  "portalstate": {
+    "signedon": false,
+    "incoming": false,
+    "outgoing": false,
+    "communication": "disconnected"
+  },
+  "factorynew": false,
+  "replacesbridgeid": null,
+  "backup": {
+    "status": "idle",
+    "errorcode": 0
+  },
+  "whitelist": {
+    "12345": {
+      "last use date": "2016-02-02T12:06:24",
+      "create date": "2015-11-27T21:26:29",
+      "name": "Hue#LGE LG"
+    }
+  }
+}

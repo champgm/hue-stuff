@@ -22,6 +22,11 @@ class HueApplication {
     console.log(`Static content will be read from: ${webAppFolder}`);
     this.application.use("/", express.static(webAppFolder));
 
+    // Add the documentation folder as static content. This contains the UI.
+    const docFolder = path.join(__dirname, "../../documentation");
+    console.log(`Documenation content will be read from: ${docFolder}`);
+    this.application.use("/documentation", express.static(docFolder));
+
     // It needs to access the node_modules.
     // I really haven't found a better way to do this.
     const nodeModulesFolder = path.join(__dirname, "../../../node_modules");

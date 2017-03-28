@@ -1,0 +1,34 @@
+{
+  "1482820976701523": {
+    "name": "wakeup - bedroom",
+    "description": "BR - on",
+    "command": {
+      "address": "/api/1234/groups/0/action",
+      "body": {
+        "scene": "808140eef-on-30"
+      },
+      "method": "PUT"
+    },
+    "localtime": "W124/T05:30:00",
+    "time": "W124/T09:30:00",
+    "created": "2015-12-04T12:01:11",
+    "status": "disabled",
+    "recycle": false
+  },
+  "7303628988606452": {
+    "name": "wakeup - den pair",
+    "description": "Den - full",
+    "command": {
+      "address": "/api/1234/groups/0/action",
+      "body": {
+        "scene": "T2-8b5kh32vSxCz"
+      },
+      "method": "PUT"
+    },
+    "localtime": "W124/T05:30:00",
+    "time": "W124/T09:30:00",
+    "created": "2015-12-17T19:12:03",
+    "status": "enabled",
+    "recycle": false
+  }
+}

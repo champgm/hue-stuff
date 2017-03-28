@@ -1,0 +1,225 @@
+#%RAML 1.0
+title: Hue Stuff Backend API
+version: 0.1
+baseUri: /
+mediaType: application/json
+
+documentation:
+ - title: About The API
+   content: !include markdown/about-api.md
+
+schemas:
+  state: !include schemas/state.json
+  light: !include schemas/light.json
+  lights: !include schemas/lights.json
+  group: !include schemas/group.json
+  groups: !include schemas/groups.json
+  schedule: !include schemas/schedule.json
+  schedules: !include schemas/schedules.json
+  scene: !include schemas/scene.json
+  scenes: !include schemas/scenes.json
+  rule: !include schemas/rule.json
+  rules: !include schemas/rules.json
+  sensor: !include schemas/sensor.json
+  sensors: !include schemas/sensors.json
+  configuration: !include schemas/configuration.json
+  resourceLink: !include schemas/resourceLink.json
+  resourceLinks: !include schemas/resourceLinks.json
+  putResult: !include schemas/putResult.json
+  putResultItem: !include schemas/putResultItem.json
+
+/documentation:
+  displayName: Documentation
+  description: !include markdown/description-root.md
+  get:
+    description: Returns this page
+
+/lights:
+  displayName: Lights
+  description: An endpoint which interacts with Light objects
+  get:
+    description: Returns all configured lights
+    body:
+      type: lights
+      example: !include examples/lights.json
+  /{lightId}:
+    get:
+      description: Returns the specified light
+      body:
+        type: light
+        example: !include examples/light.json
+    put:
+      description: Attempts to update all attributes in the given light.
+      body:
+        type: light
+        example: !include examples/light.json
+      responses:
+        200: !include types/200Response.raml
+    /state:
+      get:
+        description: Returns a light's current State
+        body:
+          type: lights
+          example: !include examples/lights.json
+      put:
+        description: Sets the State attribute of the light
+        body:
+          type: state
+          example: !include examples/state.json
+        responses:
+          200: !include types/200Response.raml
+
+/groups:
+  get:
+    description: Returns the specified group
+    body:
+      type: group
+      example: !include examples/group.json
+  /{groupId}:
+    get:
+      description: Returns the specified group
+      body:
+        type: group
+        example: !include examples/group.json
+    put:
+      description: Attempts to update all attributes in the given group.
+      body:
+        type: group
+        example: !include examples/group.json
+      responses:
+        200: !include types/200Response.raml
+    /state:
+      get:
+        description: Returns a group's current Action (State)
+        body:
+          type: groups
+          example: !include examples/groups.json
+      put:
+        description: Sets the Action (State) attribute of the group
+        body:
+          type: state
+          example: !include examples/state.json
+        responses:
+          200: !include types/200Response.raml
+/schedules:
+  get:
+    description: Returns the specified schedule
+    body:
+      type: schedules
+      example: !include examples/schedules.json
+  /{scheduleId}:
+    get:
+      description: Returns the specified schedule
+      body:
+        type: schedule
+        example: !include examples/schedule.json
+    put:
+      description: Attempts to update all attributes in the given schedule.
+      body:
+        type: schedule
+        example: !include examples/schedule.json
+      responses:
+        200: !include types/200Response.raml
+/scenes:
+  get:
+    description: Returns the specified scene
+    body:
+      type: scenes
+      example: !include examples/scenes.json
+  /{sceneId}:
+    get:
+      description: Returns the specified scene
+      body:
+        type: scene
+        example: !include examples/scene.json
+    put:
+      description: Attempts to update all attributes in the given scene.
+      body:
+        type: scene
+        example: !include examples/scene.json
+      responses:
+        200: !include types/200Response.raml
+/rules:
+  get:
+    description: Returns the specified rule
+    body:
+      type: rules
+      example: !include examples/rules.json
+  /{ruleId}:
+    get:
+      description: Returns the specified rule
+      body:
+        type: rule
+        example: !include examples/rule.json
+    put:
+      description: Attempts to update all attributes in the given rule.
+      body:
+        type: rule
+        example: !include examples/rule.json
+      responses:
+        200: !include types/200Response.raml
+/sensors:
+  get:
+    description: Returns the specified sensor
+    body:
+      type: sensors
+      example: !include examples/sensors.json
+  /{sensorId}:
+    get:
+      description: Returns the specified sensor
+      body:
+        type: sensor
+        examples:
+          daylight: !include examples/sensorDaylight.json
+          hardware: !include examples/sensorHardware.json
+          lightState: !include examples/sensorLightState.json
+    put:
+      description: Attempts to update all attributes in the given sensor.
+      body:
+        type: sensor
+        examples:
+          daylight: !include examples/sensorDaylight.json
+          hardware: !include examples/sensorHardware.json
+          lightState: !include examples/sensorLightState.json
+      responses:
+        200: !include types/200Response.raml
+/configuration:
+  get:
+    description: Returns the configuration
+    body:
+      type: configuration
+      example: !include examples/configuration.json
+  put:
+    description: Attempts to update all attributes in the given configuration.
+    body:
+      type: configuration
+      examples:
+        daylight: !include examples/configuration.json
+    responses:
+      200: !include types/200Response.raml
+/resourceLinks:
+  get:
+    description: Returns the specified resourceLink
+    body:
+      type: resourceLinks
+      example: !include examples/resourceLinks.json
+  /{resourceLinkId}:
+    get:
+      description: Returns the specified resourceLink
+      body:
+        type: resourceLink
+        example: !include examples/resourceLink.json
+    put:
+      description: Attempts to update all attributes in the given resourceLink.
+      body:
+        type: resourceLink
+        example: !include examples/resourceLink.json
+      responses:
+        200: !include types/200Response.raml
+# This requires V1.13
+# /capabilities:
+#   get:
+#     description: Returns all capabilities
+#     body:
+#       type: capabilities
+#       example: !include examples/capabilities.json

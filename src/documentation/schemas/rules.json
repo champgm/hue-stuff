@@ -1,0 +1,10 @@
+{
+  "id":"rules",
+  "title": "Map<String,Rule>",
+  "type": "object",
+  "patternProperties": {
+    ".{1,}": {
+      "$ref": "rule.json#"
+    }
+  }
+}

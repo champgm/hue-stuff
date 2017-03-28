@@ -1,0 +1,198 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "definitions": {},
+  "id": "http://example.com/example.json",
+  "properties": {
+    "UTC": {
+      "id": "/properties/UTC",
+      "type": "string"
+    },
+    "apiversion": {
+      "id": "/properties/apiversion",
+      "type": "string"
+    },
+    "backup": {
+      "id": "/properties/backup",
+      "properties": {
+        "errorcode": {
+          "id": "/properties/backup/properties/errorcode",
+          "type": "integer"
+        },
+        "status": {
+          "id": "/properties/backup/properties/status",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "bridgeid": {
+      "id": "/properties/bridgeid",
+      "type": "string"
+    },
+    "dhcp": {
+      "id": "/properties/dhcp",
+      "type": "boolean"
+    },
+    "factorynew": {
+      "id": "/properties/factorynew",
+      "type": "boolean"
+    },
+    "gateway": {
+      "id": "/properties/gateway",
+      "type": "string"
+    },
+    "ipaddress": {
+      "id": "/properties/ipaddress",
+      "type": "string"
+    },
+    "linkbutton": {
+      "id": "/properties/linkbutton",
+      "type": "boolean"
+    },
+    "localtime": {
+      "id": "/properties/localtime",
+      "type": "string"
+    },
+    "mac": {
+      "id": "/properties/mac",
+      "type": "string"
+    },
+    "modelid": {
+      "id": "/properties/modelid",
+      "type": "string"
+    },
+    "name": {
+      "id": "/properties/name",
+      "type": "string"
+    },
+    "netmask": {
+      "id": "/properties/netmask",
+      "type": "string"
+    },
+    "portalconnection": {
+      "id": "/properties/portalconnection",
+      "type": "string"
+    },
+    "portalservices": {
+      "id": "/properties/portalservices",
+      "type": "boolean"
+    },
+    "portalstate": {
+      "id": "/properties/portalstate",
+      "properties": {
+        "communication": {
+          "id": "/properties/portalstate/properties/communication",
+          "type": "string"
+        },
+        "incoming": {
+          "id": "/properties/portalstate/properties/incoming",
+          "type": "boolean"
+        },
+        "outgoing": {
+          "id": "/properties/portalstate/properties/outgoing",
+          "type": "boolean"
+        },
+        "signedon": {
+          "id": "/properties/portalstate/properties/signedon",
+          "type": "boolean"
+        }
+      },
+      "type": "object"
+    },
+    "proxyaddress": {
+      "id": "/properties/proxyaddress",
+      "type": "string"
+    },
+    "proxyport": {
+      "id": "/properties/proxyport",
+      "type": "integer"
+    },
+    "replacesbridgeid": {
+      "id": "/properties/replacesbridgeid",
+      "type": "null"
+    },
+    "swupdate": {
+      "id": "/properties/swupdate",
+      "properties": {
+        "checkforupdate": {
+          "id": "/properties/swupdate/properties/checkforupdate",
+          "type": "boolean"
+        },
+        "devicetypes": {
+          "id": "/properties/swupdate/properties/devicetypes",
+          "properties": {
+            "bridge": {
+              "id": "/properties/swupdate/properties/devicetypes/properties/bridge",
+              "type": "boolean"
+            },
+            "lights": {
+              "id": "/properties/swupdate/properties/devicetypes/properties/lights",
+              "items": {},
+              "type": "array"
+            },
+            "sensors": {
+              "id": "/properties/swupdate/properties/devicetypes/properties/sensors",
+              "items": {},
+              "type": "array"
+            }
+          },
+          "type": "object"
+        },
+        "notify": {
+          "id": "/properties/swupdate/properties/notify",
+          "type": "boolean"
+        },
+        "text": {
+          "id": "/properties/swupdate/properties/text",
+          "type": "string"
+        },
+        "updatestate": {
+          "id": "/properties/swupdate/properties/updatestate",
+          "type": "integer"
+        },
+        "url": {
+          "id": "/properties/swupdate/properties/url",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "swversion": {
+      "id": "/properties/swversion",
+      "type": "string"
+    },
+    "timezone": {
+      "id": "/properties/timezone",
+      "type": "string"
+    },
+    "whitelist": {
+      "id": "/properties/whitelist",
+      "patternProperties": {
+        ".{1,}": {
+          "id": "/properties/whitelist/properties/12345",
+          "properties": {
+            "create date": {
+              "id": "/properties/whitelist/properties/12345/properties/create date",
+              "type": "string"
+            },
+            "last use date": {
+              "id": "/properties/whitelist/properties/12345/properties/last use date",
+              "type": "string"
+            },
+            "name": {
+              "id": "/properties/whitelist/properties/12345/properties/name",
+              "type": "string"
+            }
+          },
+          "type": "object"
+        }
+      },
+      "type": "object"
+    },
+    "zigbeechannel": {
+      "id": "/properties/zigbeechannel",
+      "type": "integer"
+    }
+  },
+  "type": "object"
+}

@@ -1,0 +1,10 @@
+{
+  "id":"schedules",
+  "title": "Map<String,Schedule>",
+  "type": "object",
+  "patternProperties": {
+    ".{1,}": {
+      "$ref": "schedule.json#"
+    }
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "id":"lights",
+  "title": "Map<String,Light>",
+  "type": "object",
+  "patternProperties": {
+    ".{1,}": {
+      "$ref": "light.json#"
+    }
+  }
+}

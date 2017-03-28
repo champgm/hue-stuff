@@ -1,0 +1,92 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "definitions": {},
+  "id": "http://example.com/example.json",
+  "properties": {
+    "config": {
+      "id": "/properties/config",
+      "properties": {
+        "battery": {
+          "id": "/properties/config/properties/battery",
+          "type": "integer"
+        },
+        "lat": {
+          "id": "/properties/config/properties/lat",
+          "type": "string"
+        },
+        "long": {
+          "id": "/properties/config/properties/long",
+          "type": "string"
+        },
+        "on": {
+          "id": "/properties/config/properties/on",
+          "type": "boolean"
+        },
+        "reachable": {
+          "id": "/properties/config/properties/reachable",
+          "type": "boolean"
+        },
+        "sunriseoffset": {
+          "id": "/properties/config/properties/sunriseoffset",
+          "type": "integer"
+        },
+        "sunsetoffset": {
+          "id": "/properties/config/properties/sunsetoffset",
+          "type": "integer"
+        }
+      },
+      "type": "object"
+    },
+    "manufacturername": {
+      "id": "/properties/manufacturername",
+      "type": "string"
+    },
+    "modelid": {
+      "id": "/properties/modelid",
+      "type": "string"
+    },
+    "name": {
+      "id": "/properties/name",
+      "type": "string"
+    },
+    "recycle": {
+      "id": "/properties/recycle",
+      "type": "boolean"
+    },
+    "state": {
+      "id": "/properties/state",
+      "properties": {
+        "buttonevent": {
+          "id": "/properties/state/properties/buttonevent",
+          "type": "integer"
+        },
+        "daylight": {
+          "id": "/properties/state/properties/daylight",
+          "type": "null"
+        },
+        "lastupdated": {
+          "id": "/properties/state/properties/lastupdated",
+          "type": "string"
+        },
+        "status": {
+          "id": "/properties/state/properties/status",
+          "type": "integer"
+        }
+      },
+      "type": "object"
+    },
+    "swversion": {
+      "id": "/properties/swversion",
+      "type": "string"
+    },
+    "type": {
+      "id": "/properties/type",
+      "type": "string"
+    },
+    "uniqueid": {
+      "id": "/properties/uniqueid",
+      "type": "string"
+    }
+  },
+  "type": "object"
+}

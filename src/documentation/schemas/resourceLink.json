@@ -1,0 +1,36 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "definitions": {},
+  "id": "resourceLink",
+  "properties": {
+    "class": {
+      "id": "/properties/class",
+      "type": "integer"
+    },
+    "description": {
+      "id": "/properties/description",
+      "type": "string"
+    },
+    "links": {
+      "id": "/properties/links",
+      "items": {
+        "id": "/properties/links/items",
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "name": {
+      "id": "/properties/name",
+      "type": "string"
+    },
+    "owner": {
+      "id": "/properties/owner",
+      "type": "string"
+    },
+    "type": {
+      "id": "/properties/type",
+      "type": "string"
+    }
+  },
+  "type": "object"
+}

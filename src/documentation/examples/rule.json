@@ -1,0 +1,29 @@
+{
+  "name": "Tap 7.4 Default",
+  "owner": "1234",
+  "created": "2016-11-22T23:01:37",
+  "lasttriggered": "none",
+  "timestriggered": 0,
+  "status": "enabled",
+  "recycle": false,
+  "conditions": [
+    {
+      "address": "/sensors/7/state/buttonevent",
+      "operator": "eq",
+      "value": "18"
+    },
+    {
+      "address": "/sensors/7/state/lastupdated",
+      "operator": "dx"
+    }
+  ],
+  "actions": [
+    {
+      "address": "/groups/0/action",
+      "method": "PUT",
+      "body": {
+        "scene": "8a99c376a-on-0"
+      }
+    }
+  ]
+}

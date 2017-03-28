@@ -1,0 +1,14 @@
+[
+  {
+    "error": {
+      "type": 6,
+      "address": "/lights/1/swversion",
+      "description": "parameter, swversion, not available"
+    }
+  },
+  {
+    "success": {
+      "/lights/1/name": "ColorLamp1"
+    }
+  }
+]

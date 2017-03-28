@@ -1,0 +1,9 @@
+[
+  {
+    "error": {
+      "type": 6,
+      "address": "/lights/1/manufacturername",
+      "description": "parameter, manufacturername, not available"
+    }
+  }
+]

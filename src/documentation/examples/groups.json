@@ -1,0 +1,50 @@
+{
+  "1": {
+    "name": "Dimmer 5",
+    "lights": [
+      "5",
+      "4"
+    ],
+    "type": "LightGroup",
+    "state": {
+      "all_on": false,
+      "any_on": false
+    },
+    "recycle": false,
+    "action": {
+      "on": false,
+      "bri": 254,
+      "alert": "none"
+    }
+  },
+  "2": {
+    "name": "Den",
+    "lights": [
+      "1",
+      "2",
+      "3",
+      "6",
+      "7"
+    ],
+    "type": "LightGroup",
+    "state": {
+      "all_on": false,
+      "any_on": false
+    },
+    "recycle": false,
+    "action": {
+      "on": false,
+      "bri": 254,
+      "hue": 33946,
+      "sat": 5,
+      "effect": "none",
+      "xy": [
+        0.3791,
+        0.3759
+      ],
+      "ct": 248,
+      "alert": "none",
+      "colormode": "hs"
+    }
+  }
+}
