@@ -35,8 +35,7 @@
     "global-require": [0],
     "padded-blocks": [0],
     "no-await-in-loop": [0],
-    "no-restricted-syntax":[0],
-    "quotes": [2, "double"]
+    "no-restricted-syntax":[0]
   },
   "extends": [
     "airbnb",
