@@ -1,6 +1,6 @@
 
 const makeRequest = require('request-promise');
-const RequestOptionsUtil = require('../RequestOptionsUtil');
+const RequestOptionsUtil = require('./RequestOptionsUtil');
 const UtilityScenes = require('./UtilityScenes');
 const LightUtil = require('./LightUtil');
 
@@ -11,7 +11,7 @@ class SceneUtil {
     this.lightUtil = new LightUtil(bridgeUri);
   }
 
-  async getAllScenes(v2ScenesRequested) {
+  async getAll(v2ScenesRequested) {
     // First, get all of the bridge scenes
     const options = this.requestOptionsUtil.simpleGet('scenes');
     console.log(`Will GET with options: ${JSON.stringify(options)}`);
@@ -58,14 +58,14 @@ class SceneUtil {
     return resultScenes;
   }
 
-  async getScene(sceneId) {
+  async get(sceneId) {
     const getOptions = this.requestOptionsUtil.simpleGet(`scenes/${sceneId}`);
     console.log(`Will GET with options: ${JSON.stringify(getOptions)}`);
     const scene = await makeRequest(getOptions);
     return scene;
   }
 
-  async activateScene(sceneId) {
+  async select(sceneId) {
     if (UtilityScenes.getAllUtilitySceneIds().includes(sceneId)) {
       switch (sceneId) {
         case UtilityScenes.getAllOffId(): {

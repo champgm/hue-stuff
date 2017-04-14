@@ -1,5 +1,7 @@
 const path = require('path');
-const logger = require('../../../logger/logger.js').child({ fileName: `${path.basename(__filename)}` });
+const logger = require('../../../logger/logger.js')
+  .child({ fileName: `${path.basename(__filename)}` });
+const routeCommon = require('./RouteCommon');
 const makeRequest = require('request-promise');
 
 const itemType = 'sensors';

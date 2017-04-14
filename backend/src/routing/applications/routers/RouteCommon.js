@@ -1,11 +1,8 @@
 const path = require('path');
 const logger = require('../../../logger/logger.js')
   .child({ fileName: `${path.basename(__filename)}` });
-const routeCommon = require('./RouteCommon');
 
-const itemType = 'rules';
-
-const route = (util, application) => {
+const route = (itemType, util, application) => {
   application.get(`/${itemType}`, async (request, response, next) => {
     logger.info(`get ${itemType} called`);
     const items = await util.getAll();
@@ -22,10 +19,10 @@ const route = (util, application) => {
   });
 
   application.put(`/${itemType}/:itemId`, async (request, response, next) => {
-    logger.info(`put ${itemType} called`);
     const itemId = request.itemId;
-    const updateResponse = await util.update(itemId, request.body);
-    response.send(updateResponse);
+    logger.info({ itemId }, `put ${itemType} called`);
+    const item = await util.update(itemId, request.body);
+    response.json(item);
     logger.info('Request handled.');
   });
 

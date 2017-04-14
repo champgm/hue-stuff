@@ -39,15 +39,19 @@ schemas:
   description: An endpoint which interacts with Light objects
   get:
     description: Returns all configured lights
-    body:
-      type: lights
-      example: !include examples/lights.json
+    responses:
+      200:
+        body:
+          type: lights
+          example: !include examples/lights.json
   /{lightId}:
     get:
       description: Returns the specified light
-      body:
-        type: light
-        example: !include examples/light.json
+      responses:
+        200:
+          body:
+            type: light
+            example: !include examples/light.json
     put:
       description: Attempts to update all attributes in the given light.
       body:
@@ -58,9 +62,11 @@ schemas:
     /state:
       get:
         description: Returns a light's current State
-        body:
-          type: state
-          example: !include examples/state.json
+        responses:
+          200:
+            body:
+              type: state
+              example: !include examples/state.json
       put:
         description: Sets the State attribute of the light
         body:
@@ -71,22 +77,28 @@ schemas:
     /select:
       get:
         description: Toggles the given light on or off
-        body:
-          type: light
-          example: !include examples/light.json
+        responses:
+          200:
+            body:
+              type: light
+              example: !include examples/light.json
 
 /groups:
   get:
     description: Returns the specified group
-    body:
-      type: group
-      example: !include examples/group.json
+    responses:
+      200:
+        body:
+          type: group
+          example: !include examples/group.json
   /{groupId}:
     get:
       description: Returns the specified group
-      body:
-        type: group
-        example: !include examples/group.json
+      responses:
+        200:
+          body:
+            type: group
+            example: !include examples/group.json
     put:
       description: Attempts to update all attributes in the given group.
       body:
@@ -97,9 +109,11 @@ schemas:
     /state:
       get:
         description: Returns a group's current Action (State)
-        body:
-          type: state
-          example: !include examples/state.json
+        responses:
+          200:
+            body:
+              type: state
+              example: !include examples/state.json
       put:
         description: Sets the Action (State) attribute of the group
         body:
@@ -111,15 +125,19 @@ schemas:
 /schedules:
   get:
     description: Returns the specified schedule
-    body:
-      type: schedules
-      example: !include examples/schedules.json
+    responses:
+      200:
+        body:
+          type: schedules
+          example: !include examples/schedules.json
   /{scheduleId}:
     get:
       description: Returns the specified schedule
-      body:
-        type: schedule
-        example: !include examples/schedule.json
+      responses:
+        200:
+          body:
+            type: schedule
+            example: !include examples/schedule.json
     put:
       description: Attempts to update all attributes in the given schedule.
       body:
@@ -131,15 +149,19 @@ schemas:
 /scenes:
   get:
     description: Returns the specified scene
-    body:
-      type: scenes
-      example: !include examples/scenes.json
+    responses:
+      200:
+        body:
+          type: scenes
+          example: !include examples/scenes.json
   /{sceneId}:
     get:
       description: Returns the specified scene
-      body:
-        type: scene
-        example: !include examples/scene.json
+      responses:
+        200:
+          body:
+            type: scene
+            example: !include examples/scene.json
     put:
       description: Attempts to update all attributes in the given scene.
       body:
@@ -150,22 +172,28 @@ schemas:
     /select:
       get:
         description: Activates the given scene
-        body:
-          type: scene
-          example: !include examples/scene.json
+        responses:
+          200:
+            body:
+              type: scene
+              example: !include examples/scene.json
 
 /rules:
   get:
     description: Returns the specified rule
-    body:
-      type: rules
-      example: !include examples/rules.json
+    responses:
+      200:
+        body:
+          type: rules
+          example: !include examples/rules.json
   /{ruleId}:
     get:
       description: Returns the specified rule
-      body:
-        type: rule
-        example: !include examples/rule.json
+      responses:
+        200:
+          body:
+            type: rule
+            example: !include examples/rule.json
     put:
       description: Attempts to update all attributes in the given rule.
       body:
@@ -177,18 +205,22 @@ schemas:
 /sensors:
   get:
     description: Returns the specified sensor
-    body:
-      type: sensors
-      example: !include examples/sensors.json
+    responses:
+      200:
+        body:
+          type: sensors
+          example: !include examples/sensors.json
   /{sensorId}:
     get:
       description: Returns the specified sensor
-      body:
-        type: sensor
-        examples:
-          daylight: !include examples/sensorDaylight.json
-          hardware: !include examples/sensorHardware.json
-          lightState: !include examples/sensorLightState.json
+      responses:
+        200:
+          body:
+            type: sensor
+            examples:
+              daylight: !include examples/sensorDaylight.json
+              hardware: !include examples/sensorHardware.json
+              lightState: !include examples/sensorLightState.json
     put:
       description: Attempts to update all attributes in the given sensor.
       body:
@@ -203,9 +235,11 @@ schemas:
 /configuration:
   get:
     description: Returns the configuration
-    body:
-      type: configuration
-      example: !include examples/configuration.json
+    responses:
+      200:
+        body:
+          type: configuration
+          example: !include examples/configuration.json
   put:
     description: Attempts to update all attributes in the given configuration.
     body:
@@ -218,15 +252,19 @@ schemas:
 /resourceLinks:
   get:
     description: Returns the specified resourceLink
-    body:
-      type: resourceLinks
-      example: !include examples/resourceLinks.json
+    responses:
+      200:
+        body:
+          type: resourceLinks
+          example: !include examples/resourceLinks.json
   /{resourceLinkId}:
     get:
       description: Returns the specified resourceLink
-      body:
-        type: resourceLink
-        example: !include examples/resourceLink.json
+      responses:
+        200:
+          body:
+            type: resourceLink
+            example: !include examples/resourceLink.json
     put:
       description: Attempts to update all attributes in the given resourceLink.
       body:

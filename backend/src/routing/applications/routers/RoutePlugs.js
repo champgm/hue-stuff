@@ -1,12 +1,14 @@
 const path = require('path');
-const logger = require('../../../logger/logger.js').child({ fileName: `${path.basename(__filename)}` });
+const logger = require('../../../logger/logger.js')
+  .child({ fileName: `${path.basename(__filename)}` });
+const routeCommon = require('./RouteCommon');
 
 const itemType = 'plugs';
 
 const route = (util, application) => {
   application.get(`/${itemType}`, async (request, response, next) => {
     logger.info(`get ${itemType} called`);
-    const items = await util.getAllPlugs();
+    const items = await util.getAll();
     response.send(items);
     logger.info('Request handled.');
   });
@@ -35,7 +37,7 @@ const route = (util, application) => {
     logger.info(`select ${itemType} called`);
     const itemId = request.itemId;
     logger.info(`Plugid from request: ${itemId}`);
-    const item = await util.togglePlug(itemId);
+    const item = await util.select(itemId);
     response.send(item);
     logger.info('Request handled.');
   });

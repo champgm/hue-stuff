@@ -9,7 +9,7 @@ class TPLinkPlugUtil {
   }
 
 
-  async getAllPlugs() {
+  async getAll() {
     const resultPlugs = {};
     for (const plugIp of this.knownPlugs) {
       const plug = await this.getPlug(plugIp);
@@ -20,29 +20,29 @@ class TPLinkPlugUtil {
     return resultPlugs;
   }
 
-  async getPlug(plugId) {
+  async get(plugId) {
     const client = new Hs100Api.Client();
     const plug = await client.getPlug({ host: plugId });
     return plug;
   }
 
-  async setPlugState(plugId, onBoolean) {
+  async setState(plugId, onBoolean) {
     const plug = await this.getPlug(plugId);
     const setStateResult = await plug.setPowerState(onBoolean);
     return setStateResult;
   }
 
-  async togglePlug(plugId) {
+  async select(plugId) {
     const plug = await this.getPlug(plugId);
     const currentPowerState = await plug.getPowerState();
     return this.setPlugState(plugId, !currentPowerState);
   }
 
-  async turnPlugOff(plugId) {
+  async turnOff(plugId) {
     return this.setPlugState(plugId, false);
   }
 
-  async turnPlugOn(plugId) {
+  async turnOn(plugId) {
     return this.setPlugState(plugId, true);
   }
 }
