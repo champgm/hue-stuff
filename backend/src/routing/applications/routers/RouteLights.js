@@ -3,7 +3,7 @@ const logger = require('../../../logger/logger.js').child({ fileName: `${path.ba
 
 const itemType = 'lights';
 
-const routeLights = (util, application) => {
+const route = (util, application) => {
   application.get(`/${itemType}`, async (request, response, next) => {
     logger.info(`get ${itemType} called`);
     const items = await util.getAllLights();
@@ -12,12 +12,16 @@ const routeLights = (util, application) => {
   });
 
   application.get(`/${itemType}/:itemId`, async (request, response, next) => {
-
+    const itemId = request.itemId;
+    logger.info({ itemId }, `get ${itemType} called`);
+    const item = await util.getLight(itemId);
+    response.json(item);
+    logger.info('Request handled.');
   });
 
   application.put(`/${itemType}/:itemId`, async (request, response, next) => {
-    logger.info(`put ${itemType} called`);
     const itemId = request.itemId;
+    logger.info({ itemId }, `put ${itemType} called`);
     const item = await util.update(itemId, request.body);
     response.json(item);
     logger.info('Request handled.');
@@ -31,9 +35,9 @@ const routeLights = (util, application) => {
 
   });
 
-  application.get(`/${itemType}/:itemId/toggle`, async (request, response, next) => {
-    logger.info(`toggle ${itemType} called`);
+  application.get(`/${itemType}/:itemId/select`, async (request, response, next) => {
     const itemId = request.itemId;
+    logger.info({ itemId }, `select ${itemType} called`);
     const item = await util.toggleLight(itemId);
     response.json(item);
     logger.info('Request handled.');
@@ -42,4 +46,4 @@ const routeLights = (util, application) => {
   return application;
 };
 
-module.exports = routeLights;
+module.exports = route;

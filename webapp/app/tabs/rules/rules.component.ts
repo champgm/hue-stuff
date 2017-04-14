@@ -12,8 +12,6 @@ import 'rxjs/add/operator/toPromise';
 })
 export class RulesComponent extends ItemsComponent implements OnInit {
   itemType: string = 'rules';
-  itemsUri: string = `/getrules`;
-  updateUri: string = `/updaterule?ruleid=`
 
   constructor(http: Http) {
     super(http);

@@ -68,7 +68,7 @@ schemas:
           example: !include examples/state.json
         responses:
           200: !include types/200Response.raml
-    /toggle:
+    /select:
       get:
         description: Toggles the given light on or off
         body:
@@ -147,6 +147,12 @@ schemas:
         example: !include examples/scene.json
       responses:
         200: !include types/200Response.raml
+    /select:
+      get:
+        description: Activates the given scene
+        body:
+          type: scene
+          example: !include examples/scene.json
 
 /rules:
   get:

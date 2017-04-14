@@ -13,6 +13,10 @@ class AlexaApplication {
     this.port = port;
   }
 
+  use(middleware) {
+    this.application.use(middleware);
+  }
+
   start() {
     // Check to make sure everything needed for the external server is available
     if (!(this.secretConfiguration &&

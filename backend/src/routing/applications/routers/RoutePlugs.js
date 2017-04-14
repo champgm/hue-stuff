@@ -2,15 +2,12 @@ const path = require('path');
 const logger = require('../../../logger/logger.js').child({ fileName: `${path.basename(__filename)}` });
 const makeRequest = require('request-promise');
 
-const itemType = 'sensors';
+const itemType = 'plugs';
 
 const route = (util, application) => {
   application.get(`/${itemType}`, async (request, response, next) => {
     logger.info(`get ${itemType} called`);
-    const options = util.simpleGet('sensors');
-
-    logger.info({ options }, 'Will GET with options.');
-    const items = await makeRequest(options);
+    const items = await util.getAllPlugs();
     response.send(items);
     logger.info('Request handled.');
   });
@@ -23,6 +20,25 @@ const route = (util, application) => {
   application.put(`/${itemType}/:itemId`, async (request, response, next) => {
     response.status(400);
     response.json({ error: 'This endpoint has not yet been implemented.' });
+  });
+
+  application.get(`/${itemType}/:itemId/state`, async (request, response, next) => {
+    response.status(400);
+    response.json({ error: 'This endpoint has not yet been implemented.' });
+  });
+
+  application.put(`/${itemType}/:itemId/state`, async (request, response, next) => {
+    response.status(400);
+    response.json({ error: 'This endpoint has not yet been implemented.' });
+  });
+
+  application.get(`/${itemType}/:itemId/select`, async (request, response, next) => {
+    logger.info(`select ${itemType} called`);
+    const itemId = request.itemId;
+    logger.info(`Plugid from request: ${itemId}`);
+    const item = await util.togglePlug(itemId);
+    response.send(item);
+    logger.info('Request handled.');
   });
 
   return application;

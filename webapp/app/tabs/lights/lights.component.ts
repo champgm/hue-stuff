@@ -12,9 +12,6 @@ import 'rxjs/add/operator/toPromise';
 })
 export class LightsComponent extends ItemsComponent implements OnInit {
   itemType: string = 'lights';
-  itemsUri: string = `/getlights?`;
-  selectUri: string = `/togglelight?lightid=`;
-  updateUri: string = `/updatelight?lightid=`;
 
   constructor(http: Http) {
     super(http);
