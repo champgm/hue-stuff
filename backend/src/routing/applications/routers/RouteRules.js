@@ -3,7 +3,7 @@ const logger = require('../../../logger/logger.js')
   .child({ fileName: `${path.basename(__filename)}` });
 
 
-const itemType = 'sensors';
+const itemType = 'rules';
 
 const route = (util, application) => {
   application.get(`/${itemType}`, async (request, response, next) => {

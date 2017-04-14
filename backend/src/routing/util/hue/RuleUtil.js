@@ -1,5 +1,5 @@
 const makeRequest = require('request-promise');
-const RequestOptionsUtil = require('../../RequestOptionsUtil');
+const RequestOptionsUtil = require('../RequestOptionsUtil');
 
 class RuleUtil {
   constructor(bridgeUri) {

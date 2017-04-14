@@ -1,6 +1,5 @@
 const path = require('path');
 const logger = require('../../../logger/logger.js').child({ fileName: `${path.basename(__filename)}` });
-const makeRequest = require('request-promise');
 
 const itemType = 'plugs';
 

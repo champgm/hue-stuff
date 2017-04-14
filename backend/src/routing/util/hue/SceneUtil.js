@@ -1,8 +1,8 @@
 
 const makeRequest = require('request-promise');
-const RequestOptionsUtil = require('../../RequestOptionsUtil');
+const RequestOptionsUtil = require('../RequestOptionsUtil');
 const UtilityScenes = require('./UtilityScenes');
-const LightUtil = require('../light/LightUtil');
+const LightUtil = require('./LightUtil');
 
 class SceneUtil {
   constructor(bridgeUri) {

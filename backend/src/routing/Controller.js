@@ -1,11 +1,11 @@
-const RequestOptionsUtil = require('./util/RequestOptionsUtil');
-const TPLinkPlugUtil = require('./util/tplink/plug/TPLinkPlugUtil');
 const AlexaApplication = require('./applications/AlexaApplication');
 const WebApplication = require('./applications/WebApplication');
-const LightUtil = require('./util/hue/light/LightUtil');
-const SceneUtil = require('./util/hue/scene/SceneUtil');
-const GroupUtil = require('./util/hue/group/GroupUtil');
-const RuleUtil = require('./util/hue/rule/RuleUtil');
+const RequestOptionsUtil = require('./util/RequestOptionsUtil');
+const TPLinkPlugUtil = require('./util/tplink/TPLinkPlugUtil');
+const LightUtil = require('./util/hue/LightUtil');
+const SceneUtil = require('./util/hue/SceneUtil');
+const GroupUtil = require('./util/hue/GroupUtil');
+const RuleUtil = require('./util/hue/RuleUtil');
 const bodyParser = require('body-parser');
 const morgan = require('morgan');
 

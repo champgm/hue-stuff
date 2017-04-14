@@ -1,4 +1,4 @@
-const UtilityScenes = require('../util/hue/scene/UtilityScenes');
+const UtilityScenes = require('../util/hue/UtilityScenes');
 const alexaVerifier = require('alexa-verifier-middleware');
 const bodyParser = require('body-parser');
 const express = require('express');

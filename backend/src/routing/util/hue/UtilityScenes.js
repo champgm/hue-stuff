@@ -1,5 +1,3 @@
-
-
 class UtilityScenes {
   static getAllUtilitySceneIds() {
     return [UtilityScenes.getAllOffId()];
