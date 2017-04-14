@@ -1,21 +1,21 @@
-const webpack = require("webpack");
-const webpackMerge = require("webpack-merge");
-const ExtractTextPlugin = require("extract-text-webpack-plugin");
-const commonConfig = require("./webpack.common.js");
-const pathHelper = require("./pathHelper");
+const webpack = require('webpack');
+const webpackMerge = require('webpack-merge');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const commonConfig = require('./webpack.common.js');
+const pathHelper = require('./pathHelper');
 
-const ENV = "production";
-process.env.NODE_ENV = "production";
-process.env.ENV = "production";
+const ENV = 'production';
+process.env.NODE_ENV = 'production';
+process.env.ENV = 'production';
 
 module.exports = webpackMerge(commonConfig, {
-  devtool: "source-map",
+  devtool: 'source-map',
 
   output: {
-    path: pathHelper.root("dist"),
-    publicPath: "/",
-    filename: "[name].[hash].js",
-    chunkFilename: "[id].[hash].chunk.js"
+    path: pathHelper.root('dist'),
+    publicPath: '/',
+    filename: '[name].[hash].js',
+    chunkFilename: '[id].[hash].chunk.js'
   },
 
   plugins: [
@@ -26,9 +26,9 @@ module.exports = webpackMerge(commonConfig, {
         keep_fnames: true
       }
     }),
-    new ExtractTextPlugin("[name].[hash].css"),
+    new ExtractTextPlugin('[name].[hash].css'),
     new webpack.DefinePlugin({
-      "process.env": {
+      'process.env': {
         ENV: JSON.stringify(ENV)
       }
     }),
