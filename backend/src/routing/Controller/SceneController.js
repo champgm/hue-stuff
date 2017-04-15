@@ -1,27 +1,30 @@
 
 const makeRequest = require('request-promise');
-const RequestOptionsUtil = require('./RequestOptionsUtil');
-const UtilityScenes = require('./UtilityScenes');
-const LightUtil = require('./LightUtil');
+const UtilityScenes = require('./utilities/UtilityScenes');
+const LightController = require('./LightController');
+const CommonController = require('./CommonController');
+const path = require('path');
+const logger = require('../../logger/logger.js')
+  .child({ fileName: `${path.basename(__filename)}` });
 
-class SceneUtil {
+const type = 'scenes';
+
+class SceneUtil extends CommonController {
+
   constructor(bridgeUri) {
-    this.bridgeUri = bridgeUri;
-    this.requestOptionsUtil = new RequestOptionsUtil(bridgeUri);
-    this.lightUtil = new LightUtil(bridgeUri);
+    super(type, bridgeUri, logger);
+    this.lightController = new LightController(bridgeUri);
   }
 
   async getAll(v2ScenesRequested) {
-    // First, get all of the bridge scenes
-    const options = this.requestOptionsUtil.simpleGet('scenes');
-    console.log(`Will GET with options: ${JSON.stringify(options)}`);
-    const scenes = await makeRequest(options);
-
     if (v2ScenesRequested) {
-      console.log('V2 Scenes requested, will return only V2 scenes.');
+      logger.info('V2 Scenes requested, will return only V2 scenes.');
     } else {
-      console.log('V2 Scenes not requested, will return all.');
+      logger.info('V2 Scenes not requested, will return all.');
     }
+
+    // First, get all of the bridge scenes
+    const scenes = super.getAll();
 
     // Start collecting all scenes.
     const resultScenes = {};
@@ -40,11 +43,7 @@ class SceneUtil {
     for (const sceneId in scenes) {
       // Check to make sure it's a real attribute and not some weird superclass attribute
       if (Object.prototype.hasOwnProperty.call(scenes, sceneId)) {
-        // Grab the scene and put its ID inside
         const scene = scenes[sceneId];
-        scene.id = sceneId;
-        scenes[sceneId] = scene;
-
         // Filter out non-V2 scenes, if they're not wanted.
         if (v2ScenesRequested) {
           if (scene.version === 2) {
@@ -58,52 +57,36 @@ class SceneUtil {
     return resultScenes;
   }
 
-  async get(sceneId) {
-    const getOptions = this.requestOptionsUtil.simpleGet(`scenes/${sceneId}`);
-    console.log(`Will GET with options: ${JSON.stringify(getOptions)}`);
-    const scene = await makeRequest(getOptions);
-    return scene;
-  }
-
   async select(sceneId) {
     if (UtilityScenes.getAllUtilitySceneIds().includes(sceneId)) {
       switch (sceneId) {
         case UtilityScenes.getAllOffId(): {
-          const lights = await this.lightUtil.getAllLights();
+          const lights = await this.lightController.getAll();
           for (const lightId in lights) {
             if (Object.prototype.hasOwnProperty.call(lights, lightId)) {
-              await this.lightUtil.turnLightOff(lightId);
+              await this.lightController.turnOff(lightId);
             }
           }
           return { sceneId: { sceneId } };
         }
         default: {
           const unsupportedMessage = `Unsupported utility scene ID: ${sceneId}`;
-          console.log(unsupportedMessage);
+          logger.info(unsupportedMessage);
           return new Error(unsupportedMessage);
         }
       }
     } else {
-      const getOptions = this.requestOptionsUtil.simpleGet(`scenes/${sceneId}`);
-      console.log(`Will GET with options: ${JSON.stringify(getOptions)}`);
-      const scene = await makeRequest(getOptions);
-
+      const scene = this.get(sceneId);
       for (const lightId in scene.lightstates) {
         if (Object.prototype.hasOwnProperty.call(scene.lightstates, lightId)) {
           const lightState = scene.lightstates[lightId];
-          await this.lightUtil.setLightState(lightId, lightState);
+          await this.lightController.setState(lightId, lightState);
         }
       }
-      const currentSceneState = await makeRequest(getOptions);
-      return currentSceneState;
-    }
-  }
 
-  async update(itemId, json) {
-    const uri = `scenes/${itemId}`;
-    const putOptions = this.requestOptionsUtil.putWithBody(uri, json);
-    const response = await makeRequest(putOptions);
-    return response;
+      // Return the current state of the scene
+      return this.get(sceneId);
+    }
   }
 
 }

@@ -1,6 +1,12 @@
 const Hs100Api = require('hs100-api');
 
-class TPLinkPlugUtil {
+class TPLinkPlugUtil extends CommonUtil {
+
+    constructor(bridgeUri) {
+    super(type, bridgeUri, logger);
+  }
+
+
   constructor(plugIps) {
     this.knownPlugs = [];
     plugIps.forEach(async (plugIp) => {
