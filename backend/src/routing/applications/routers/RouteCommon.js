@@ -5,10 +5,20 @@ const logger = require('../../../logger/logger.js')
 const route = (itemType, controller, application) => {
 
   application.get(`/${itemType}`, async (request, response, next) => {
-    logger.info(`get ${itemType} called`);
-    const items = await controller.getAll();
-    response.json(items);
-    logger.info('Request handled.');
+    try {
+      logger.info(`get ${itemType} called`);
+      const items = await controller.getAll();
+      response.json(items);
+      logger.info('Request handled.');
+    } catch (caughtError) {
+      logger.error({ keys: Object.getOwnPropertyNames(caughtError) }, 'error keys');
+      const error = {
+        message: caughtError.message,
+        type: caughtError.type,
+        stack: caughtError.stack
+      };
+      logger.error({ error }, 'An unhandled error was caught.');
+    }
   });
 
   application.get(`/${itemType}/:itemId`, async (request, response, next) => {

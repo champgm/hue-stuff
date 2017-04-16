@@ -1,15 +1,15 @@
-const Controller = require('./routing/Controller');
+const ApplicationRouter = require('./routing/ApplicationRouter');
 const getSecrets = require('./configuration/GetSecrets');
 const getPorts = require('./configuration/GetPorts');
 const getBridgeDetails = require('./configuration/GetBridgeDetails');
-const getPlugIps = require('./configuration/GetPlugIps');
+const getBroadcastAddress = require('./configuration/GetBroadcastAddress');
 
 const secretConfiguration = getSecrets();
 const expressConfiguration = getPorts();
 const bridgeDetails = getBridgeDetails();
-const plugIps = getPlugIps();
+const plugIps = getBroadcastAddress();
 
-const server = new Controller(
+const server = new ApplicationRouter(
   expressConfiguration,
   bridgeDetails,
   plugIps,

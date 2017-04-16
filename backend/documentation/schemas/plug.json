@@ -1,0 +1,387 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "definitions": {},
+  "id": "plug",
+  "properties": {
+    "client": {
+      "id": "/properties/client",
+      "properties": {
+        "_events": {
+          "id": "/properties/client/properties/_events",
+          "properties": {},
+          "type": "object"
+        },
+        "_eventsCount": {
+          "id": "/properties/client/properties/_eventsCount",
+          "type": "integer"
+        },
+        "broadcast": {
+          "id": "/properties/client/properties/broadcast",
+          "type": "string"
+        },
+        "debug": {
+          "id": "/properties/client/properties/debug",
+          "type": "boolean"
+        },
+        "devices": {
+          "id": "/properties/client/properties/devices",
+          "properties": {},
+          "type": "object"
+        },
+        "discoveryInterval": {
+          "id": "/properties/client/properties/discoveryInterval",
+          "type": "integer"
+        },
+        "discoveryPacketSequence": {
+          "id": "/properties/client/properties/discoveryPacketSequence",
+          "type": "integer"
+        },
+        "discoveryTimer": {
+          "id": "/properties/client/properties/discoveryTimer",
+          "properties": {
+            "_called": {
+              "id": "/properties/client/properties/discoveryTimer/properties/_called",
+              "type": "boolean"
+            },
+            "_idleNext": {
+              "id": "/properties/client/properties/discoveryTimer/properties/_idleNext",
+              "type": "string"
+            },
+            "_idlePrev": {
+              "id": "/properties/client/properties/discoveryTimer/properties/_idlePrev",
+              "properties": {
+                "_idleNext": {
+                  "id": "/properties/client/properties/discoveryTimer/properties/_idlePrev/properties/_idleNext",
+                  "type": "string"
+                },
+                "_idlePrev": {
+                  "id": "/properties/client/properties/discoveryTimer/properties/_idlePrev/properties/_idlePrev",
+                  "type": "string"
+                },
+                "_timer": {
+                  "id": "/properties/client/properties/discoveryTimer/properties/_idlePrev/properties/_timer",
+                  "properties": {
+                    "_list": {
+                      "id": "/properties/client/properties/discoveryTimer/properties/_idlePrev/properties/_timer/properties/_list",
+                      "type": "string"
+                    }
+                  },
+                  "type": "object"
+                },
+                "_unrefed": {
+                  "id": "/properties/client/properties/discoveryTimer/properties/_idlePrev/properties/_unrefed",
+                  "type": "boolean"
+                },
+                "msecs": {
+                  "id": "/properties/client/properties/discoveryTimer/properties/_idlePrev/properties/msecs",
+                  "type": "integer"
+                }
+              },
+              "type": "object"
+            },
+            "_idleStart": {
+              "id": "/properties/client/properties/discoveryTimer/properties/_idleStart",
+              "type": "integer"
+            },
+            "_idleTimeout": {
+              "id": "/properties/client/properties/discoveryTimer/properties/_idleTimeout",
+              "type": "integer"
+            },
+            "_repeat": {
+              "id": "/properties/client/properties/discoveryTimer/properties/_repeat",
+              "type": "integer"
+            }
+          },
+          "type": "object"
+        },
+        "domain": {
+          "id": "/properties/client/properties/domain",
+          "type": "null"
+        },
+        "offlineTolerance": {
+          "id": "/properties/client/properties/offlineTolerance",
+          "type": "integer"
+        },
+        "socket": {
+          "id": "/properties/client/properties/socket",
+          "properties": {
+            "_bindState": {
+              "id": "/properties/client/properties/socket/properties/_bindState",
+              "type": "integer"
+            },
+            "_events": {
+              "id": "/properties/client/properties/socket/properties/_events",
+              "properties": {},
+              "type": "object"
+            },
+            "_eventsCount": {
+              "id": "/properties/client/properties/socket/properties/_eventsCount",
+              "type": "integer"
+            },
+            "_handle": {
+              "id": "/properties/client/properties/socket/properties/_handle",
+              "properties": {
+                "fd": {
+                  "id": "/properties/client/properties/socket/properties/_handle/properties/fd",
+                  "type": "integer"
+                },
+                "owner": {
+                  "id": "/properties/client/properties/socket/properties/_handle/properties/owner",
+                  "type": "string"
+                }
+              },
+              "type": "object"
+            },
+            "_receiving": {
+              "id": "/properties/client/properties/socket/properties/_receiving",
+              "type": "boolean"
+            },
+            "domain": {
+              "id": "/properties/client/properties/socket/properties/domain",
+              "type": "null"
+            },
+            "fd": {
+              "id": "/properties/client/properties/socket/properties/fd",
+              "type": "integer"
+            },
+            "type": {
+              "id": "/properties/client/properties/socket/properties/type",
+              "type": "string"
+            }
+          },
+          "type": "object"
+        }
+      },
+      "type": "object"
+    },
+    "cloudInfo": {
+      "id": "/properties/cloudInfo",
+      "properties": {
+        "binded": {
+          "id": "/properties/cloudInfo/properties/binded",
+          "type": "integer"
+        },
+        "cld_connection": {
+          "id": "/properties/cloudInfo/properties/cld_connection",
+          "type": "integer"
+        },
+        "err_code": {
+          "id": "/properties/cloudInfo/properties/err_code",
+          "type": "integer"
+        },
+        "fwDlPage": {
+          "id": "/properties/cloudInfo/properties/fwDlPage",
+          "type": "string"
+        },
+        "fwNotifyType": {
+          "id": "/properties/cloudInfo/properties/fwNotifyType",
+          "type": "integer"
+        },
+        "illegalType": {
+          "id": "/properties/cloudInfo/properties/illegalType",
+          "type": "integer"
+        },
+        "server": {
+          "id": "/properties/cloudInfo/properties/server",
+          "type": "string"
+        },
+        "stopConnect": {
+          "id": "/properties/cloudInfo/properties/stopConnect",
+          "type": "integer"
+        },
+        "tcspInfo": {
+          "id": "/properties/cloudInfo/properties/tcspInfo",
+          "type": "string"
+        },
+        "tcspStatus": {
+          "id": "/properties/cloudInfo/properties/tcspStatus",
+          "type": "integer"
+        },
+        "username": {
+          "id": "/properties/cloudInfo/properties/username",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "consumption": {
+      "id": "/properties/consumption",
+      "properties": {
+        "err_code": {
+          "id": "/properties/consumption/properties/err_code",
+          "type": "integer"
+        },
+        "err_msg": {
+          "id": "/properties/consumption/properties/err_msg",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "deviceId": {
+      "id": "/properties/deviceId",
+      "type": "string"
+    },
+    "deviceName": {
+      "id": "/properties/deviceName",
+      "type": "string"
+    },
+    "hardwareVersion": {
+      "id": "/properties/hardwareVersion",
+      "type": "string"
+    },
+    "host": {
+      "id": "/properties/host",
+      "type": "string"
+    },
+    "latitude": {
+      "id": "/properties/latitude",
+      "type": "number"
+    },
+    "longitude": {
+      "id": "/properties/longitude",
+      "type": "number"
+    },
+    "mac": {
+      "id": "/properties/mac",
+      "type": "string"
+    },
+    "model": {
+      "id": "/properties/model",
+      "type": "string"
+    },
+    "name": {
+      "id": "/properties/name",
+      "type": "string"
+    },
+    "port": {
+      "id": "/properties/port",
+      "type": "integer"
+    },
+    "scheduleNextAction": {
+      "id": "/properties/scheduleNextAction",
+      "properties": {
+        "err_code": {
+          "id": "/properties/scheduleNextAction/properties/err_code",
+          "type": "integer"
+        },
+        "err_msg": {
+          "id": "/properties/scheduleNextAction/properties/err_msg",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "seenOnDiscovery": {
+      "id": "/properties/seenOnDiscovery",
+      "type": "integer"
+    },
+    "softwareVersion": {
+      "id": "/properties/softwareVersion",
+      "type": "string"
+    },
+    "status": {
+      "id": "/properties/status",
+      "type": "string"
+    },
+    "sysInfo": {
+      "id": "/properties/sysInfo",
+      "properties": {
+        "active_mode": {
+          "id": "/properties/sysInfo/properties/active_mode",
+          "type": "string"
+        },
+        "alias": {
+          "id": "/properties/sysInfo/properties/alias",
+          "type": "string"
+        },
+        "dev_name": {
+          "id": "/properties/sysInfo/properties/dev_name",
+          "type": "string"
+        },
+        "deviceId": {
+          "id": "/properties/sysInfo/properties/deviceId",
+          "type": "string"
+        },
+        "err_code": {
+          "id": "/properties/sysInfo/properties/err_code",
+          "type": "integer"
+        },
+        "feature": {
+          "id": "/properties/sysInfo/properties/feature",
+          "type": "string"
+        },
+        "fwId": {
+          "id": "/properties/sysInfo/properties/fwId",
+          "type": "string"
+        },
+        "hwId": {
+          "id": "/properties/sysInfo/properties/hwId",
+          "type": "string"
+        },
+        "hw_ver": {
+          "id": "/properties/sysInfo/properties/hw_ver",
+          "type": "string"
+        },
+        "icon_hash": {
+          "id": "/properties/sysInfo/properties/icon_hash",
+          "type": "string"
+        },
+        "latitude": {
+          "id": "/properties/sysInfo/properties/latitude",
+          "type": "number"
+        },
+        "led_off": {
+          "id": "/properties/sysInfo/properties/led_off",
+          "type": "integer"
+        },
+        "longitude": {
+          "id": "/properties/sysInfo/properties/longitude",
+          "type": "number"
+        },
+        "mac": {
+          "id": "/properties/sysInfo/properties/mac",
+          "type": "string"
+        },
+        "model": {
+          "id": "/properties/sysInfo/properties/model",
+          "type": "string"
+        },
+        "oemId": {
+          "id": "/properties/sysInfo/properties/oemId",
+          "type": "string"
+        },
+        "on_time": {
+          "id": "/properties/sysInfo/properties/on_time",
+          "type": "integer"
+        },
+        "relay_state": {
+          "id": "/properties/sysInfo/properties/relay_state",
+          "type": "integer"
+        },
+        "rssi": {
+          "id": "/properties/sysInfo/properties/rssi",
+          "type": "integer"
+        },
+        "sw_ver": {
+          "id": "/properties/sysInfo/properties/sw_ver",
+          "type": "string"
+        },
+        "type": {
+          "id": "/properties/sysInfo/properties/type",
+          "type": "string"
+        },
+        "updating": {
+          "id": "/properties/sysInfo/properties/updating",
+          "type": "integer"
+        }
+      },
+      "type": "object"
+    },
+    "timeout": {
+      "id": "/properties/timeout",
+      "type": "integer"
+    }
+  },
+  "type": "object"
+}
