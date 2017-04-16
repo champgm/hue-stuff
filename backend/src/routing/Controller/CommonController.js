@@ -11,7 +11,7 @@ class CommonUtil {
 
   async getAll() {
     const options = this.requestOptionsUtil.simpleGet(this.type);
-    this.logger.info({ options }, `Will GET with options.`);
+    this.logger.info({ options }, 'Will GET with options.');
     const items = await makeRequest(options);
 
     for (const id in items) {
@@ -27,11 +27,10 @@ class CommonUtil {
 
   async get(id) {
     const options = this.requestOptionsUtil.simpleGet(`${this.type}/${id}`);
-    this.logger.info({ options }, `Will GET with options.`);
+    this.logger.info({ options }, 'Will GET with options.');
     const item = await makeRequest(options);
     return item;
   }
-
 
   async update(itemId, json) {
     const uri = `${this.type}/${itemId}`;

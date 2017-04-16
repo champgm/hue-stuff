@@ -16,7 +16,14 @@ class LightUtil extends CommonController {
     const options = this.requestOptionsUtil.putWithBody(`${this.type}/${itemId}/state`, state);
     console.log(`Will PUT with options: ${JSON.stringify(options)}`);
     await makeRequest(options);
-    return this.get(itemId);
+    return this.getState(itemId);
+  }
+
+  async getState(itemId) {
+    const options = this.requestOptionsUtil.simpleGet(`${this.type}/${itemId}/state`);
+    this.logger.info({ options }, 'Will GET with options.');
+    const item = await makeRequest(options);
+    return item;
   }
 
   async select(itemId) {

@@ -13,9 +13,9 @@ const routeSensors = require('./routers/RouteSensors');
 const routeSchedules = require('./routers/RouteSchedules');
 
 class WebApplication {
-  constructor(hueUtilities, port) {
+  constructor(controllers, port) {
     this.application = express();
-    this.hueUtilities = hueUtilities;
+    this.controllers = controllers;
     this.port = port;
   }
 
@@ -32,13 +32,13 @@ class WebApplication {
       next();
     });
 
-    this.application = routePlugs(this.hueUtilities.plugUtil, this.application);
-    this.application = routeRules(this.hueUtilities.ruleUtil, this.application);
-    this.application = routeLights(this.hueUtilities.lightUtil, this.application);
-    this.application = routeGroups(this.hueUtilities.groupUtil, this.application);
-    this.application = routeScenes(this.hueUtilities.sceneUtil, this.application);
-    this.application = routeSensors(this.hueUtilities.requestOptionsUtil, this.application);
-    this.application = routeSchedules(this.hueUtilities.requestOptionsUtil, this.application);
+    this.application = routePlugs(this.controllers.plugController, this.application);
+    this.application = routeRules(this.controllers.ruleController, this.application);
+    this.application = routeLights(this.controllers.lightController, this.application);
+    this.application = routeGroups(this.controllers.groupController, this.application);
+    this.application = routeScenes(this.controllers.sceneController, this.application);
+    this.application = routeSensors(this.controllers.sensorController, this.application);
+    this.application = routeSchedules(this.controllers.scheduleController, this.application);
 
     // Stoart the local server
     logger.info('Starting Hue application...');

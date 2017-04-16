@@ -1,4 +1,4 @@
-const UtilityScenes = require('../util/hue/UtilityScenes');
+const UtilityScenes = require('../controller/utilities/UtilityScenes');
 const alexaVerifier = require('alexa-verifier-middleware');
 const bodyParser = require('body-parser');
 const express = require('express');
@@ -6,9 +6,9 @@ const https = require('https');
 const fs = require('fs');
 
 class AlexaApplication {
-  constructor(hueUtilities, port, secretConfiguration) {
+  constructor(controllers, port, secretConfiguration) {
     this.application = express();
-    this.hueUtilities = hueUtilities;
+    this.controllers = controllers;
     this.secretConfiguration = secretConfiguration;
     this.port = port;
   }
@@ -58,7 +58,7 @@ class AlexaApplication {
     const whiteSceneId = this.secretConfiguration.whiteSceneId;
     const redSceneId = this.secretConfiguration.redSceneId;
     const secretEndpoint = this.secretConfiguration.endpoint;
-    const sceneUtil = this.hueUtilities.sceneUtil;
+    const sceneController = this.controllers.sceneController;
 
     // For security, there's a thing which will verify that this request comes from amazon
     // and isn't an attack or something
@@ -78,23 +78,23 @@ class AlexaApplication {
         chosenScene = scene;
         switch (scene) {
           case 'red':
-            await sceneUtil.activateScene(redSceneId);
+            await sceneController.activateScene(redSceneId);
             break;
           case 'white':
-            await sceneUtil.activateScene(whiteSceneId);
+            await sceneController.activateScene(whiteSceneId);
             break;
           case 'off':
-            await sceneUtil.activateScene(UtilityScenes.getAllOffId());
+            await sceneController.activateScene(UtilityScenes.getAllOffId());
             break;
           case 'on':
-            await sceneUtil.activateScene(whiteSceneId);
+            await sceneController.activateScene(whiteSceneId);
             break;
           default:
-            await sceneUtil.activateScene(whiteSceneId);
+            await sceneController.activateScene(whiteSceneId);
             break;
         }
       } else {
-        await sceneUtil.activateScene(whiteSceneId);
+        await sceneController.activateScene(whiteSceneId);
         chosenScene = 'on';
       }
 
