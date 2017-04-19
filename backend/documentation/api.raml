@@ -22,6 +22,8 @@ schemas:
   rules: !include schemas/rules.json
   sensor: !include schemas/sensor.json
   sensors: !include schemas/sensors.json
+  plug: !include schemas/plug.json
+  plugs: !include schemas/plugs.json
   configuration: !include schemas/configuration.json
   resourceLink: !include schemas/resourceLink.json
   resourceLinks: !include schemas/resourceLinks.json
@@ -231,6 +233,40 @@ schemas:
           lightState: !include examples/sensorLightState.json
       responses:
         200: !include types/200Response.raml
+
+/plugs:
+  displayName: Plugs
+  description: An endpoint which interacts with plug objects
+  get:
+    description: Returns all configured plugs
+    responses:
+      200:
+        body:
+          type: plugs
+          example: !include examples/plugs.json
+  /{plugId}:
+    get:
+      description: Returns the specified plug
+      responses:
+        200:
+          body:
+            type: plug
+            example: !include examples/plug.json
+    put:
+      description: Attempts to update all attributes in the given plug.
+      body:
+        type: plug
+        example: !include examples/plug.json
+      responses:
+        200: !include types/200Response.raml
+    /select:
+      get:
+        description: Toggles the given plug on or off
+        responses:
+          200:
+            body:
+              type: plug
+              example: !include examples/plug.json
 
 /configuration:
   get:

@@ -42,9 +42,19 @@ class WebApplication {
 
     // Stoart the local server
     logger.info('Starting Hue application...');
-    this.application.listen(this.port, () => {
-      logger.info({ port: this.port }, 'Hue Application listening.');
-    });
+    try {
+      this.application.listen(this.port, () => {
+        logger.info({ port: this.port }, 'Hue Application listening.');
+      });
+    } catch (caughtError) {
+      logger.error({ keys: Object.getOwnPropertyNames(caughtError) }, 'error keys');
+      const error = {
+        message: caughtError.message,
+        type: caughtError.type,
+        stack: caughtError.stack
+      };
+      logger.error({ error }, 'An unhandled error was caught.');
+    }
   }
 
   routeStaticEndpoints() {

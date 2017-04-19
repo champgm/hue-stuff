@@ -1,5 +1,4 @@
 
-const makeRequest = require('request-promise');
 const UtilityScenes = require('./utilities/UtilityScenes');
 const LightController = require('./LightController');
 const CommonController = require('./CommonController');
@@ -24,7 +23,7 @@ class SceneUtil extends CommonController {
     }
 
     // First, get all of the bridge scenes
-    const scenes = super.getAll();
+    const scenes = await super.getAll();
 
     // Start collecting all scenes.
     const resultScenes = {};

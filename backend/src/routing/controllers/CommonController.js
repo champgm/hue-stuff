@@ -1,6 +1,5 @@
 const makeRequest = require('request-promise');
 const RequestOptionsUtil = require('./utilities/RequestOptionsUtil');
-const path = require('path');
 
 class CommonUtil {
   constructor(type, bridgeUri, logger) {

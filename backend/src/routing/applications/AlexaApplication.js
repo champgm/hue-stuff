@@ -1,4 +1,4 @@
-const UtilityScenes = require('../controller/utilities/UtilityScenes');
+const UtilityScenes = require('../controllers/utilities/UtilityScenes');
 const alexaVerifier = require('alexa-verifier-middleware');
 const bodyParser = require('body-parser');
 const express = require('express');
