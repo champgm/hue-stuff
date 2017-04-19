@@ -1,5 +1,5 @@
-[
-  {
+{
+  "99.99.99.99": {
     "client": {
       "domain": null,
       "_events": {},
@@ -100,4 +100,4 @@
       "err_msg": "time not sync"
     }
   }
-]
+}
