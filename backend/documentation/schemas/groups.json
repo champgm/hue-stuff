@@ -1,0 +1,10 @@
+{
+  "id":"groups",
+  "title": "Map<String,Group>",
+  "type": "object",
+  "patternProperties": {
+    ".{1,}": {
+      "$ref": "group.json#"
+    }
+  }
+}

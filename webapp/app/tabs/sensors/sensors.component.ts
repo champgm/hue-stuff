@@ -12,8 +12,6 @@ import 'rxjs/add/operator/toPromise';
 })
 export class SensorsComponent extends ItemsComponent implements OnInit {
   itemType: string = 'sensors';
-  itemsUri: string = `/getsensors`;
-  updateUri: string = `/updatesensor?sensorid=`;
 
   constructor(http: Http) {
     super(http);

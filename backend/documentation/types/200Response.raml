@@ -1,0 +1,8 @@
+  description: |
+    A response signifying that the request was accepted. Whether or not each individual attribute was successfully applied depends on the contents of the result.
+  body:
+    type: putResult
+    examples:
+      fullySuccessful: !include ../examples/putSuccessResult.json
+      partiallySuccessful: !include ../examples/putMixedResult.json
+      noneSuccessful: !include ../examples/putErrorResult.json

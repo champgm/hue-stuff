@@ -1,0 +1,18 @@
+{
+  "state": {
+    "daylight": null,
+    "lastupdated": "none"
+  },
+  "config": {
+    "on": true,
+    "long": "none",
+    "lat": "none",
+    "sunriseoffset": 30,
+    "sunsetoffset": -30
+  },
+  "name": "Daylight",
+  "type": "Daylight",
+  "modelid": "PHDL00",
+  "manufacturername": "Philips",
+  "swversion": "1.0"
+}

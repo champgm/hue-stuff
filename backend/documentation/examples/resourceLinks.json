@@ -1,0 +1,16 @@
+{
+  "1": {
+    "name": "Sunrise",
+    "description": "Carla's wakeup experience",
+    "type": "Link",
+    "class": 1,
+    "owner": "12345",
+    "links": [
+      "/schedules/2",
+      "/schedules/3",
+      "/scenes/ABCD",
+      "/scences/EFGH",
+      "/groups/8"
+    ]
+  }
+}

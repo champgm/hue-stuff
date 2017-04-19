@@ -12,8 +12,6 @@ import 'rxjs/add/operator/toPromise';
 })
 export class SchedulesComponent extends ItemsComponent implements OnInit {
   itemType: string = 'schedules';
-  itemsUri: string = `/getschedules`;
-  updateUri: string = `/updateschedule?scheduleid=`;
 
   constructor(http: Http) {
     super(http);

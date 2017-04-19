@@ -1,0 +1,17 @@
+{
+  "state": {
+    "status": 0,
+    "lastupdated": "none"
+  },
+  "config": {
+    "on": true,
+    "reachable": true
+  },
+  "name": "Light status",
+  "type": "CLIPGenericStatus",
+  "modelid": "Model 2015",
+  "manufacturername": "all 4 hue",
+  "swversion": "1.0",
+  "uniqueid": "PFHS-LIGHT-STATE",
+  "recycle": false
+}

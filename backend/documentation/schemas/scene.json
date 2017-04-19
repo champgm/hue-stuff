@@ -1,0 +1,49 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "definitions": {},
+  "id": "http://example.com/example.json",
+  "properties": {
+    "appdata": {
+      "id": "/properties/appdata",
+      "properties": {},
+      "type": "object"
+    },
+    "lastupdated": {
+      "id": "/properties/lastupdated",
+      "type": "string"
+    },
+    "lights": {
+      "id": "/properties/lights",
+      "items": {
+        "id": "/properties/lights/items",
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "locked": {
+      "id": "/properties/locked",
+      "type": "boolean"
+    },
+    "name": {
+      "id": "/properties/name",
+      "type": "string"
+    },
+    "owner": {
+      "id": "/properties/owner",
+      "type": "string"
+    },
+    "picture": {
+      "id": "/properties/picture",
+      "type": "string"
+    },
+    "recycle": {
+      "id": "/properties/recycle",
+      "type": "boolean"
+    },
+    "version": {
+      "id": "/properties/version",
+      "type": "integer"
+    }
+  },
+  "type": "object"
+}

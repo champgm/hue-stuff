@@ -1,0 +1,62 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "definitions": {},
+  "id": "schedule",
+  "properties": {
+    "command": {
+      "$schema": "http://json-schema.org/draft-04/schema#",
+      "definitions": {},
+      "id": "command",
+      "properties": {
+        "address": {
+          "id": "/properties/address",
+          "type": "string"
+        },
+        "body": {
+          "id": "/properties/body",
+          "properties": {
+            "scene": {
+              "id": "/properties/body/properties/scene",
+              "type": "string"
+            }
+          },
+          "type": "object"
+        },
+        "method": {
+          "id": "/properties/method",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "created": {
+      "id": "/properties/created",
+      "type": "string"
+    },
+    "description": {
+      "id": "/properties/description",
+      "type": "string"
+    },
+    "localtime": {
+      "id": "/properties/localtime",
+      "type": "string"
+    },
+    "name": {
+      "id": "/properties/name",
+      "type": "string"
+    },
+    "recycle": {
+      "id": "/properties/recycle",
+      "type": "boolean"
+    },
+    "status": {
+      "id": "/properties/status",
+      "type": "string"
+    },
+    "time": {
+      "id": "/properties/time",
+      "type": "string"
+    }
+  },
+  "type": "object"
+}

@@ -1,0 +1,10 @@
+{
+  "id":"sensors",
+  "title": "Map<String,Sensor>",
+  "type": "object",
+  "patternProperties": {
+    ".{1,}": {
+      "$ref": "sensor.json#"
+    }
+  }
+}

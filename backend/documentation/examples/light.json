@@ -1,0 +1,23 @@
+{
+  "state": {
+    "on": false,
+    "bri": 253,
+    "hue": 16055,
+    "sat": 72,
+    "effect": "none",
+    "xy": [
+      0.4166,
+      0.3961
+    ],
+    "ct": 301,
+    "alert": "none",
+    "colormode": "xy",
+    "reachable": true
+  },
+  "type": "Extended color light",
+  "name": "ColorLamp1",
+  "modelid": "LCT007",
+  "manufacturername": "Philips",
+  "uniqueid": "00:17:88:01:10:5a:d0:e3-0b",
+  "swversion": "5.38.1.14919"
+}

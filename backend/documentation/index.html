@@ -1,0 +1,18 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>API Console</title>
+  <link href="api-console/styles/api-console-light-theme.css" rel="stylesheet" class="theme">
+</head>
+<body ng-app="ramlConsoleApp" ng-cloak>
+  <script src="api-console/scripts/api-console-vendor.js"></script>
+  <script type="text/javascript" src="api-console/scripts/api-console.js"></script>
+  <script type="text/javascript">
+    $.noConflict();
+  </script>
+  <raml-console-loader src="api.raml"  options="{ disableThemeSwitcher: true,disableRamlClientGenerator: true, singleView: true }"></raml-console-loader>
+</body>
+
+</html>

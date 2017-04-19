@@ -1,0 +1,10 @@
+{
+  "id":"plugs",
+  "title": "Map<String,Plug>",
+  "type": "object",
+  "patternProperties": {
+    ".{1,}": {
+      "$ref": "plug.json#"
+    }
+  }
+}

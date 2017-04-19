@@ -1,0 +1,52 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "definitions": {},
+  "id": "state",
+  "properties": {
+    "alert": {
+      "id": "/properties/alert",
+      "type": "string"
+    },
+    "bri": {
+      "id": "/properties/bri",
+      "type": "integer"
+    },
+    "colormode": {
+      "id": "/properties/colormode",
+      "type": "string"
+    },
+    "ct": {
+      "id": "/properties/ct",
+      "type": "integer"
+    },
+    "effect": {
+      "id": "/properties/effect",
+      "type": "string"
+    },
+    "hue": {
+      "id": "/properties/hue",
+      "type": "integer"
+    },
+    "on": {
+      "id": "/properties/on",
+      "type": "boolean"
+    },
+    "reachable": {
+      "id": "/properties/reachable",
+      "type": "boolean"
+    },
+    "sat": {
+      "id": "/properties/sat",
+      "type": "integer"
+    },
+    "xy": {
+      "id": "/properties/xy",
+      "items": {
+        "id": "/properties/xy/items",
+        "type": "number"
+      },
+      "type": "array"
+    }
+  },
+  "type": "object"
+}

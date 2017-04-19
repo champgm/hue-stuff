@@ -1,0 +1,45 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "definitions": {},
+  "id": "group",
+  "properties": {
+    "action": {
+      "$ref": "state.json#"
+    },
+    "class": {
+      "id": "/properties/class",
+      "type": "string"
+    },
+    "lights": {
+      "id": "/properties/lights",
+      "items": {
+        "id": "/properties/lights/items",
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "name": {
+      "id": "/properties/name",
+      "type": "string"
+    },
+    "state": {
+      "id": "/properties/state",
+      "properties": {
+        "all_on": {
+          "id": "/properties/state/properties/all_on",
+          "type": "boolean"
+        },
+        "any_on": {
+          "id": "/properties/state/properties/any_on",
+          "type": "boolean"
+        }
+      },
+      "type": "object"
+    },
+    "type": {
+      "id": "/properties/type",
+      "type": "string"
+    }
+  },
+  "type": "object"
+}

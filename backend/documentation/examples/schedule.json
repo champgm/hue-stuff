@@ -1,0 +1,16 @@
+{
+  "name": "wakeup - bedroom",
+  "description": "BR - on",
+  "command": {
+    "address": "/api/1234/groups/0/action",
+    "body": {
+      "scene": "808140eef-on-30"
+    },
+    "method": "PUT"
+  },
+  "localtime": "W124/T05:30:00",
+  "time": "W124/T09:30:00",
+  "created": "2015-12-04T12:01:11",
+  "status": "disabled",
+  "recycle": false
+}

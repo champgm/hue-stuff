@@ -1,0 +1,35 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "definitions": {},
+  "id": "light",
+  "properties": {
+    "state": {
+      "$ref": "state.json#"
+    },
+    "manufacturername": {
+      "id": "/properties/manufacturername",
+      "type": "string"
+    },
+    "modelid": {
+      "id": "/properties/modelid",
+      "type": "string"
+    },
+    "name": {
+      "id": "/properties/name",
+      "type": "string"
+    },
+    "swversion": {
+      "id": "/properties/swversion",
+      "type": "string"
+    },
+    "type": {
+      "id": "/properties/type",
+      "type": "string"
+    },
+    "uniqueid": {
+      "id": "/properties/uniqueid",
+      "type": "string"
+    }
+  },
+  "type": "object"
+}

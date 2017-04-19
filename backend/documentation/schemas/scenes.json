@@ -1,0 +1,10 @@
+{
+  "id":"scenes",
+  "title": "Map<String,Scene>",
+  "type": "object",
+  "patternProperties": {
+    ".{1,}": {
+      "$ref": "scene.json#"
+    }
+  }
+}

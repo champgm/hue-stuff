@@ -15,9 +15,7 @@ export abstract class ItemsComponent implements OnInit {
   @ViewChild('editResultModal') public editResultModal: ModalDirective;
 
   topPad: number = 50;
-  updateUri: string;
-  selectUri: string;
-  itemsUri: string;
+  itemType: string;
   items: any;
   itemIds: string[];
   selectedItemId: string;
@@ -40,8 +38,9 @@ export abstract class ItemsComponent implements OnInit {
     return this.http.get(uri).toPromise();
   }
 
-  async getItems() {
-    await this.httpGet(this.itemsUri)
+  async getItems(itemParameters?: string) {
+    const parameters = itemParameters ? itemParameters : "";
+    await this.httpGet(`/${this.itemType}${parameters}`)
       .then(response => {
         const json = response.json();
         this.itemIds = Object.keys(json);
@@ -52,9 +51,7 @@ export abstract class ItemsComponent implements OnInit {
   onSelect(itemId: string) {
     console.log(`${this.constructor.name}: onSelect called with itemId: ${itemId}`);
     this.selectedItemId = itemId;
-    if (this.selectUri) {
-      return this.httpGet(`${this.selectUri}${this.selectedItemId}`);
-    }
+    return this.httpGet(`/${this.itemType}/${itemId}/select`);
   }
 
   onView(itemId: string) {
@@ -87,10 +84,8 @@ export abstract class ItemsComponent implements OnInit {
       this.editResult = `Unable to parse input JSON: ${this.itemJsonToEdit}`;
       return;
     }
-    if (this.updateUri) {
-      const response = await this.http.put(`${this.updateUri}${this.itemIdToEdit}`, editedItem).toPromise();
-      this.editResult = JSON.parse(response["_body"]);
-    }
+    const response = await this.http.put(`${this.itemType}/${this.itemIdToEdit}`, editedItem).toPromise();
+    this.editResult = JSON.parse(response["_body"]);
     this.editResultModal.show();
     await this.getItems();
     this.onEdit(this.itemIdToEdit);

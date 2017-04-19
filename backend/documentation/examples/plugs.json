@@ -1,0 +1,103 @@
+{
+  "99.99.99.99": {
+    "client": {
+      "domain": null,
+      "_events": {},
+      "_eventsCount": 2,
+      "broadcast": "99.99.99.255",
+      "discoveryInterval": 30000,
+      "offlineTolerance": 3,
+      "debug": true,
+      "devices": {},
+      "discoveryTimer": {
+        "_called": true,
+        "_idleTimeout": 30000,
+        "_idlePrev": {
+          "_idleNext": "[Circular]",
+          "_idlePrev": "[Circular]",
+          "_timer": {
+            "_list": "[Circular]"
+          },
+          "_unrefed": false,
+          "msecs": 30000
+        },
+        "_idleNext": "[Circular]",
+        "_idleStart": 30533,
+        "_repeat": 30000
+      },
+      "discoveryPacketSequence": 3,
+      "socket": {
+        "domain": null,
+        "_events": {},
+        "_eventsCount": 2,
+        "_handle": {
+          "fd": -4083,
+          "owner": "[Circular]"
+        },
+        "_receiving": true,
+        "_bindState": 2,
+        "type": "udp4",
+        "fd": -42
+      }
+    },
+    "deviceId": "80061EE651499999999999961C76BF183563E1",
+    "host": "99.99.99.99",
+    "port": 9999,
+    "seenOnDiscovery": 3,
+    "timeout": 0,
+    "name": "My Smart Plug 2",
+    "deviceName": "Wi-Fi Smart Plug",
+    "model": "HS100(US)",
+    "softwareVersion": "1.1.2 Build 161014 Rel.164426",
+    "hardwareVersion": "1.0",
+    "mac": "50:C7:BF:42:BE:C8",
+    "latitude": 33.965986,
+    "longitude": -84.242481,
+    "status": "online",
+    "sysInfo": {
+      "err_code": 0,
+      "sw_ver": "1.1.2 Build 161014 Rel.164426",
+      "hw_ver": "1.0",
+      "type": "IOT.SMARTPLUGSWITCH",
+      "model": "HS100(US)",
+      "mac": "99:99:99:99:99:99",
+      "deviceId": "80061EE6599999999999996D61C76BF183563E1",
+      "hwId": "5EACBE93FB9999999999F1C2ADE6DDE11",
+      "fwId": "6C4ACA62CB99999999999990CF24148345CD43",
+      "oemId": "37589AA199999999999993E2914B7760127E5",
+      "alias": "My Smart Plug 2",
+      "dev_name": "Wi-Fi Smart Plug",
+      "icon_hash": "",
+      "relay_state": 1,
+      "on_time": 30,
+      "active_mode": "schedule",
+      "feature": "TIM",
+      "updating": 0,
+      "rssi": -55,
+      "led_off": 0,
+      "latitude": 33.965986,
+      "longitude": -84.242481
+    },
+    "cloudInfo": {
+      "username": "",
+      "server": "devs.tplinkcloud.com",
+      "binded": 0,
+      "cld_connection": 0,
+      "illegalType": -1,
+      "stopConnect": -1,
+      "tcspStatus": -1,
+      "fwDlPage": "",
+      "tcspInfo": "",
+      "fwNotifyType": 0,
+      "err_code": 0
+    },
+    "consumption": {
+      "err_code": -1,
+      "err_msg": "module not support"
+    },
+    "scheduleNextAction": {
+      "err_code": -11,
+      "err_msg": "time not sync"
+    }
+  }
+}

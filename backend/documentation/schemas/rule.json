@@ -1,0 +1,86 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "definitions": {},
+  "id": "rule",
+  "properties": {
+    "actions": {
+      "id": "/properties/actions",
+      "items": {
+        "id": "/properties/actions/items",
+        "properties": {
+          "address": {
+            "id": "/properties/actions/items/properties/address",
+            "type": "string"
+          },
+          "body": {
+            "id": "/properties/actions/items/properties/body",
+            "properties": {
+              "scene": {
+                "id": "/properties/actions/items/properties/body/properties/scene",
+                "type": "string"
+              }
+            },
+            "type": "object"
+          },
+          "method": {
+            "id": "/properties/actions/items/properties/method",
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "conditions": {
+      "id": "/properties/conditions",
+      "items": {
+        "id": "/properties/conditions/items",
+        "properties": {
+          "address": {
+            "id": "/properties/conditions/items/properties/address",
+            "type": "string"
+          },
+          "operator": {
+            "id": "/properties/conditions/items/properties/operator",
+            "type": "string"
+          },
+          "value": {
+            "id": "/properties/conditions/items/properties/value",
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "created": {
+      "id": "/properties/created",
+      "type": "string"
+    },
+    "lasttriggered": {
+      "id": "/properties/lasttriggered",
+      "type": "string"
+    },
+    "name": {
+      "id": "/properties/name",
+      "type": "string"
+    },
+    "owner": {
+      "id": "/properties/owner",
+      "type": "string"
+    },
+    "recycle": {
+      "id": "/properties/recycle",
+      "type": "boolean"
+    },
+    "status": {
+      "id": "/properties/status",
+      "type": "string"
+    },
+    "timestriggered": {
+      "id": "/properties/timestriggered",
+      "type": "integer"
+    }
+  },
+  "type": "object"
+}
