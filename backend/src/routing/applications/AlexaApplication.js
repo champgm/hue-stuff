@@ -78,23 +78,23 @@ class AlexaApplication {
         chosenScene = scene;
         switch (scene) {
           case 'red':
-            await sceneController.activateScene(redSceneId);
+            await sceneController.select(redSceneId);
             break;
           case 'white':
-            await sceneController.activateScene(whiteSceneId);
+            await sceneController.select(whiteSceneId);
             break;
           case 'off':
-            await sceneController.activateScene(UtilityScenes.getAllOffId());
+            await sceneController.select(UtilityScenes.getAllOffId());
             break;
           case 'on':
-            await sceneController.activateScene(whiteSceneId);
+            await sceneController.select(whiteSceneId);
             break;
           default:
-            await sceneController.activateScene(whiteSceneId);
+            await sceneController.select(whiteSceneId);
             break;
         }
       } else {
-        await sceneController.activateScene(whiteSceneId);
+        await sceneController.select(whiteSceneId);
         chosenScene = 'on';
       }
 

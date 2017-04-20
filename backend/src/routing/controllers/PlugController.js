@@ -4,7 +4,6 @@ const logger = require('bunyan')
   .createLogger({ name: `${path.basename(__filename)}` });
 
 
-
 class TPLinkPlugUtil {
 
   constructor(broadcastAddress) {

@@ -57,7 +57,9 @@ class SceneUtil extends CommonController {
   }
 
   async select(sceneId) {
+    logger.info({ sceneId }, 'Select called for scene.');
     if (UtilityScenes.getAllUtilitySceneIds().includes(sceneId)) {
+      logger.info('Scene ID represents a utility scene.');
       switch (sceneId) {
         case UtilityScenes.getAllOffId(): {
           const lights = await this.lightController.getAll();
@@ -75,7 +77,8 @@ class SceneUtil extends CommonController {
         }
       }
     } else {
-      const scene = this.get(sceneId);
+      logger.info('Scene ID represents a normal scene.');
+      const scene = await this.get(sceneId);
       for (const lightId in scene.lightstates) {
         if (Object.prototype.hasOwnProperty.call(scene.lightstates, lightId)) {
           const lightState = scene.lightstates[lightId];

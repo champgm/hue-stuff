@@ -16,7 +16,7 @@ class LightUtil extends CommonController {
     const options = this.requestOptionsUtil.putWithBody(`${this.type}/${itemId}/state`, state);
     console.log(`Will PUT with options: ${JSON.stringify(options)}`);
     await makeRequest(options);
-    return this.getState(itemId);
+    return this.get(itemId);
   }
 
   async getState(itemId) {
@@ -27,7 +27,9 @@ class LightUtil extends CommonController {
   }
 
   async select(itemId) {
+    logger.info({ itemId }, `Select called for ${type}`);
     const item = await this.get(itemId);
+    logger.info({ item }, 'Item retrieved.');
     const toggledState = { on: !(item.state.on) };
     return this.setState(itemId, toggledState);
   }
