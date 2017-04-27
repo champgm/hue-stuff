@@ -44,6 +44,7 @@ class ApplicationRouter {
     alexaApplication.use(morgan('common'));
     alexaApplication.use(bodyParser.json());
     alexaApplication.use(errorHandler);
+    alexaApplication.use(bodyParser.urlencoded({ extended: true }));
     alexaApplication.start();
 
     const webApplication = new WebApplication(

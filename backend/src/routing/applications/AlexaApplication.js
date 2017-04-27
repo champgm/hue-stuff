@@ -4,6 +4,9 @@ const bodyParser = require('body-parser');
 const express = require('express');
 const https = require('https');
 const fs = require('fs');
+const path = require('path');
+const logger = require('../../logger/logger.js')
+  .child({ fileName: `${path.basename(__filename)}` });
 
 class AlexaApplication {
   constructor(controllers, port, secretConfiguration) {
@@ -25,30 +28,33 @@ class AlexaApplication {
       this.secretConfiguration.whiteSceneId &&
       this.secretConfiguration.sslCertPath &&
       this.secretConfiguration.sslKeyPath)) {
-      console.log(`${this.constructor.name}: Secret endpoints not configured! ` +
+      logger.info({ secretConfiguration: this.secretConfiguration }, 'Secret endpoints not configured! ' +
         'Will not add bindings to external server!');
       return false;
     }
+    logger.info({ secretConfiguration: this.secretConfiguration }, 'Found secret configuration');
+
 
     // Route gets and puts for the external application
+    logger.info('Routing external puts...');
     this.routeExternalPuts();
-
 
     try {
       // Read the SSL stuff
+      logger.info('Reading certificate information...');
       const certificate = fs.readFileSync(this.secretConfiguration.sslCertPath);
       const privateKey = fs.readFileSync(this.secretConfiguration.sslKeyPath);
 
       // Start the external server
-      console.log(`${this.constructor.name}: Starting Alexa Application...`);
+      logger.info('Starting Alexa Application...');
       https.createServer({ key: privateKey, cert: certificate }, this.application)
         .listen(this.port, () => {
-          console.log(`Alexa Application listening on port ${this.port}!`);
+          logger.info({ port: this.port }, 'Alexa Application listening!');
         });
       return true;
     } catch (error) {
-      console.log('Error starting Alexa endpoint.');
-      console.log(`${JSON.stringify(error)}`);
+      const loggableError = { message: error.message, stack: error.stack, type: error.type };
+      logger.error({ error, loggableError }, 'Error starting Alexa endpoint.');
       return false;
     }
   }
@@ -59,16 +65,13 @@ class AlexaApplication {
     const redSceneId = this.secretConfiguration.redSceneId;
     const secretEndpoint = this.secretConfiguration.endpoint;
     const sceneController = this.controllers.sceneController;
+    logger.info({ whiteSceneId, redSceneId, secretEndpoint }, 'Routing IDs and endpoints');
 
     // For security, there's a thing which will verify that this request comes from amazon
     // and isn't an attack or something
     const alexaRouter = express.Router(); // Instantiate an express "router"
     alexaRouter.use(alexaVerifier); // Make the router use the Alexa call verifier
     this.application.use(alexaRouter); // Use it
-
-    // This will help us parse POSTs
-    this.application.use(bodyParser.json()); // support json encoded bodies
-    this.application.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
 
     // Right now, these are the only accepted responses.
     const processPost = async (request, response) => {
@@ -113,10 +116,11 @@ class AlexaApplication {
         }
       };
       response.send(alexaResponse);
-      console.log('Request handled.');
+      logger.info('Request handled.');
     };
 
     // Start this app on the secret endpoint
+    logger.info('Setting up endpoint');
     this.application.post(`/${secretEndpoint}`, processPost);
   }
 
