@@ -120,8 +120,9 @@ class AlexaApplication {
     };
 
     // Start this app on the secret endpoint
-    logger.info('Setting up endpoint');
-    this.application.post(`/${secretEndpoint}`, processPost);
+    const endpoint = `/${secretEndpoint}`;
+    logger.info({ endpoint }, 'Setting up endpoint');
+    this.application.post(endpoint, processPost);
   }
 
   getOutputSpeech(chosenScene) {
