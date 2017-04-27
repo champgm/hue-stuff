@@ -16,6 +16,10 @@ class AlexaApplication {
     this.port = port;
   }
 
+  getApplication() {
+    return this.application;
+  }
+
   use(middleware) {
     this.application.use(middleware);
   }

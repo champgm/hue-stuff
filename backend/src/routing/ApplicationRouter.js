@@ -11,6 +11,11 @@ const RuleController = require('./controllers/RuleController');
 const errorHandler = require('./middleware/HandleErrors');
 const bodyParser = require('body-parser');
 const morgan = require('morgan');
+const listEndpoints = require('express-list-endpoints');
+
+const path = require('path');
+const logger = require('../logger/logger.js')
+  .child({ fileName: `${path.basename(__filename)}` });
 
 class ApplicationRouter {
   constructor(expressConfiguration, bridgeDetails, broadcastAddress, secretConfiguration) {
@@ -47,6 +52,9 @@ class ApplicationRouter {
     alexaApplication.use(bodyParser.urlencoded({ extended: true }));
     alexaApplication.start();
 
+    const alexaEndpoints = listEndpoints(alexaApplication.getApplication());
+    logger.info({ alexaEndpoints }, 'Alexa Endpoints');
+
     const webApplication = new WebApplication(
       controllers,
       this.internalExpressPort);
@@ -54,6 +62,9 @@ class ApplicationRouter {
     webApplication.use(bodyParser.json());
     alexaApplication.use(errorHandler);
     webApplication.start();
+
+    const webEndpoints = listEndpoints(webApplication.getApplication());
+    logger.info({ webEndpoints }, 'Web Endpoints');
 
     return true;
   }
