@@ -46,10 +46,10 @@ class ApplicationRouter {
       this.externalExpressPort,
       this.secretConfiguration);
 
-    alexaApplication.use(morgan('common'));
+    // alexaApplication.use(morgan('common'));
     alexaApplication.use(bodyParser.json());
     alexaApplication.use(bodyParser.urlencoded({ extended: true }));
-    alexaApplication.use(errorHandler);
+    // alexaApplication.use(errorHandler);
     alexaApplication.start();
 
     const alexaEndpoints = listEndpoints(alexaApplication.getApplication());
