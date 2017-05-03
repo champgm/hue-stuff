@@ -66,11 +66,13 @@ class WebApplication {
     // Add the webapp folder as static content. This contains the app UI.
     const packagedLocation = '../../../../dist';
     const rawLocation = '../../../../webapp';
-    const location = this.useRawWebApp ? rawLocation : packagedLocation;
-    if (this.useRawWebApp) {
+    let location;
+    if (this.useRawWebApp && this.useRawWebApp === 'true') {
       logger.info({ location, useRawWebApp: this.useRawWebApp }, 'Use Raw was true, will use raw location');
+      location = rawLocation;
     } else {
       logger.info({ location, useRawWebApp: this.useRawWebApp }, 'Use Raw was not true, will use packaged location');
+      location = packagedLocation;
     }
     const webAppFolder = path.join(__dirname, location);
     logger.info({ webAppFolder }, 'Static content will be read.');
