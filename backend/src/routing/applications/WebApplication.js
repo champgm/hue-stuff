@@ -18,6 +18,8 @@ class WebApplication {
     this.controllers = controllers;
     this.port = port;
     this.useRawWebApp = useRawWebApp;
+    logger.info({ useRawWebApp }, 'useRawWebApp');
+    logger.info({ useRawWebApp: this.useRawWebApp }, 'this.useRawWebApp');
   }
 
   getApplication() {
@@ -70,7 +72,7 @@ class WebApplication {
     if (this.useRawWebApp) {
       logger.info({ location, useRawWebApp: this.useRawWebApp }, 'Use Raw was true, will use raw location');
     } else {
-      logger.info({ location, useRawWebApp: this.useRawWebApp }, 'Use Raw was not true, will use raw location');
+      logger.info({ location, useRawWebApp: this.useRawWebApp }, 'Use Raw was not true, will use packaged location');
     }
     const webAppFolder = path.join(__dirname, location);
     logger.info({ webAppFolder }, 'Static content will be read.');

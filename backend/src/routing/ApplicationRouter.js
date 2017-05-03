@@ -28,6 +28,8 @@ class ApplicationRouter {
     this.secretConfiguration = secretConfiguration;
     this.broadcastAddress = broadcastAddress;
     this.useRawWebApp = useRawWebApp;
+    logger.info({ useRawWebApp }, 'useRawWebApp');
+    logger.info({ useRawWebApp: this.useRawWebApp }, 'this.useRawWebApp');
   }
 
   async start() {
