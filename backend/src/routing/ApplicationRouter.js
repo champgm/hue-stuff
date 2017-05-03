@@ -28,8 +28,6 @@ class ApplicationRouter {
     this.secretConfiguration = secretConfiguration;
     this.broadcastAddress = broadcastAddress;
     this.useRawWebApp = useRawWebApp;
-    logger.info({ useRawWebApp }, 'useRawWebApp');
-    logger.info({ useRawWebApp: this.useRawWebApp }, 'this.useRawWebApp');
   }
 
   async start() {
@@ -47,8 +45,7 @@ class ApplicationRouter {
     const alexaApplication = new AlexaApplication(
       controllers,
       this.externalExpressPort,
-      this.secretConfiguration,
-      this.useRawWebApp);
+      this.secretConfiguration);
 
     // alexaApplication.use(morgan('common'));
     alexaApplication.use(bodyParser.json());
@@ -61,7 +58,8 @@ class ApplicationRouter {
 
     const webApplication = new WebApplication(
       controllers,
-      this.internalExpressPort);
+      this.internalExpressPort,
+      this.useRawWebApp);
     webApplication.use(morgan('common'));
     webApplication.use(bodyParser.json());
     webApplication.use(errorHandler);

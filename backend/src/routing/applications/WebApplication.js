@@ -18,8 +18,6 @@ class WebApplication {
     this.controllers = controllers;
     this.port = port;
     this.useRawWebApp = useRawWebApp;
-    logger.info({ useRawWebApp }, 'useRawWebApp');
-    logger.info({ useRawWebApp: this.useRawWebApp }, 'this.useRawWebApp');
   }
 
   getApplication() {
