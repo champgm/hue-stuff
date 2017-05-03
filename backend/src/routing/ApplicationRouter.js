@@ -18,7 +18,7 @@ const logger = require('../logger/logger.js')
   .child({ fileName: `${path.basename(__filename)}` });
 
 class ApplicationRouter {
-  constructor(expressConfiguration, bridgeDetails, broadcastAddress, secretConfiguration) {
+  constructor(expressConfiguration, bridgeDetails, broadcastAddress, secretConfiguration, useRawWebApp) {
     this.bridgeUri =
       `http://${bridgeDetails.bridgeIp}:` +
       `${bridgeDetails.bridgePort}/` +
@@ -27,6 +27,7 @@ class ApplicationRouter {
     this.internalExpressPort = expressConfiguration.internalPort;
     this.secretConfiguration = secretConfiguration;
     this.broadcastAddress = broadcastAddress;
+    this.useRawWebApp = useRawWebApp;
   }
 
   async start() {
@@ -44,7 +45,8 @@ class ApplicationRouter {
     const alexaApplication = new AlexaApplication(
       controllers,
       this.externalExpressPort,
-      this.secretConfiguration);
+      this.secretConfiguration,
+      this.useRawWebApp);
 
     // alexaApplication.use(morgan('common'));
     alexaApplication.use(bodyParser.json());
@@ -52,8 +54,8 @@ class ApplicationRouter {
     // alexaApplication.use(errorHandler);
     alexaApplication.start();
 
-    const alexaEndpoints = listEndpoints(alexaApplication.getApplication());
-    logger.info({ alexaEndpoints }, 'Alexa Endpoints');
+    // const alexaEndpoints = listEndpoints(alexaApplication.getApplication());
+    // logger.info({ alexaEndpoints }, 'Alexa Endpoints');
 
     const webApplication = new WebApplication(
       controllers,
@@ -63,8 +65,8 @@ class ApplicationRouter {
     webApplication.use(errorHandler);
     webApplication.start();
 
-    const webEndpoints = listEndpoints(webApplication.getApplication());
-    logger.info({ webEndpoints }, 'Web Endpoints');
+    // const webEndpoints = listEndpoints(webApplication.getApplication());
+    // logger.info({ webEndpoints }, 'Web Endpoints');
 
     return true;
   }

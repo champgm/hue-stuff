@@ -13,10 +13,11 @@ const routeSensors = require('./routers/RouteSensors');
 const routeSchedules = require('./routers/RouteSchedules');
 
 class WebApplication {
-  constructor(controllers, port) {
+  constructor(controllers, port, useRawWebApp) {
     this.application = express();
     this.controllers = controllers;
     this.port = port;
+    this.useRawWebApp = useRawWebApp;
   }
 
   getApplication() {
@@ -63,7 +64,15 @@ class WebApplication {
 
   routeStaticEndpoints() {
     // Add the webapp folder as static content. This contains the app UI.
-    const webAppFolder = path.join(__dirname, '../../../../dist');
+    const packagedLocation = '../../../../dist';
+    const rawLocation = '../../../../webapp';
+    const location = this.useRawWebApp ? rawLocation : packagedLocation;
+    if (this.useRawWebApp) {
+      logger.info({ location, useRawWebApp: this.useRawWebApp }, 'Use Raw was true, will use raw location');
+    } else {
+      logger.info({ location, useRawWebApp: this.useRawWebApp }, 'Use Raw was not true, will use raw location');
+    }
+    const webAppFolder = path.join(__dirname, location);
     logger.info({ webAppFolder }, 'Static content will be read.');
     this.application.use('/', express.static(webAppFolder));
 
