@@ -1,6 +1,5 @@
 const UtilityScenes = require('../controllers/utilities/UtilityScenes');
 const alexaVerifier = require('alexa-verifier-middleware');
-const bodyParser = require('body-parser');
 const express = require('express');
 const https = require('https');
 const fs = require('fs');
@@ -79,10 +78,13 @@ class AlexaApplication {
 
     // Right now, these are the only accepted responses.
     const processPost = async (request, response) => {
+      logger.info({ request }, 'Received Alexa request');
       let chosenScene;
       if (request.body.request.intent) {
+        logger.info({ intent: request.body.request.intent }, 'Intent found');
         const scene = request.body.request.intent.slots.Scene.value;
         chosenScene = scene;
+        logger.info({ chosenScene }, 'Scene extracted');
         switch (scene) {
           case 'red':
             await sceneController.activateScene(redSceneId);

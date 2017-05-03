@@ -48,8 +48,8 @@ class ApplicationRouter {
 
     alexaApplication.use(morgan('common'));
     alexaApplication.use(bodyParser.json());
-    alexaApplication.use(errorHandler);
     alexaApplication.use(bodyParser.urlencoded({ extended: true }));
+    alexaApplication.use(errorHandler);
     alexaApplication.start();
 
     const alexaEndpoints = listEndpoints(alexaApplication.getApplication());
@@ -60,7 +60,7 @@ class ApplicationRouter {
       this.internalExpressPort);
     webApplication.use(morgan('common'));
     webApplication.use(bodyParser.json());
-    alexaApplication.use(errorHandler);
+    webApplication.use(errorHandler);
     webApplication.start();
 
     const webEndpoints = listEndpoints(webApplication.getApplication());
