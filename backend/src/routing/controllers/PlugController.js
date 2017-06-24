@@ -72,6 +72,11 @@ class TPLinkPlugUtil {
     return this.setState(plugId, true);
   }
 
+  async update(itemId, json) {
+    const response = await this.setState(itemId, json.on);
+    return response;
+  }
+
   trimPlug(originalPlug) {
     const trimmedPlug = {};
     trimmedPlug.deviceId = originalPlug.deviceId;
